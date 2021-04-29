@@ -11,6 +11,7 @@ import Vistas.JFrmMarca;
 import Vistas.JFrmPais;
 import Vistas.JFrmSeccion;
 import Vistas.JFrmTipoItem;
+import Vistas.JFrmUnidadMedida;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
@@ -52,6 +53,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoItem = new javax.swing.JMenuItem();
         itemImpuesto = new javax.swing.JMenuItem();
         itemPais = new javax.swing.JMenuItem();
+        itemUnidadMedida = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
@@ -143,6 +145,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoCompras.add(itemPais);
+
+        itemUnidadMedida.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemUnidadMedida.setText("Mantenimiento de Unidades de Medidas");
+        itemUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemUnidadMedidaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemUnidadMedida);
 
         jMenu2.add(menuMantenimientoCompras);
 
@@ -272,6 +283,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemPaisActionPerformed
 
+    private void itemUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUnidadMedidaActionPerformed
+        JFrmUnidadMedida fm = new JFrmUnidadMedida();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemUnidadMedidaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -314,6 +339,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemSeccion;
     private javax.swing.JMenuItem itemTipoItem;
+    private javax.swing.JMenuItem itemUnidadMedida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
