@@ -1,7 +1,7 @@
 package Vistas;
 
-import Dao.DAOImpuesto;
-import Modelos.Impuesto;
+import Dao.DAOPais;
+import Modelos.Pais;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -11,21 +11,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author armando
  */
-public class JFrmImpuesto extends javax.swing.JInternalFrame {
+public class JFrmPais extends javax.swing.JInternalFrame {
 
-    Impuesto i = new Impuesto();
-    DAOImpuesto dao = new DAOImpuesto();
+    Pais p = new Pais();
+    DAOPais dao = new DAOPais();
     ArrayList<Object[]> datos = new ArrayList<>();
-    Double valorMonto = 0.0;
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
 
     /**
-     * Creates new form JFrmImpuesto
+     * Creates new form JFrmPais
      */
-    public JFrmImpuesto() {
-        setTitle("JFrmImpuesto");
+    public JFrmPais() {
+        setTitle("JFrmPais");
         initComponents();
         cargar();
     }
@@ -46,7 +45,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 //CAMPOS
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(true);
-                txtPorcentaje.setEnabled(true);
+                txtNacionalidad.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -58,7 +57,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 //CAMPOS
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(true);
-                txtPorcentaje.setEnabled(true);
+                txtNacionalidad.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -71,7 +70,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 //CAMPOS
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(false);
-                txtPorcentaje.setEnabled(false);
+                txtNacionalidad.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -84,7 +83,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 //CAMPOS
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(false);
-                txtPorcentaje.setEnabled(false);
+                txtNacionalidad.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -97,7 +96,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 //CAMPOS
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(false);
-                txtPorcentaje.setEnabled(false);
+                txtNacionalidad.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -114,9 +113,8 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
         txtCriterio.setText(null);
         txtCodigo.setText(null);
         txtDescripcion.setText(null);
-        txtPorcentaje.setText(null);
+        txtNacionalidad.setText(null);
         operacion = "";
-        valorMonto = 0.0;
     }
 
     public void guardar(String accion) {
@@ -133,24 +131,21 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
             }
         }
         String descripcion = txtDescripcion.getText();
-        Double porcentaje = valorMonto;
+        String nacionalidad = txtNacionalidad.getText();
         switch (accion) {
             case "NUEVO":
                 if (descripcion.isEmpty()) {
                     error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
                 }
-                if (porcentaje == null) {
-                    error += "NO HA CARGADO EL PORCENTAJE.\n";
-                } else {
-                    if (porcentaje < 0) {
-                        error += "EL PORCENTAJE NO PUEDE SER MENOR A 0.\n";
-                    }
+                if (nacionalidad.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE NACIONALIDAD VACIO.\n";
                 }
+
                 if (error.isEmpty()) {
-                    i.setIdimpuesto(id);
-                    i.setDescripcion(descripcion);
-                    i.setPorcentaje(porcentaje);
-                    dao.agregar(i);
+                    p.setIdpais(id);
+                    p.setDescripcion(descripcion);
+                    p.setNacionalidad(nacionalidad);
+                    dao.agregar(p);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
@@ -160,18 +155,14 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 if (descripcion.isEmpty()) {
                     error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
                 }
-                if (porcentaje == null) {
-                    error += "NO HA CARGADO EL PORCENTAJE.\n";
-                } else {
-                    if (porcentaje < 0) {
-                        error += "EL PORCENTAJE NO PUEDE SER MENOR A 0.\n";
-                    }
+                if (nacionalidad.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE NACIONALIDAD VACIO.\n";
                 }
                 if (error.isEmpty()) {
-                    i.setIdimpuesto(id);
-                    i.setDescripcion(descripcion);
-                    i.setPorcentaje(porcentaje);
-                    dao.modificar(i);
+                    p.setIdpais(id);
+                    p.setDescripcion(descripcion);
+                    p.setNacionalidad(nacionalidad);
+                    dao.modificar(p);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
@@ -179,8 +170,8 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    i.setIdimpuesto(id);
-                    dao.eliminar(i);
+                    p.setIdpais(id);
+                    dao.eliminar(p);
                     cargar();
                 }
                 break;
@@ -195,12 +186,10 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
         if (fila >= 0) {
             String id = tablaDatos.getValueAt(fila, 0).toString();
             String descripcion = tablaDatos.getValueAt(fila, 1).toString();
-            Double porcentaje = Double.parseDouble(tablaDatos.getValueAt(fila, 2).toString());
+            String nacionalidad = tablaDatos.getValueAt(fila, 2).toString();
             txtCodigo.setText(id);
             txtDescripcion.setText(descripcion);
-            valorMonto = porcentaje;
-            DecimalFormat formateador = new DecimalFormat("#,###.00");
-            txtPorcentaje.setText(formateador.format(valorMonto).replace(".", "").replace(",", "."));
+            txtNacionalidad.setText(nacionalidad);
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -236,7 +225,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
         btnConfirmar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        txtPorcentaje = new org.jdesktop.swingx.JXTextField();
+        txtNacionalidad = new org.jdesktop.swingx.JXTextField();
 
         Modificar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         Modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_edit_file_16px.png"))); // NOI18N
@@ -265,7 +254,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mantenimiento de Impuestos");
+        jLabel1.setText("Mantenimiento de Países");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -311,11 +300,11 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">%</span></span></span></p></html> "
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nacionalidad</span></span></span></p></html> "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false
@@ -335,9 +324,6 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
             tablaDatos.getColumnModel().getColumn(0).setMinWidth(60);
             tablaDatos.getColumnModel().getColumn(0).setPreferredWidth(60);
             tablaDatos.getColumnModel().getColumn(0).setMaxWidth(60);
-            tablaDatos.getColumnModel().getColumn(2).setMinWidth(50);
-            tablaDatos.getColumnModel().getColumn(2).setPreferredWidth(50);
-            tablaDatos.getColumnModel().getColumn(2).setMaxWidth(50);
         }
 
         javax.swing.GroupLayout pestanhaListaLayout = new javax.swing.GroupLayout(pestanhaLista);
@@ -425,19 +411,19 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel4.setText("%:");
+        jLabel4.setText("Nacionalidad:");
 
-        txtPorcentaje.setEnabled(false);
-        txtPorcentaje.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtPorcentaje.setPrompt("Porcentaje del iva...");
-        txtPorcentaje.addActionListener(new java.awt.event.ActionListener() {
+        txtNacionalidad.setEnabled(false);
+        txtNacionalidad.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtNacionalidad.setPrompt("Nacionalidad del pais...");
+        txtNacionalidad.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPorcentajeActionPerformed(evt);
+                txtNacionalidadActionPerformed(evt);
             }
         });
-        txtPorcentaje.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNacionalidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPorcentajeKeyTyped(evt);
+                txtNacionalidadKeyTyped(evt);
             }
         });
 
@@ -449,30 +435,27 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pestanhaABMLayout.createSequentialGroup()
-                        .addGap(0, 262, Short.MAX_VALUE)
-                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConfirmar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addGroup(pestanhaABMLayout.createSequentialGroup()
-                        .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtNacionalidad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
+                        .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
                         .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
+                                .addGap(186, 186, 186)
+                                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnConfirmar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pestanhaABMLayout.createSequentialGroup()
-                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(pestanhaABMLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(pestanhaABMLayout.createSequentialGroup()
-                                        .addComponent(txtPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE)))
-                                .addContainerGap())))))
+                                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap())
         );
         pestanhaABMLayout.setVerticalGroup(
             pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -488,8 +471,8 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtPorcentaje, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                    .addComponent(txtNacionalidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -563,7 +546,7 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
         if (txtDescripcion.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            txtPorcentaje.grabFocus();
+            txtNacionalidad.grabFocus();
         }
     }//GEN-LAST:event_txtDescripcionActionPerformed
 
@@ -598,36 +581,23 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
         recuperarDatos();
     }//GEN-LAST:event_EliminarActionPerformed
 
-    private void txtPorcentajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPorcentajeActionPerformed
-        if (txtPorcentaje.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE PORCENTAJE VACIO","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
+    private void txtNacionalidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNacionalidadActionPerformed
+        if (txtNacionalidad.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE NACIONALIDAD VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            String number = txtPorcentaje.getText();
-            double monto = Double.parseDouble(number);
-            if (monto < 0.0) {
-                JOptionPane.showMessageDialog(null, "EL PORCENTAJE NO PUEDE SER MENOR A 0","ADVERTENCIA",JOptionPane.WARNING_MESSAGE);
-            } else {
-                valorMonto = monto;
-                DecimalFormat formateador = new DecimalFormat("#,###.00");
-                txtPorcentaje.setText(formateador.format(valorMonto));
-                btnConfirmar.grabFocus();
-            }
+            btnConfirmar.grabFocus();
         }
-    }//GEN-LAST:event_txtPorcentajeActionPerformed
+    }//GEN-LAST:event_txtNacionalidadActionPerformed
 
-    private void txtPorcentajeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPorcentajeKeyTyped
+    private void txtNacionalidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNacionalidadKeyTyped
         char c = evt.getKeyChar();
-        if (Character.isLetter(c)) {
-            getToolkit().beep();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtNacionalidad.getText().length() == 100) {
             evt.consume();
         }
-        if (c == ',') {
-            evt.consume();
-        }
-        if (txtPorcentaje.getText().length() == 10) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtPorcentajeKeyTyped
+    }//GEN-LAST:event_txtNacionalidadKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -651,6 +621,6 @@ public class JFrmImpuesto extends javax.swing.JInternalFrame {
     private org.jdesktop.swingx.JXTextField txtCodigo;
     private org.jdesktop.swingx.JXTextField txtCriterio;
     private org.jdesktop.swingx.JXTextField txtDescripcion;
-    private org.jdesktop.swingx.JXTextField txtPorcentaje;
+    private org.jdesktop.swingx.JXTextField txtNacionalidad;
     // End of variables declaration//GEN-END:variables
 }
