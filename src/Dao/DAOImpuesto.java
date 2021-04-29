@@ -8,31 +8,32 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Controladores.OperacionesSeccion;
-import Modelos.Seccion;
+import Controladores.OperacionesImpuesto;
+import Modelos.Impuesto;
 
 /**
  *
  * @author armando
  */
-public class DAOSeccion implements OperacionesSeccion {
+public class DAOImpuesto implements OperacionesImpuesto {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();
-    Seccion s = new Seccion();
+    Impuesto i = new Impuesto();
 
     @Override
     public boolean agregar(Object obj) {
-        s = (Seccion) obj;
-        String sql = "INSERT INTO SECCION VALUES(?, ?);";
+        i = (Impuesto) obj;
+        String sql = "INSERT INTO IMPUESTO VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, s.getIdseccion());
-            ps.setString(2, s.getDescripcion());
+            ps.setInt(1, i.getIdimpuesto());
+            ps.setString(2, i.getDescripcion());
+            ps.setDouble(3, i.getPorcentaje());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -50,16 +51,17 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public boolean modificar(Object obj) {
-        s = (Seccion) obj;
-        String sql = "UPDATE SECCION SET descripcion = ? WHERE idseccion = ?;";
+        i = (Impuesto) obj;
+        String sql = "UPDATE IMPUESTO SET descripcion = ?, porcentaje = ? WHERE idimpuesto = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, s.getDescripcion());
-            ps.setInt(2, s.getIdseccion());
+            ps.setString(1, i.getDescripcion());
+            ps.setDouble(2, i.getPorcentaje());
+            ps.setInt(3, i.getIdimpuesto());
             ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
@@ -78,15 +80,15 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public boolean eliminar(Object obj) {
-        s = (Seccion) obj;
-        String sql = "DELETE FROM SECCION WHERE idseccion = ?;";
+        i = (Impuesto) obj;
+        String sql = "DELETE FROM IMPUESTO WHERE idimpuesto = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, s.getIdseccion());
+            ps.setInt(1, i.getIdimpuesto());
             ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
@@ -105,15 +107,15 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public int nuevoID() {
-        String sql = "select idseccion + 1 as proximo_cod_libre\n"
-                + "  from (select 0 as idseccion\n"
+        String sql = "select idimpuesto + 1 as proximo_cod_libre\n"
+                + "  from (select 0 as idimpuesto\n"
                 + "         union all\n"
-                + "        select idseccion\n"
-                + "          from seccion) t1\n"
+                + "        select idimpuesto\n"
+                + "          from impuesto) t1\n"
                 + " where not exists (select null\n"
-                + "                     from seccion t2\n"
-                + "                    where t2.idseccion = t1.idseccion + 1)\n"
-                + " order by idseccion\n"
+                + "                     from impuesto t2\n"
+                + "                    where t2.idimpuesto = t1.idimpuesto + 1)\n"
+                + " order by idimpuesto\n"
                 + " LIMIT 1;";
         Connection con;
         PreparedStatement ps;
@@ -136,7 +138,7 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM SECCION WHERE CONCAT(descripcion, idseccion) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM IMPUESTO WHERE CONCAT(descripcion, porcentaje, idimpuesto) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -148,9 +150,10 @@ public class DAOSeccion implements OperacionesSeccion {
             ps.setString(1, "%" + criterio + "%");
             rs = ps.executeQuery();        
             while (rs.next()) {
-                Object[] fila = new Object[2];
+                Object[] fila = new Object[3];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
+                fila[2] = rs.getDouble(3);
                 datos.add(fila);
             }
             con.close();

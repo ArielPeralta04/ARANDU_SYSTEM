@@ -8,14 +8,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Controladores.OperacionesMarca;
+import Controladores.OperacionesLinea;
 import Modelos.Linea;
 
 /**
  *
  * @author armando
  */
-public class DAOLinea implements OperacionesMarca {
+public class DAOLinea implements OperacionesLinea {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();

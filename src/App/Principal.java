@@ -5,9 +5,11 @@
  */
 package App;
 
+import Vistas.JFrmImpuesto;
 import Vistas.JFrmLinea;
 import Vistas.JFrmMarca;
 import Vistas.JFrmSeccion;
+import Vistas.JFrmTipoItem;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
@@ -42,10 +44,12 @@ public class Principal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
-        jMenu7 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menuMantenimientoCompras = new javax.swing.JMenu();
+        itemMarca = new javax.swing.JMenuItem();
+        itemLinea = new javax.swing.JMenuItem();
+        itemSeccion = new javax.swing.JMenuItem();
+        itemTipoItem = new javax.swing.JMenuItem();
+        itemImpuesto = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
@@ -81,37 +85,55 @@ public class Principal extends javax.swing.JFrame {
         jMenu2.setText("Compras");
         jMenu2.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
 
-        jMenu7.setText("Mantenimientos");
-        jMenu7.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        menuMantenimientoCompras.setText("Mantenimientos");
+        menuMantenimientoCompras.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        jMenuItem1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenuItem1.setText("Mantenimiento de Marcas");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        itemMarca.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMarca.setText("Mantenimiento de Marcas");
+        itemMarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                itemMarcaActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem1);
+        menuMantenimientoCompras.add(itemMarca);
 
-        jMenuItem2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenuItem2.setText("Mantenimiento de Líneas");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        itemLinea.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemLinea.setText("Mantenimiento de Líneas");
+        itemLinea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                itemLineaActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem2);
+        menuMantenimientoCompras.add(itemLinea);
 
-        jMenuItem3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenuItem3.setText("Mantenimiento de Secciones");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        itemSeccion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemSeccion.setText("Mantenimiento de Secciones");
+        itemSeccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                itemSeccionActionPerformed(evt);
             }
         });
-        jMenu7.add(jMenuItem3);
+        menuMantenimientoCompras.add(itemSeccion);
 
-        jMenu2.add(jMenu7);
+        itemTipoItem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoItem.setText("Mantenimiento de Tipos de Ìtems");
+        itemTipoItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoItemActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemTipoItem);
+
+        itemImpuesto.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemImpuesto.setText("Mantenimiento de Impuestos");
+        itemImpuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemImpuestoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemImpuesto);
+
+        jMenu2.add(menuMantenimientoCompras);
 
         jMenuBar1.add(jMenu2);
 
@@ -155,7 +177,7 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void itemMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMarcaActionPerformed
         JFrmMarca fm = new JFrmMarca();
         panelInterno.add(fm);
         Dimension desktopSize = panelInterno.getSize();
@@ -167,9 +189,9 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         fm.show();
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_itemMarcaActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void itemLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLineaActionPerformed
         JFrmLinea fm = new JFrmLinea();
         panelInterno.add(fm);
         Dimension desktopSize = panelInterno.getSize();
@@ -181,9 +203,9 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         fm.show();
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_itemLineaActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void itemSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeccionActionPerformed
         JFrmSeccion fm = new JFrmSeccion();
         panelInterno.add(fm);
         Dimension desktopSize = panelInterno.getSize();
@@ -195,7 +217,35 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         fm.show();
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_itemSeccionActionPerformed
+
+    private void itemTipoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoItemActionPerformed
+        JFrmTipoItem fm = new JFrmTipoItem();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemTipoItemActionPerformed
+
+    private void itemImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemImpuestoActionPerformed
+        JFrmImpuesto fm = new JFrmImpuesto();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemImpuestoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -233,6 +283,11 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemImpuesto;
+    private javax.swing.JMenuItem itemLinea;
+    private javax.swing.JMenuItem itemMarca;
+    private javax.swing.JMenuItem itemSeccion;
+    private javax.swing.JMenuItem itemTipoItem;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
@@ -240,11 +295,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
-    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenu menuMantenimientoCompras;
     private javax.swing.JDesktopPane panelInterno;
     // End of variables declaration//GEN-END:variables
 }

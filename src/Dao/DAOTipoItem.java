@@ -8,31 +8,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Controladores.OperacionesSeccion;
-import Modelos.Seccion;
+import Controladores.OperacionesTipoItem;
+import Modelos.TipoItem;
 
 /**
  *
  * @author armando
  */
-public class DAOSeccion implements OperacionesSeccion {
+public class DAOTipoItem implements OperacionesTipoItem {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();
-    Seccion s = new Seccion();
+    TipoItem ti = new TipoItem();
 
     @Override
     public boolean agregar(Object obj) {
-        s = (Seccion) obj;
-        String sql = "INSERT INTO SECCION VALUES(?, ?);";
+        ti = (TipoItem) obj;
+        String sql = "INSERT INTO TIPO_ITEM VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, s.getIdseccion());
-            ps.setString(2, s.getDescripcion());
+            ps.setInt(1, ti.getIdtipo());
+            ps.setString(2, ti.getDescripcion());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -50,16 +50,16 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public boolean modificar(Object obj) {
-        s = (Seccion) obj;
-        String sql = "UPDATE SECCION SET descripcion = ? WHERE idseccion = ?;";
+        ti = (TipoItem) obj;
+        String sql = "UPDATE TIPO_ITEM SET descripcion = ? WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, s.getDescripcion());
-            ps.setInt(2, s.getIdseccion());
+            ps.setString(1, ti.getDescripcion());
+            ps.setInt(2, ti.getIdtipo());
             ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
@@ -78,15 +78,15 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public boolean eliminar(Object obj) {
-        s = (Seccion) obj;
-        String sql = "DELETE FROM SECCION WHERE idseccion = ?;";
+        ti = (TipoItem) obj;
+        String sql = "DELETE FROM TIPO_ITEM WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, s.getIdseccion());
+            ps.setInt(1, ti.getIdtipo());
             ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
@@ -105,15 +105,15 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public int nuevoID() {
-        String sql = "select idseccion + 1 as proximo_cod_libre\n"
-                + "  from (select 0 as idseccion\n"
+        String sql = "select idtipo + 1 as proximo_cod_libre\n"
+                + "  from (select 0 as idtipo\n"
                 + "         union all\n"
-                + "        select idseccion\n"
-                + "          from seccion) t1\n"
+                + "        select idtipo\n"
+                + "          from tipo_item) t1\n"
                 + " where not exists (select null\n"
-                + "                     from seccion t2\n"
-                + "                    where t2.idseccion = t1.idseccion + 1)\n"
-                + " order by idseccion\n"
+                + "                     from tipo_item t2\n"
+                + "                    where t2.idtipo = t1.idtipo + 1)\n"
+                + " order by idtipo\n"
                 + " LIMIT 1;";
         Connection con;
         PreparedStatement ps;
@@ -136,7 +136,7 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM SECCION WHERE CONCAT(descripcion, idseccion) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM TIPO_ITEM WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
