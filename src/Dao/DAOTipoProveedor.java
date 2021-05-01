@@ -60,7 +60,6 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
             ps = con.prepareStatement(sql);
             ps.setString(1, tp.getDescripcion());
             ps.setInt(2, tp.getIdtipo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, tp.getIdtipo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

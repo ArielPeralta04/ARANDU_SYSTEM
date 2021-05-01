@@ -5,6 +5,7 @@
  */
 package App;
 
+import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
 import Vistas.JFrmImpuesto;
 import Vistas.JFrmLinea;
@@ -75,6 +76,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoComprobante = new javax.swing.JMenuItem();
         itemTipoProveedor = new javax.swing.JMenuItem();
         itemTipoTarjeta = new javax.swing.JMenuItem();
+        itemBanco = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -271,6 +273,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemTipoTarjeta);
+
+        itemBanco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemBanco.setText("Mantenimiento de Bancos");
+        itemBanco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemBancoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemBanco);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -511,6 +522,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemTipoTarjetaActionPerformed
 
+    private void itemBancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBancoActionPerformed
+        JFrmBanco fm = new JFrmBanco();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemBancoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -547,6 +572,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemBanco;
     private javax.swing.JMenuItem itemCaja;
     private javax.swing.JMenuItem itemImpuesto;
     private javax.swing.JMenuItem itemLinea;

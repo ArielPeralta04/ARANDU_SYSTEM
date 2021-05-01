@@ -62,7 +62,6 @@ public class DAOMoneda implements OperacionesMoneda {
             ps.setString(1, m.getDescripcion());
             ps.setString(2, m.getSimbolo());
             ps.setInt(3, m.getIdmoneda());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -89,7 +88,6 @@ public class DAOMoneda implements OperacionesMoneda {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, m.getIdmoneda());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

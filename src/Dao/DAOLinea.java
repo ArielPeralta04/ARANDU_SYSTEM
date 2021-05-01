@@ -60,7 +60,6 @@ public class DAOLinea implements OperacionesLinea {
             ps = con.prepareStatement(sql);
             ps.setString(1, l.getDescripcion());
             ps.setInt(2, l.getIdlinea());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOLinea implements OperacionesLinea {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, l.getIdlinea());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

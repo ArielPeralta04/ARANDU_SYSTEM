@@ -60,7 +60,6 @@ public class DAOCaja implements OperacionesCaja {
             ps = con.prepareStatement(sql);
             ps.setString(1, c.getDescripcion());
             ps.setInt(2, c.getIdcaja());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOCaja implements OperacionesCaja {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, c.getIdcaja());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

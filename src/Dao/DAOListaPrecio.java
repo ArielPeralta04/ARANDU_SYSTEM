@@ -60,7 +60,6 @@ public class DAOListaPrecio implements OperacionesListaPrecio {
             ps = con.prepareStatement(sql);
             ps.setString(1, lp.getDescripcion());
             ps.setInt(2, lp.getIdlista());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOListaPrecio implements OperacionesListaPrecio {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, lp.getIdlista());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

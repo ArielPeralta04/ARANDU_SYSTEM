@@ -60,7 +60,6 @@ public class DAOMotivoAjuste implements OperacionesMotivoAjuste {
             ps = con.prepareStatement(sql);
             ps.setString(1, ma.getDescripcion());
             ps.setInt(2, ma.getIdmotivo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOMotivoAjuste implements OperacionesMotivoAjuste {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, ma.getIdmotivo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

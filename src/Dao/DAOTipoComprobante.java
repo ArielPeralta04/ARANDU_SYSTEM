@@ -60,7 +60,6 @@ public class DAOTipoComprobante implements OperacionesTipoComprobante {
             ps = con.prepareStatement(sql);
             ps.setString(1, tc.getDescripcion());
             ps.setInt(2, tc.getIdtipo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOTipoComprobante implements OperacionesTipoComprobante {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, tc.getIdtipo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

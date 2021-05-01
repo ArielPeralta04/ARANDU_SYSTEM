@@ -62,7 +62,6 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
             ps.setString(1, um.getDescripcion());
             ps.setString(2, um.getSimbolo());
             ps.setInt(3, um.getIdunidad());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -89,7 +88,6 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, um.getIdunidad());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

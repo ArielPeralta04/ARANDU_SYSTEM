@@ -163,4 +163,33 @@ public class DAOPais implements OperacionesPais {
         return datos;
     }
 
+    @Override
+    public boolean consultarDatos(Object obj) {
+        p = (Pais) obj;
+        String sql = "SELECT * FROM PAIS WHERE idpais = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, p.getIdpais());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                p.setIdpais(rs.getInt(1));
+                p.setDescripcion(rs.getString(2));
+                con.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "NO EXISTE PAIS CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                con.close();
+                return false;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
 }

@@ -161,7 +161,7 @@ public class DAOBanco implements OperacionesBanco {
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
                 fila[2] = rs.getInt(3);
-                fila[2] = rs.getString(4);
+                fila[3] = rs.getString(4);
                 datos.add(fila);
             }
             con.close();
@@ -184,7 +184,7 @@ public class DAOBanco implements OperacionesBanco {
             ps = con.prepareStatement(sql);
             ps.setInt(1, b.getIdbanco());
             rs = ps.executeQuery();
-            if (true) {
+            if (rs.next()) {
                 b.setIdbanco(rs.getInt(1));
                 b.setDescripcion(rs.getString(2));
                 b.setIdpais(rs.getInt(3));

@@ -60,7 +60,6 @@ public class DAOSeccion implements OperacionesSeccion {
             ps = con.prepareStatement(sql);
             ps.setString(1, s.getDescripcion());
             ps.setInt(2, s.getIdseccion());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOSeccion implements OperacionesSeccion {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, s.getIdseccion());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

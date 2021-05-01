@@ -62,7 +62,6 @@ public class DAOImpuesto implements OperacionesImpuesto {
             ps.setString(1, i.getDescripcion());
             ps.setDouble(2, i.getPorcentaje());
             ps.setInt(3, i.getIdimpuesto());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -89,7 +88,6 @@ public class DAOImpuesto implements OperacionesImpuesto {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, i.getIdimpuesto());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

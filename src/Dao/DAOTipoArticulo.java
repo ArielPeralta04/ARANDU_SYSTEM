@@ -60,7 +60,6 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
             ps = con.prepareStatement(sql);
             ps.setString(1, ti.getDescripcion());
             ps.setInt(2, ti.getIdtipo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, ti.getIdtipo());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

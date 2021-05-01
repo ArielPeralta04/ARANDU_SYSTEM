@@ -60,7 +60,6 @@ public class DAOMarca implements OperacionesMarca {
             ps = con.prepareStatement(sql);
             ps.setString(1, m.getDescripcion());
             ps.setInt(2, m.getIdmarca());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -87,7 +86,6 @@ public class DAOMarca implements OperacionesMarca {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, m.getIdmarca());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 con.close();

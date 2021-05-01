@@ -1,8 +1,9 @@
 package Vistas;
 
 import Dao.DAOBanco;
+import Dao.DAOPais;
 import Modelos.Banco;
-import java.text.DecimalFormat;
+import Modelos.Pais;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -14,8 +15,11 @@ import javax.swing.table.DefaultTableModel;
 public class JFrmBanco extends javax.swing.JInternalFrame {
 
     Banco b = new Banco();
+    Pais p = new Pais();
     DAOBanco dao = new DAOBanco();
+    DAOPais daoPais = new DAOPais();
     ArrayList<Object[]> datos = new ArrayList<>();
+    ArrayList<Object[]> datosPais = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
@@ -39,6 +43,16 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
         this.tablaDatos.setModel(modelo);
     }
 
+    public void cargarPais() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosPais.getModel();
+        modelo.setRowCount(0);
+        datosPais = daoPais.consultar(txtCriterioPais.getText());
+        for (Object[] obj : datosPais) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosPais.setModel(modelo);
+    }
+
     public void habilitarCampos(String accion) {
         switch (accion) {
             case "NUEVO":
@@ -46,7 +60,6 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(true);
                 txtCodigoPais.setEnabled(true);
-                txtDescripcionPais.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -59,7 +72,6 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(true);
                 txtCodigoPais.setEnabled(true);
-                txtDescripcionPais.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -73,7 +85,6 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(false);
                 txtCodigoPais.setEnabled(false);
-                txtDescripcionPais.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -87,7 +98,6 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(false);
                 txtCodigoPais.setEnabled(false);
-                txtDescripcionPais.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -101,7 +111,6 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 txtCodigo.setEnabled(false);
                 txtDescripcion.setEnabled(false);
                 txtCodigoPais.setEnabled(false);
-                txtDescripcionPais.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -116,6 +125,7 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
 
     public void limpiarCampos() {
         txtCriterio.setText(null);
+        txtCriterioPais.setText(null);
         txtCodigo.setText(null);
         txtDescripcion.setText(null);
         txtCodigoPais.setText(null);
@@ -165,9 +175,9 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                     error += "NO HA SELECCIONADO UN PAIS.\n";
                 }
                 if (error.isEmpty()) {
-                    b.setIdpais(id);
                     b.setDescripcion(descripcion);
-                    b.setIdbanco(codigoPais);
+                    b.setIdpais(codigoPais);
+                    b.setIdbanco(id);
                     dao.modificar(b);
                     cargar();
                 } else {
@@ -176,7 +186,7 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    b.setIdpais(id);
+                    b.setIdbanco(id);
                     dao.eliminar(b);
                     cargar();
                 }
@@ -203,6 +213,21 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
         }
     }
+    private void buscarPais() {
+        cargarPais();
+        BuscadorPais.setModal(true);
+        BuscadorPais.setSize(540, 265);
+        BuscadorPais.setLocationRelativeTo(this);
+        BuscadorPais.setVisible(true);
+        int fila = tablaDatosPais.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoPais.setText(tablaDatosPais.getValueAt(fila, 0).toString());
+            txtDescripcionPais.setText(tablaDatosPais.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoPais.setText(null);
+            txtDescripcionPais.setText(null);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -216,6 +241,12 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
         menuDesplegable = new javax.swing.JPopupMenu();
         Modificar = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
+        BuscadorPais = new javax.swing.JDialog();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        txtCriterioPais = new org.jdesktop.swingx.JXTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaDatosPais = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -255,6 +286,101 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
             }
         });
         menuDesplegable.add(Eliminar);
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel5.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("BUSCADOR DE PAISES");
+        jLabel5.setOpaque(true);
+
+        txtCriterioPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioPais.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioPais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioPaisActionPerformed(evt);
+            }
+        });
+        txtCriterioPais.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioPaisKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioPaisKeyTyped(evt);
+            }
+        });
+
+        tablaDatosPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosPais.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosPais.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosPaisMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaDatosPais);
+        if (tablaDatosPais.getColumnModel().getColumnCount() > 0) {
+            tablaDatosPais.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosPais.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosPais.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioPais, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorPaisLayout = new javax.swing.GroupLayout(BuscadorPais.getContentPane());
+        BuscadorPais.getContentPane().setLayout(BuscadorPaisLayout);
+        BuscadorPaisLayout.setHorizontalGroup(
+            BuscadorPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorPaisLayout.setVerticalGroup(
+            BuscadorPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         setClosable(true);
         setIconifiable(true);
@@ -336,6 +462,9 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
             tablaDatos.getColumnModel().getColumn(2).setMinWidth(0);
             tablaDatos.getColumnModel().getColumn(2).setPreferredWidth(0);
             tablaDatos.getColumnModel().getColumn(2).setMaxWidth(0);
+            tablaDatos.getColumnModel().getColumn(3).setMinWidth(150);
+            tablaDatos.getColumnModel().getColumn(3).setPreferredWidth(150);
+            tablaDatos.getColumnModel().getColumn(3).setMaxWidth(150);
         }
 
         javax.swing.GroupLayout pestanhaListaLayout = new javax.swing.GroupLayout(pestanhaLista);
@@ -355,7 +484,7 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(txtCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 228, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -423,7 +552,7 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel4.setText("Pais");
+        jLabel4.setText("Pais:");
 
         txtCodigoPais.setEnabled(false);
         txtCodigoPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -434,6 +563,9 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
             }
         });
         txtCodigoPais.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoPaisKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCodigoPaisKeyTyped(evt);
             }
@@ -462,27 +594,29 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
-                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pestanhaABMLayout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnConfirmar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(pestanhaABMLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
                         .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pestanhaABMLayout.createSequentialGroup()
-                                .addComponent(txtCodigoPais, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtDescripcionPais, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
+                                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnConfirmar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
+                                        .addComponent(txtCodigoPais, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txtDescripcionPais, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap())))
         );
         pestanhaABMLayout.setVerticalGroup(
             pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -500,7 +634,7 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtCodigoPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDescripcionPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -611,18 +745,29 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
 
     private void txtCodigoPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoPaisActionPerformed
         if (txtCodigoPais.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE NACIONALIDAD VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE PAIS VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            btnConfirmar.grabFocus();
+            int idpais = Integer.parseInt(txtCodigoPais.getText());
+            p.setIdpais(idpais);
+            boolean resultado = daoPais.consultarDatos(p);
+            if (resultado == true) {
+                txtDescripcionPais.setText(p.getDescripcion());
+                btnConfirmar.grabFocus();
+            } else {
+                txtCodigoPais.setText(null);
+                txtDescripcionPais.setText(null);
+                txtCodigoPais.grabFocus();
+            }
         }
     }//GEN-LAST:event_txtCodigoPaisActionPerformed
 
     private void txtCodigoPaisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPaisKeyTyped
         char c = evt.getKeyChar();
-        if (Character.isLowerCase(c)) {
-            evt.setKeyChar(Character.toUpperCase(c));
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
         }
-        if (txtCodigoPais.getText().length() == 100) {
+        if (txtCodigoPais.getText().length() == 10) {
             evt.consume();
         }
     }//GEN-LAST:event_txtCodigoPaisKeyTyped
@@ -635,8 +780,49 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescripcionPaisKeyTyped
 
+    private void txtCriterioPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioPaisActionPerformed
+        cargarPais();
+    }//GEN-LAST:event_txtCriterioPaisActionPerformed
+
+    private void txtCriterioPaisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioPaisKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterio.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioPaisKeyTyped
+
+    private void txtCriterioPaisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioPaisKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoPais.setText(null);
+            txtDescripcionPais.setText(null);
+            txtCodigoPais.grabFocus();
+            BuscadorPais.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioPaisKeyPressed
+
+    private void tablaDatosPaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosPaisMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosPais.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioPais.setText(null);
+                BuscadorPais.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosPaisMouseClicked
+
+    private void txtCodigoPaisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPaisKeyPressed
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarPais();
+        }
+    }//GEN-LAST:event_txtCodigoPaisKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog BuscadorPais;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
@@ -646,17 +832,22 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPopupMenu menuDesplegable;
     private javax.swing.JTabbedPane pestanha;
     private javax.swing.JPanel pestanhaABM;
     private javax.swing.JPanel pestanhaLista;
     private javax.swing.JTable tablaDatos;
+    private javax.swing.JTable tablaDatosPais;
     private org.jdesktop.swingx.JXTextField txtCodigo;
     private org.jdesktop.swingx.JXTextField txtCodigoPais;
     private org.jdesktop.swingx.JXTextField txtCriterio;
+    private org.jdesktop.swingx.JXTextField txtCriterioPais;
     private org.jdesktop.swingx.JXTextField txtDescripcion;
     private org.jdesktop.swingx.JXTextField txtDescripcionPais;
     // End of variables declaration//GEN-END:variables
