@@ -16,6 +16,8 @@ import Vistas.JFrmPais;
 import Vistas.JFrmSeccion;
 import Vistas.JFrmTipoArticulo;
 import Vistas.JFrmTipoCliente;
+import Vistas.JFrmTipoComprobante;
+import Vistas.JFrmTipoProveedor;
 import Vistas.JFrmUnidadMedida;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
@@ -69,6 +71,8 @@ public class Principal extends javax.swing.JFrame {
         itemCaja = new javax.swing.JMenuItem();
         itemMoneda = new javax.swing.JMenuItem();
         itemTipoCliente = new javax.swing.JMenuItem();
+        itemTipoComprobante = new javax.swing.JMenuItem();
+        itemTipoProveedor = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -238,6 +242,24 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemTipoCliente);
+
+        itemTipoComprobante.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoComprobante.setText("Mantenimiento de Tipos de Comprobantes");
+        itemTipoComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoComprobanteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemTipoComprobante);
+
+        itemTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoProveedor.setText("Mantenimiento de Tipos de Proveedores");
+        itemTipoProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoProveedorActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemTipoProveedor);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -436,6 +458,34 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemTipoClienteActionPerformed
 
+    private void itemTipoComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoComprobanteActionPerformed
+        JFrmTipoComprobante fm = new JFrmTipoComprobante();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemTipoComprobanteActionPerformed
+
+    private void itemTipoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoProveedorActionPerformed
+        JFrmTipoProveedor fm = new JFrmTipoProveedor();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemTipoProveedorActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -483,6 +533,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemSeccion;
     private javax.swing.JMenuItem itemTipoArticulo;
     private javax.swing.JMenuItem itemTipoCliente;
+    private javax.swing.JMenuItem itemTipoComprobante;
+    private javax.swing.JMenuItem itemTipoProveedor;
     private javax.swing.JMenuItem itemUnidadMedida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
