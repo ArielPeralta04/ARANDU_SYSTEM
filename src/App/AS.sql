@@ -17,6 +17,15 @@
 CREATE DATABASE IF NOT EXISTS `as` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `as`;
 
+-- Volcando estructura para tabla as.caja
+CREATE TABLE IF NOT EXISTS `caja` (
+  `idcaja` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  PRIMARY KEY (`idcaja`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- La exportación de datos fue deseleccionada.
+
 -- Volcando estructura para tabla as.impuesto
 CREATE TABLE IF NOT EXISTS `impuesto` (
   `idimpuesto` int(11) NOT NULL,
@@ -69,6 +78,16 @@ CREATE TABLE IF NOT EXISTS `tipo_item` (
   `idtipo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idtipo`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- La exportación de datos fue deseleccionada.
+
+-- Volcando estructura para tabla as.unidad_medida
+CREATE TABLE IF NOT EXISTS `unidad_medida` (
+  `idunidad` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `simbolo` varchar(5) NOT NULL,
+  PRIMARY KEY (`idunidad`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.

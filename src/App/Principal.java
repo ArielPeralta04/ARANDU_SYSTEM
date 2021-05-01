@@ -5,9 +5,13 @@
  */
 package App;
 
+import Vistas.JFrmCaja;
 import Vistas.JFrmImpuesto;
 import Vistas.JFrmLinea;
+import Vistas.JFrmListaPrecio;
 import Vistas.JFrmMarca;
+import Vistas.JFrmMoneda;
+import Vistas.JFrmMotivoAjuste;
 import Vistas.JFrmPais;
 import Vistas.JFrmSeccion;
 import Vistas.JFrmTipoItem;
@@ -54,9 +58,15 @@ public class Principal extends javax.swing.JFrame {
         itemImpuesto = new javax.swing.JMenuItem();
         itemPais = new javax.swing.JMenuItem();
         itemUnidadMedida = new javax.swing.JMenuItem();
+        itemMotivoAjuste = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
+        menuMantenimientoVentas = new javax.swing.JMenu();
+        itemListaPrecio = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
+        menuMantenimientoFinanzas = new javax.swing.JMenu();
+        itemCaja = new javax.swing.JMenuItem();
+        itemMoneda = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -155,6 +165,15 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoCompras.add(itemUnidadMedida);
 
+        itemMotivoAjuste.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMotivoAjuste.setText("Mantenimiento de Motivos de Ajustes");
+        itemMotivoAjuste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMotivoAjusteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemMotivoAjuste);
+
         jMenu2.add(menuMantenimientoCompras);
 
         jMenuBar1.add(jMenu2);
@@ -162,6 +181,21 @@ public class Principal extends javax.swing.JFrame {
         jMenu3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_money_bag_32px.png"))); // NOI18N
         jMenu3.setText("Ventas");
         jMenu3.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
+
+        menuMantenimientoVentas.setText("Mantenimientos");
+        menuMantenimientoVentas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        itemListaPrecio.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemListaPrecio.setText("Mantenimiento de Listas de Precios");
+        itemListaPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemListaPrecioActionPerformed(evt);
+            }
+        });
+        menuMantenimientoVentas.add(itemListaPrecio);
+
+        jMenu3.add(menuMantenimientoVentas);
+
         jMenuBar1.add(jMenu3);
 
         jMenu4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_delivery_32px.png"))); // NOI18N
@@ -172,6 +206,30 @@ public class Principal extends javax.swing.JFrame {
         jMenu5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_cash_in_hand_32px.png"))); // NOI18N
         jMenu5.setText("Finanzas");
         jMenu5.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
+
+        menuMantenimientoFinanzas.setText("Mantenimientos");
+        menuMantenimientoFinanzas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        itemCaja.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemCaja.setText("Mantenimiento de Cajas");
+        itemCaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCajaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemCaja);
+
+        itemMoneda.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMoneda.setText("Mantenimiento de Monedas");
+        itemMoneda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMonedaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemMoneda);
+
+        jMenu5.add(menuMantenimientoFinanzas);
+
         jMenuBar1.add(jMenu5);
 
         jMenu6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_invoice_32px.png"))); // NOI18N
@@ -297,6 +355,62 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemUnidadMedidaActionPerformed
 
+    private void itemCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCajaActionPerformed
+        JFrmCaja fm = new JFrmCaja();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemCajaActionPerformed
+
+    private void itemListaPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListaPrecioActionPerformed
+        JFrmListaPrecio fm = new JFrmListaPrecio();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemListaPrecioActionPerformed
+
+    private void itemMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMonedaActionPerformed
+        JFrmMoneda fm = new JFrmMoneda();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemMonedaActionPerformed
+
+    private void itemMotivoAjusteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMotivoAjusteActionPerformed
+        JFrmMotivoAjuste fm = new JFrmMotivoAjuste();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemMotivoAjusteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -333,9 +447,13 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemCaja;
     private javax.swing.JMenuItem itemImpuesto;
     private javax.swing.JMenuItem itemLinea;
+    private javax.swing.JMenuItem itemListaPrecio;
     private javax.swing.JMenuItem itemMarca;
+    private javax.swing.JMenuItem itemMoneda;
+    private javax.swing.JMenuItem itemMotivoAjuste;
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemSeccion;
     private javax.swing.JMenuItem itemTipoItem;
@@ -349,6 +467,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuMantenimientoCompras;
+    private javax.swing.JMenu menuMantenimientoFinanzas;
+    private javax.swing.JMenu menuMantenimientoVentas;
     private javax.swing.JDesktopPane panelInterno;
     // End of variables declaration//GEN-END:variables
 }
