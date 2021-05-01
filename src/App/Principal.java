@@ -18,6 +18,7 @@ import Vistas.JFrmTipoArticulo;
 import Vistas.JFrmTipoCliente;
 import Vistas.JFrmTipoComprobante;
 import Vistas.JFrmTipoProveedor;
+import Vistas.JFrmTipoTarjeta;
 import Vistas.JFrmUnidadMedida;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
@@ -73,6 +74,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoCliente = new javax.swing.JMenuItem();
         itemTipoComprobante = new javax.swing.JMenuItem();
         itemTipoProveedor = new javax.swing.JMenuItem();
+        itemTipoTarjeta = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -260,6 +262,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemTipoProveedor);
+
+        itemTipoTarjeta.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoTarjeta.setText("Mantenimiento de Tipos de Tarjetas");
+        itemTipoTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoTarjetaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemTipoTarjeta);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -486,6 +497,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemTipoProveedorActionPerformed
 
+    private void itemTipoTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoTarjetaActionPerformed
+        JFrmTipoTarjeta fm = new JFrmTipoTarjeta();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemTipoTarjetaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -535,6 +560,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemTipoCliente;
     private javax.swing.JMenuItem itemTipoComprobante;
     private javax.swing.JMenuItem itemTipoProveedor;
+    private javax.swing.JMenuItem itemTipoTarjeta;
     private javax.swing.JMenuItem itemUnidadMedida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;

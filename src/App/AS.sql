@@ -17,6 +17,20 @@
 CREATE DATABASE IF NOT EXISTS `as` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `as`;
 
+-- Volcando estructura para tabla as.banco
+CREATE TABLE IF NOT EXISTS `banco` (
+  `idbanco` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `idpais` int(11) NOT NULL,
+  PRIMARY KEY (`idbanco`) USING BTREE,
+  KEY `FK_BANCO_PAIS` (`idpais`) USING BTREE,
+  CONSTRAINT `FK_BANCO_PAIS` FOREIGN KEY (`idpais`) REFERENCES `pais` (`idpais`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla as.banco: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `banco` DISABLE KEYS */;
+/*!40000 ALTER TABLE `banco` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.caja
 CREATE TABLE IF NOT EXISTS `caja` (
   `idcaja` int(11) NOT NULL,
@@ -209,13 +223,24 @@ CREATE TABLE IF NOT EXISTS `tipo_proveedor` (
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.tipo_proveedor: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.tipo_proveedor: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `tipo_proveedor` DISABLE KEYS */;
 REPLACE INTO `tipo_proveedor` (`idtipo`, `descripcion`) VALUES
 	(1, 'LOCAL'),
 	(2, 'EXTRANJERO'),
 	(3, 'OTROS');
 /*!40000 ALTER TABLE `tipo_proveedor` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.tipo_tarjeta
+CREATE TABLE IF NOT EXISTS `tipo_tarjeta` (
+  `idtipo` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  PRIMARY KEY (`idtipo`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla as.tipo_tarjeta: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `tipo_tarjeta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tipo_tarjeta` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.unidad_medida
 CREATE TABLE IF NOT EXISTS `unidad_medida` (
