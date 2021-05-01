@@ -8,31 +8,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Controladores.OperacionesTipoItem;
-import Modelos.TipoItem;
+import Modelos.TipoCliente;
+import Controladores.OperacionesTipoCliente;
 
 /**
  *
  * @author armando
  */
-public class DAOTipoItem implements OperacionesTipoItem {
+public class DAOTipoCliente implements OperacionesTipoCliente {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();
-    TipoItem ti = new TipoItem();
+    TipoCliente tc = new TipoCliente();
 
     @Override
     public boolean agregar(Object obj) {
-        ti = (TipoItem) obj;
-        String sql = "INSERT INTO TIPO_ITEM VALUES(?, ?);";
+        tc = (TipoCliente) obj;
+        String sql = "INSERT INTO TIPO_CLIENTE VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, ti.getIdtipo());
-            ps.setString(2, ti.getDescripcion());
+            ps.setInt(1, tc.getIdtipo());
+            ps.setString(2, tc.getDescripcion());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -50,16 +50,16 @@ public class DAOTipoItem implements OperacionesTipoItem {
 
     @Override
     public boolean modificar(Object obj) {
-        ti = (TipoItem) obj;
-        String sql = "UPDATE TIPO_ITEM SET descripcion = ? WHERE idtipo = ?;";
+        tc = (TipoCliente) obj;
+        String sql = "UPDATE TIPO_CLIENTE SET descripcion = ? WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, ti.getDescripcion());
-            ps.setInt(2, ti.getIdtipo());
+            ps.setString(1, tc.getDescripcion());
+            ps.setInt(2, tc.getIdtipo());
             ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas > 0) {
@@ -78,15 +78,15 @@ public class DAOTipoItem implements OperacionesTipoItem {
 
     @Override
     public boolean eliminar(Object obj) {
-        ti = (TipoItem) obj;
-        String sql = "DELETE FROM TIPO_ITEM WHERE idtipo = ?;";
+        tc = (TipoCliente) obj;
+        String sql = "DELETE FROM TIPO_CLIENTE WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, ti.getIdtipo());
+            ps.setInt(1, tc.getIdtipo());
             ps.executeUpdate();
             int filas = ps.executeUpdate();
             if (filas == 0) {
@@ -109,9 +109,9 @@ public class DAOTipoItem implements OperacionesTipoItem {
                 + "  from (select 0 as idtipo\n"
                 + "         union all\n"
                 + "        select idtipo\n"
-                + "          from tipo_item) t1\n"
+                + "          from TIPO_CLIENTE) t1\n"
                 + " where not exists (select null\n"
-                + "                     from tipo_item t2\n"
+                + "                     from TIPO_CLIENTE t2\n"
                 + "                    where t2.idtipo = t1.idtipo + 1)\n"
                 + " order by idtipo\n"
                 + " LIMIT 1;";
@@ -136,7 +136,7 @@ public class DAOTipoItem implements OperacionesTipoItem {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_ITEM WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM TIPO_CLIENTE WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

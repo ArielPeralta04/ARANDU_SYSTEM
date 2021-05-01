@@ -4,11 +4,11 @@ package Modelos;
  *
  * @author armando
  */
-public class TipoItem {
+public class TipoCliente {
     private int idtipo;
     private String descripcion;
 
-    public TipoItem() {
+    public TipoCliente() {
     }
 
     public int getIdtipo() {

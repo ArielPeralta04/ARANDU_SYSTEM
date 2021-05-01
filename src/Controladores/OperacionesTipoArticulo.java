@@ -6,7 +6,7 @@ import java.util.ArrayList;
  *
  * @author armando
  */
-public interface OperacionesTipoItem {
+public interface OperacionesTipoArticulo {
     public boolean agregar(Object obj);
     public boolean modificar(Object obj);
     public boolean eliminar(Object obj);

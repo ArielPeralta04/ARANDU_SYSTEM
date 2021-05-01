@@ -1,8 +1,7 @@
 package Vistas;
 
-
-import Dao.DAOTipoItem;
-import Modelos.TipoItem;
+import Dao.DAOTipoCliente;
+import Modelos.TipoCliente;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,20 +10,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author armando
  */
-public class JFrmTipoItem extends javax.swing.JInternalFrame {
+public class JFrmTipoCliente extends javax.swing.JInternalFrame {
 
-    TipoItem ti = new TipoItem();
-    DAOTipoItem dao = new DAOTipoItem();
+    TipoCliente tc = new TipoCliente();
+    DAOTipoCliente dao = new DAOTipoCliente();
     ArrayList<Object[]> datos = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
 
     /**
-     * Creates new form JFrmTipoItem
+     * Creates new form JFrmTipoCliente
      */
-    public JFrmTipoItem() {
-        setTitle("JFrmTipoItem");
+    public JFrmTipoCliente() {
+        setTitle("JFrmTipoCliente");
         initComponents();
         cargar();
     }
@@ -131,9 +130,9 @@ public class JFrmTipoItem extends javax.swing.JInternalFrame {
                     error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
                 }
                 if (error.isEmpty()) {
-                    ti.setIdtipo(id);
-                    ti.setDescripcion(descripcion);
-                    dao.agregar(ti);
+                    tc.setIdtipo(id);
+                    tc.setDescripcion(descripcion);
+                    dao.agregar(tc);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
@@ -144,9 +143,9 @@ public class JFrmTipoItem extends javax.swing.JInternalFrame {
                     error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
                 }
                 if (error.isEmpty()) {
-                    ti.setIdtipo(id);
-                    ti.setDescripcion(descripcion);
-                    dao.modificar(ti);
+                    tc.setIdtipo(id);
+                    tc.setDescripcion(descripcion);
+                    dao.modificar(tc);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
@@ -154,8 +153,8 @@ public class JFrmTipoItem extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    ti.setIdtipo(id);
-                    dao.eliminar(ti);
+                    tc.setIdtipo(id);
+                    dao.eliminar(tc);
                     cargar();
                 }
                 break;
@@ -234,7 +233,7 @@ public class JFrmTipoItem extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mantenimiento de Tipos de Ítems");
+        jLabel1.setText("Mantenimiento de Tipos de Clientes");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

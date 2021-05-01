@@ -14,7 +14,8 @@ import Vistas.JFrmMoneda;
 import Vistas.JFrmMotivoAjuste;
 import Vistas.JFrmPais;
 import Vistas.JFrmSeccion;
-import Vistas.JFrmTipoItem;
+import Vistas.JFrmTipoArticulo;
+import Vistas.JFrmTipoCliente;
 import Vistas.JFrmUnidadMedida;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
@@ -54,7 +55,7 @@ public class Principal extends javax.swing.JFrame {
         itemMarca = new javax.swing.JMenuItem();
         itemLinea = new javax.swing.JMenuItem();
         itemSeccion = new javax.swing.JMenuItem();
-        itemTipoItem = new javax.swing.JMenuItem();
+        itemTipoArticulo = new javax.swing.JMenuItem();
         itemImpuesto = new javax.swing.JMenuItem();
         itemPais = new javax.swing.JMenuItem();
         itemUnidadMedida = new javax.swing.JMenuItem();
@@ -67,6 +68,7 @@ public class Principal extends javax.swing.JFrame {
         menuMantenimientoFinanzas = new javax.swing.JMenu();
         itemCaja = new javax.swing.JMenuItem();
         itemMoneda = new javax.swing.JMenuItem();
+        itemTipoCliente = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -129,14 +131,14 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoCompras.add(itemSeccion);
 
-        itemTipoItem.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoItem.setText("Mantenimiento de Tipos de Ìtems");
-        itemTipoItem.addActionListener(new java.awt.event.ActionListener() {
+        itemTipoArticulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoArticulo.setText("Mantenimiento de Tipos de Artículos");
+        itemTipoArticulo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoItemActionPerformed(evt);
+                itemTipoArticuloActionPerformed(evt);
             }
         });
-        menuMantenimientoCompras.add(itemTipoItem);
+        menuMantenimientoCompras.add(itemTipoArticulo);
 
         itemImpuesto.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemImpuesto.setText("Mantenimiento de Impuestos");
@@ -228,6 +230,15 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoFinanzas.add(itemMoneda);
 
+        itemTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoCliente.setText("Mantenimiento de Tipos de Clientes");
+        itemTipoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoClienteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemTipoCliente);
+
         jMenu5.add(menuMantenimientoFinanzas);
 
         jMenuBar1.add(jMenu5);
@@ -299,8 +310,8 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemSeccionActionPerformed
 
-    private void itemTipoItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoItemActionPerformed
-        JFrmTipoItem fm = new JFrmTipoItem();
+    private void itemTipoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoArticuloActionPerformed
+        JFrmTipoArticulo fm = new JFrmTipoArticulo();
         panelInterno.add(fm);
         Dimension desktopSize = panelInterno.getSize();
         Dimension frameSize = fm.getSize();
@@ -311,7 +322,7 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         fm.show();
-    }//GEN-LAST:event_itemTipoItemActionPerformed
+    }//GEN-LAST:event_itemTipoArticuloActionPerformed
 
     private void itemImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemImpuestoActionPerformed
         JFrmImpuesto fm = new JFrmImpuesto();
@@ -411,6 +422,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemMotivoAjusteActionPerformed
 
+    private void itemTipoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoClienteActionPerformed
+        JFrmTipoCliente fm = new JFrmTipoCliente();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemTipoClienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -456,7 +481,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemMotivoAjuste;
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemSeccion;
-    private javax.swing.JMenuItem itemTipoItem;
+    private javax.swing.JMenuItem itemTipoArticulo;
+    private javax.swing.JMenuItem itemTipoCliente;
     private javax.swing.JMenuItem itemUnidadMedida;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
