@@ -93,7 +93,7 @@ public class DAOCotizacion implements OperacionesCotizacion {
             ps.setInt(1, c.getIdmoneda());
             ps.setDate(2, (Date) c.getFecha());
             int filas = ps.executeUpdate();
-            if (filas == 0) {
+            if (filas > 0) {
                 con.close();
                 JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
@@ -129,10 +129,10 @@ public class DAOCotizacion implements OperacionesCotizacion {
             ps.setString(1, "%" + criterio + "%");
             rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[2];
-                fila[0] = rs.getInt(1);
-                fila[1] = rs.getString(2);
-                fila[2] = rs.getString(3);
+                Object[] fila = new Object[4];
+                fila[0] = rs.getString(3);
+                fila[1] = rs.getInt(1);
+                fila[2] = rs.getString(2);
                 fila[3] = rs.getDouble(4);
                 datos.add(fila);
             }
@@ -158,6 +158,33 @@ public class DAOCotizacion implements OperacionesCotizacion {
             ex.printStackTrace();
         }
         return fecha;
+    }
+
+    @Override
+    public boolean verificarCotizacion(String fecha, int idmoneda) {
+        String sql = "SELECT COUNT(*) REGISTROS  FROM cotizacion AS C WHERE C.fecha = ? AND C.idmoneda = ?;";
+        boolean valor = false;
+        Connection con;
+        PreparedStatement ps;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setString(1, fecha);
+            ps.setInt(2, idmoneda);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                if (rs.getInt(1) > 0) {
+                    valor = true;
+                } else {
+                    valor = false;
+                }
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER LA COTIZACIÓN \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return valor;
     }
 
 }

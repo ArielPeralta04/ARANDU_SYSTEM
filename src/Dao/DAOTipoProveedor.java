@@ -87,7 +87,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
             ps = con.prepareStatement(sql);
             ps.setInt(1, tp.getIdtipo());
             int filas = ps.executeUpdate();
-            if (filas == 0) {
+            if (filas > 0) {
                 con.close();
                 JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
                 return true;

@@ -89,9 +89,8 @@ public class DAOPais implements OperacionesPais {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, p.getIdpais());
-            ps.executeUpdate();
             int filas = ps.executeUpdate();
-            if (filas == 0) {
+            if (filas > 0) {
                 con.close();
                 JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
                 return true;

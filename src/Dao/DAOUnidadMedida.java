@@ -89,7 +89,7 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
             ps = con.prepareStatement(sql);
             ps.setInt(1, um.getIdunidad());
             int filas = ps.executeUpdate();
-            if (filas == 0) {
+            if (filas > 0) {
                 con.close();
                 JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
                 return true;

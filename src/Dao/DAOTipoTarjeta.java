@@ -87,7 +87,7 @@ public class DAOTipoTarjeta implements OperacionesTipoTarjeta {
             ps = con.prepareStatement(sql);
             ps.setInt(1, tt.getIdtipo());
             int filas = ps.executeUpdate();
-            if (filas == 0) {
+            if (filas > 0) {
                 con.close();
                 JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
                 return true;

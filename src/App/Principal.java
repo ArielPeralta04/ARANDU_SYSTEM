@@ -7,6 +7,7 @@ package App;
 
 import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
+import Vistas.JFrmCotizacion;
 import Vistas.JFrmImpuesto;
 import Vistas.JFrmLinea;
 import Vistas.JFrmListaPrecio;
@@ -84,6 +85,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoProveedor = new javax.swing.JMenuItem();
         itemTipoTarjeta = new javax.swing.JMenuItem();
         itemBanco = new javax.swing.JMenuItem();
+        itemCotizacion = new javax.swing.JMenuItem();
         menuMovimientoCompra1 = new javax.swing.JMenu();
         menuMovimientoCompra7 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -330,6 +332,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemBanco);
+
+        itemCotizacion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemCotizacion.setText("Mantenimiento de Cotizaciónes");
+        itemCotizacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCotizacionActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemCotizacion);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -594,6 +605,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemBancoActionPerformed
 
+    private void itemCotizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCotizacionActionPerformed
+        JFrmCotizacion fm = new JFrmCotizacion();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemCotizacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -632,6 +657,7 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem itemBanco;
     private javax.swing.JMenuItem itemCaja;
+    private javax.swing.JMenuItem itemCotizacion;
     private javax.swing.JMenuItem itemImpuesto;
     private javax.swing.JMenuItem itemLinea;
     private javax.swing.JMenuItem itemListaPrecio;

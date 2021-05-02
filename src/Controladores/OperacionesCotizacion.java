@@ -14,4 +14,5 @@ public interface OperacionesCotizacion {
     public ArrayList<Object[]> consultar(String criterio);
     public boolean consultarDatos(Object obj);
     public Date parseFecha(String cadena);
+    public boolean verificarCotizacion(String fecha, int idmoneda);
 }

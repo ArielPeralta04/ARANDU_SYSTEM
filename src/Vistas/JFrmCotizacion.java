@@ -1,7 +1,11 @@
 package Vistas;
 
 import Dao.DAOCotizacion;
+import Dao.DAOMoneda;
 import Modelos.Cotizacion;
+import Modelos.Moneda;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
@@ -14,8 +18,14 @@ import javax.swing.table.DefaultTableModel;
 public class JFrmCotizacion extends javax.swing.JInternalFrame {
 
     Cotizacion c = new Cotizacion();
+    Moneda m = new Moneda();
     DAOCotizacion dao = new DAOCotizacion();
+    DAOMoneda daoMoneda = new DAOMoneda();
     ArrayList<Object[]> datos = new ArrayList<>();
+    ArrayList<Object[]> datosMoneda = new ArrayList<>();
+    Double valorMonto = 0.0;
+    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    Date SYSDATE = new Date();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
@@ -27,6 +37,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         setTitle("JFrmCotizacion");
         initComponents();
         cargar();
+        txtFecha.setFormats(formato);
     }
 
     public void cargar() {
@@ -39,11 +50,21 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         this.tablaDatos.setModel(modelo);
     }
 
+    public void cargarMoneda() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosMonedas.getModel();
+        modelo.setRowCount(0);
+        datosMoneda = daoMoneda.consultar(txtCriterioMoneda.getText());
+        for (Object[] obj : datosMoneda) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosMonedas.setModel(modelo);
+    }
+
     public void habilitarCampos(String accion) {
         switch (accion) {
             case "NUEVO":
                 //CAMPOS
-                txtCodigoMoneda.setEnabled(false);
+                txtCodigoMoneda.setEnabled(true);
                 txtDescripcionMoneda.setEnabled(false);
                 txtFecha.setEnabled(true);
                 txtTasa.setEnabled(true);
@@ -130,27 +151,52 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
         Date fecha = txtFecha.getDate();
         java.sql.Date fechaSQL = new java.sql.Date(fecha.getTime());
+        Double tasa = valorMonto;
+
         switch (accion) {
             case "NUEVO":
-                if (descripcion.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
+                if (dao.verificarCotizacion("" + fechaSQL, idmoneda) == true) {
+                    JOptionPane.showMessageDialog(null, "YA EXISTE UNA COTIZACION PARA LA FECHA: " + formato.format(fecha) + " CON LA MONEDA: " + idmoneda);
+                    error += "YA EXISTE UNA COTIZACIÓN PARA ESTA FECHA\n";
+                    limpiarCampos();
+                } else {
+                    if (idmoneda == 0) {
+                        error += "NO HA SELECCIONADO UNA MONEDA.\n";
+                    }
+                    if (fecha == null) {
+                        error += "NO HA SELECCIONADO UNA FECHA.\n";
+                    }
+                    if (tasa == null) {
+                        error += "NO HA CARGADO LA TASA.\n";
+                    } else {
+                        if (tasa <= 0) {
+                            error += "LA TASA NO PUEDE SER MENOR O IGUAL A 0.\n";
+                        }
+                    }
                 }
                 if (error.isEmpty()) {
-                    c.setIdcaja(id);
-                    c.setDescripcion(descripcion);
+                    c.setIdmoneda(idmoneda);
+                    c.setFecha(fechaSQL);
+                    c.setTasa(tasa);
                     dao.agregar(c);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
+
             case "MODIFICAR":
-                if (descripcion.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
+                if (tasa == null) {
+                    error += "NO HA CARGADO LA TASA.\n";
+                } else {
+                    if (tasa <= 0) {
+                        error += "LA TASA NO PUEDE SER MENOR O IGUAL A 0.\n";
+                    }
                 }
                 if (error.isEmpty()) {
-                    c.setIdcaja(id);
-                    c.setDescripcion(descripcion);
+                    c.setTasa(tasa);
+                    c.setIdmoneda(idmoneda);
+                    c.setFecha(fechaSQL);
                     dao.modificar(c);
                     cargar();
                 } else {
@@ -159,7 +205,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    c.setIdcaja(id);
+                    c.setIdmoneda(idmoneda);
+                    c.setFecha(fechaSQL);
                     dao.eliminar(c);
                     cargar();
                 }
@@ -173,13 +220,40 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     public void recuperarDatos() {
         int fila = tablaDatos.getSelectedRow();
         if (fila >= 0) {
-            String id = tablaDatos.getValueAt(fila, 0).toString();
-            String descripcion = tablaDatos.getValueAt(fila, 1).toString();
-            txtCodigo.setText(id);
-            txtDescripcion.setText(descripcion);
+            String fecha = tablaDatos.getValueAt(fila, 0).toString();
+            String idmoneda = tablaDatos.getValueAt(fila, 1).toString();
+            String descripcionmoneda = tablaDatos.getValueAt(fila, 2).toString();
+            Double tasa = Double.parseDouble(tablaDatos.getValueAt(fila, 3).toString());
+            txtFecha.setDate(dao.parseFecha(fecha));
+            txtCodigoMoneda.setText(idmoneda);
+            txtDescripcionMoneda.setText(descripcionmoneda);
+            valorMonto = tasa;
+            DecimalFormat formatter;
+            if (idmoneda.equals("1")) {
+                formatter = new DecimalFormat("#,###");
+            } else {
+                formatter = new DecimalFormat("#,###.000");
+            }
+            txtTasa.setText(formatter.format(valorMonto).replace(".", "").replace(",", "."));
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void buscarMoneda() {
+        cargarMoneda();
+        BuscadorMoneda.setModal(true);
+        BuscadorMoneda.setSize(540, 270);
+        BuscadorMoneda.setLocationRelativeTo(this);
+        BuscadorMoneda.setVisible(true);
+        int fila = tablaDatosMonedas.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoMoneda.setText(tablaDatosMonedas.getValueAt(fila, 0).toString());
+            txtDescripcionMoneda.setText(tablaDatosMonedas.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoMoneda.setText(null);
+            txtDescripcionMoneda.setText(null);
         }
     }
 
@@ -195,7 +269,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         menuDesplegable = new javax.swing.JPopupMenu();
         Modificar = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
-        BuscadorPais = new javax.swing.JDialog();
+        BuscadorMoneda = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         txtCriterioMoneda = new org.jdesktop.swingx.JXTextField();
@@ -325,14 +399,14 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout BuscadorPaisLayout = new javax.swing.GroupLayout(BuscadorPais.getContentPane());
-        BuscadorPais.getContentPane().setLayout(BuscadorPaisLayout);
-        BuscadorPaisLayout.setHorizontalGroup(
-            BuscadorPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout BuscadorMonedaLayout = new javax.swing.GroupLayout(BuscadorMoneda.getContentPane());
+        BuscadorMoneda.getContentPane().setLayout(BuscadorMonedaLayout);
+        BuscadorMonedaLayout.setHorizontalGroup(
+            BuscadorMonedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        BuscadorPaisLayout.setVerticalGroup(
-            BuscadorPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        BuscadorMonedaLayout.setVerticalGroup(
+            BuscadorMonedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -438,7 +512,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(txtCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -593,7 +667,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtTasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 147, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -686,14 +760,14 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
 
     private void txtCodigoMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoMonedaActionPerformed
         if (txtCodigoMoneda.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE PAIS VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE MONEDA VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            int idpais = Integer.parseInt(txtCodigoMoneda.getText());
-            p.setIdpais(idpais);
-            boolean resultado = daoPais.consultarDatos(p);
+            int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
+            m.setIdmoneda(idmoneda);
+            boolean resultado = daoMoneda.consultarDatos(m);
             if (resultado == true) {
-                txtDescripcionMoneda.setText(p.getDescripcion());
-                btnConfirmar.grabFocus();
+                txtDescripcionMoneda.setText(m.getDescripcion());
+                txtFecha.grabFocus();
             } else {
                 txtCodigoMoneda.setText(null);
                 txtDescripcionMoneda.setText(null);
@@ -704,7 +778,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
 
     private void txtCodigoMonedaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoMonedaKeyPressed
         if (evt.VK_F1 == evt.getKeyCode()) {
-            buscarPais();
+            buscarMoneda();
         }
     }//GEN-LAST:event_txtCodigoMonedaKeyPressed
 
@@ -730,14 +804,34 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     private void txtFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechaActionPerformed
         if (txtFecha.getDate() == null) {
             String fechaActual = formato.format(SYSDATE);
-            txtFecha.setDate(parseFecha(fechaActual));
+            txtFecha.setDate(dao.parseFecha(fechaActual));
         } else {
             txtTasa.grabFocus();
         }
     }//GEN-LAST:event_txtFechaActionPerformed
 
     private void txtTasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTasaActionPerformed
-        // TODO add your handling code here:
+        if (txtTasa.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TASA VACIO", "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
+        } else {
+            String number = txtTasa.getText();
+            double monto = Double.parseDouble(number);
+            int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
+            if (monto <= 0) {
+                JOptionPane.showMessageDialog(null, "LA TASA NO PUEDE SER MENOR O IGUAL 0", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+            } else {
+                valorMonto = monto;
+                DecimalFormat formatter;
+                if (idmoneda == 1) {
+                    formatter = new DecimalFormat("#,###");
+                } else {
+                    formatter = new DecimalFormat("#,###.000");
+                }
+                txtTasa.setText(formatter.format(monto));
+                btnConfirmar.setSelected(true);
+                btnConfirmar.grabFocus();
+            }
+        }
     }//GEN-LAST:event_txtTasaActionPerformed
 
     private void txtTasaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaKeyPressed
@@ -745,19 +839,30 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtTasaKeyPressed
 
     private void txtTasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (c == ',') {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtTasa.getText().length() == 20) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtTasaKeyTyped
 
     private void txtCriterioMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioMonedaActionPerformed
-        cargarPais();
+        cargarMoneda();
     }//GEN-LAST:event_txtCriterioMonedaActionPerformed
 
     private void txtCriterioMonedaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioMonedaKeyPressed
         if (evt.VK_ESCAPE == evt.getKeyCode()) {
-            txtCodigoPais.setText(null);
-            txtDescripcionPais.setText(null);
-            txtCodigoPais.grabFocus();
-            BuscadorPais.dispose();
+            txtCodigoMoneda.setText(null);
+            txtDescripcionMoneda.setText(null);
+            txtCodigoMoneda.grabFocus();
+            BuscadorMoneda.dispose();
         }
     }//GEN-LAST:event_txtCriterioMonedaKeyPressed
 
@@ -777,14 +882,14 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
             } else {
                 txtCriterioMoneda.setText(null);
-                BuscadorPais.dispose();
+                BuscadorMoneda.dispose();
             }
         }
     }//GEN-LAST:event_tablaDatosMonedasMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog BuscadorPais;
+    private javax.swing.JDialog BuscadorMoneda;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
