@@ -27,8 +27,12 @@ CREATE TABLE IF NOT EXISTS `banco` (
   CONSTRAINT `FK_BANCO_PAIS` FOREIGN KEY (`idpais`) REFERENCES `pais` (`idpais`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.banco: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.banco: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `banco` DISABLE KEYS */;
+REPLACE INTO `banco` (`idbanco`, `descripcion`, `idpais`) VALUES
+	(1, 'FINANCIERA EL COMERCIO', 1),
+	(2, 'BANCO CONTINENTAL', 1),
+	(3, 'BANCO ITAU', 1);
 /*!40000 ALTER TABLE `banco` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.caja
@@ -44,6 +48,20 @@ REPLACE INTO `caja` (`idcaja`, `descripcion`) VALUES
 	(1, 'CAJA GUARANIES'),
 	(2, 'CAJA DOLARES');
 /*!40000 ALTER TABLE `caja` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.cotizacion
+CREATE TABLE IF NOT EXISTS `cotizacion` (
+  `idmoneda` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `tasa` double NOT NULL,
+  PRIMARY KEY (`fecha`,`idmoneda`) USING BTREE,
+  KEY `FK_COTIZACION_MONEDA` (`idmoneda`) USING BTREE,
+  CONSTRAINT `FK_COTIZACION_MONEDA` FOREIGN KEY (`idmoneda`) REFERENCES `moneda` (`idmoneda`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla as.cotizacion: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.impuesto
 CREATE TABLE IF NOT EXISTS `impuesto` (
@@ -81,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `lista_precio` (
   PRIMARY KEY (`idlista`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.lista_precio: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla as.lista_precio: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `lista_precio` DISABLE KEYS */;
 REPLACE INTO `lista_precio` (`idlista`, `descripcion`) VALUES
 	(1, 'MINORISTA'),
@@ -154,6 +172,20 @@ REPLACE INTO `pais` (`idpais`, `descripcion`, `nacionalidad`) VALUES
 	(4, 'ARGENTINA', 'ARGENTINO/A'),
 	(5, 'COLOMBIA', 'COLOMBIANO/A');
 /*!40000 ALTER TABLE `pais` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.periodo
+CREATE TABLE IF NOT EXISTS `periodo` (
+  `idperiodo` int(11) NOT NULL,
+  `fecha_desde` date NOT NULL,
+  `fecha_hasta` date NOT NULL,
+  PRIMARY KEY (`idperiodo`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Volcando datos para la tabla as.periodo: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `periodo` DISABLE KEYS */;
+REPLACE INTO `periodo` (`idperiodo`, `fecha_desde`, `fecha_hasta`) VALUES
+	(1, '2021-05-01', '2021-05-31');
+/*!40000 ALTER TABLE `periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.seccion
 CREATE TABLE IF NOT EXISTS `seccion` (
@@ -238,8 +270,11 @@ CREATE TABLE IF NOT EXISTS `tipo_tarjeta` (
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.tipo_tarjeta: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.tipo_tarjeta: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `tipo_tarjeta` DISABLE KEYS */;
+REPLACE INTO `tipo_tarjeta` (`idtipo`, `descripcion`) VALUES
+	(1, 'TARJETA DE DÉBITO'),
+	(2, 'TARJETA DE CRÉDITO');
 /*!40000 ALTER TABLE `tipo_tarjeta` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.unidad_medida

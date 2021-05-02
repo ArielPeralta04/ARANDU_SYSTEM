@@ -15,6 +15,7 @@ import Vistas.JFrmMarca;
 import Vistas.JFrmMoneda;
 import Vistas.JFrmMotivoAjuste;
 import Vistas.JFrmPais;
+import Vistas.JFrmPeriodo;
 import Vistas.JFrmSeccion;
 import Vistas.JFrmTipoArticulo;
 import Vistas.JFrmTipoCliente;
@@ -86,6 +87,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoTarjeta = new javax.swing.JMenuItem();
         itemBanco = new javax.swing.JMenuItem();
         itemCotizacion = new javax.swing.JMenuItem();
+        itemPeriodo = new javax.swing.JMenuItem();
         menuMovimientoCompra1 = new javax.swing.JMenu();
         menuMovimientoCompra7 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -341,6 +343,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemCotizacion);
+
+        itemPeriodo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemPeriodo.setText("Mantenimiento de Periodos");
+        itemPeriodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemPeriodoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemPeriodo);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -619,6 +630,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemCotizacionActionPerformed
 
+    private void itemPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPeriodoActionPerformed
+        JFrmPeriodo fm = new JFrmPeriodo();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemPeriodoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -665,6 +690,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemMoneda;
     private javax.swing.JMenuItem itemMotivoAjuste;
     private javax.swing.JMenuItem itemPais;
+    private javax.swing.JMenuItem itemPeriodo;
     private javax.swing.JMenuItem itemSeccion;
     private javax.swing.JMenuItem itemTipoArticulo;
     private javax.swing.JMenuItem itemTipoCliente;
