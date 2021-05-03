@@ -12,10 +12,10 @@ public class Database {
     private String pass;
 
     public Database() {
-        this.url = "jdbc:mysql://localhost:3306/AS";
+        this.url = "jdbc:mysql://localhost:3306/AS?characterEncoding=latin1&useConfigs=maxPerformance";
         this.driver = "com.mysql.jdbc.Driver";
         this.user = "root";
-        this.pass = "";
+        this.pass = "root";
     }
 
     public String getUrl() {

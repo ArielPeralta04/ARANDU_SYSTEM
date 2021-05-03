@@ -216,7 +216,7 @@ public class JFrmBanco extends javax.swing.JInternalFrame {
     private void buscarPais() {
         cargarPais();
         BuscadorPais.setModal(true);
-        BuscadorPais.setSize(540, 265);
+        BuscadorPais.setSize(540, 285);
         BuscadorPais.setLocationRelativeTo(this);
         BuscadorPais.setVisible(true);
         int fila = tablaDatosPais.getSelectedRow();

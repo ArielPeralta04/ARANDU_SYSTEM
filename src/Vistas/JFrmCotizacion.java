@@ -244,7 +244,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     private void buscarMoneda() {
         cargarMoneda();
         BuscadorMoneda.setModal(true);
-        BuscadorMoneda.setSize(540, 270);
+        BuscadorMoneda.setSize(540, 285);
         BuscadorMoneda.setLocationRelativeTo(this);
         BuscadorMoneda.setVisible(true);
         int fila = tablaDatosMonedas.getSelectedRow();

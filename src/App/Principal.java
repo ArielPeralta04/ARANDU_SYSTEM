@@ -5,6 +5,7 @@
  */
 package App;
 
+import Vistas.JFrmArticulo;
 import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
 import Vistas.JFrmCotizacion;
@@ -66,6 +67,7 @@ public class Principal extends javax.swing.JFrame {
         itemPais = new javax.swing.JMenuItem();
         itemUnidadMedida = new javax.swing.JMenuItem();
         itemMotivoAjuste = new javax.swing.JMenuItem();
+        itemArticulo = new javax.swing.JMenuItem();
         menuMovimientoCompra = new javax.swing.JMenu();
         menuMovimientoCompra4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -197,6 +199,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoCompras.add(itemMotivoAjuste);
+
+        itemArticulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemArticulo.setText("Mantenimiento de Artículos");
+        itemArticulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemArticuloActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemArticulo);
 
         jMenu2.add(menuMantenimientoCompras);
 
@@ -644,6 +655,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemPeriodoActionPerformed
 
+    private void itemArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemArticuloActionPerformed
+        JFrmArticulo fm = new JFrmArticulo();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemArticuloActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -680,6 +705,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem itemArticulo;
     private javax.swing.JMenuItem itemBanco;
     private javax.swing.JMenuItem itemCaja;
     private javax.swing.JMenuItem itemCotizacion;

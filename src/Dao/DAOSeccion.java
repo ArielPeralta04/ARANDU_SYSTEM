@@ -158,4 +158,33 @@ public class DAOSeccion implements OperacionesSeccion {
         return datos;
     }
 
+    @Override
+    public boolean consultarDatos(Object obj) {
+        s = (Seccion) obj;
+        String sql = "SELECT * FROM SECCION WHERE idseccion = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, s.getIdseccion());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                s.setIdseccion(rs.getInt(1));
+                s.setDescripcion(rs.getString(2));
+                con.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "NO EXISTE SECCION CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                con.close();
+                return false;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
 }

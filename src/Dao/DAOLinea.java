@@ -158,4 +158,33 @@ public class DAOLinea implements OperacionesLinea {
         return datos;
     }
 
+    @Override
+    public boolean consultarDatos(Object obj) {
+        l = (Linea) obj;
+        String sql = "SELECT * FROM LINEA WHERE idlinea = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, l.getIdlinea());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                l.setIdlinea(rs.getInt(1));
+                l.setDescripcion(rs.getString(2));
+                con.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "NO EXISTE LÍNEA CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                con.close();
+                return false;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
 }
