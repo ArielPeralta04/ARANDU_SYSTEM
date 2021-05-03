@@ -158,4 +158,33 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
         return datos;
     }
 
+    @Override
+    public boolean consultarDatos(Object obj) {
+        ti = (TipoArticulo) obj;
+        String sql = "SELECT * FROM TIPO_ARTICULO WHERE idtipo = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, ti.getIdtipo());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                ti.setIdtipo(rs.getInt(1));
+                ti.setDescripcion(rs.getString(2));
+                con.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "NO EXISTE TIPO DE ARTÍCULO CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                con.close();
+                return false;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
 }

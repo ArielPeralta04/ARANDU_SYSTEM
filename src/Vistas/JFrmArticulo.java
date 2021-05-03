@@ -4,10 +4,12 @@ import Dao.DAOArticulo;
 import Dao.DAOLinea;
 import Dao.DAOMarca;
 import Dao.DAOSeccion;
+import Dao.DAOTipoArticulo;
 import Modelos.Articulo;
 import Modelos.Linea;
 import Modelos.Marca;
 import Modelos.Seccion;
+import Modelos.TipoArticulo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -22,14 +24,17 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     Marca m = new Marca();
     Linea l = new Linea();
     Seccion s = new Seccion();
+    TipoArticulo ta = new TipoArticulo();
     DAOArticulo dao = new DAOArticulo();
     DAOMarca daoMarca = new DAOMarca();
     DAOLinea daoLinea = new DAOLinea();
     DAOSeccion daoSeccion = new DAOSeccion();
+    DAOTipoArticulo daoTipoArticulo = new DAOTipoArticulo();
     ArrayList<Object[]> datos = new ArrayList<>();
     ArrayList<Object[]> datosMarca = new ArrayList<>();
     ArrayList<Object[]> datosLinea = new ArrayList<>();
     ArrayList<Object[]> datosSeccion = new ArrayList<>();
+    ArrayList<Object[]> datosTipoArticulo = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
@@ -72,6 +77,15 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         this.tablaDatosLinea.setModel(modelo);
     }
     public void cargarSeccion() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosSeccion.getModel();
+        modelo.setRowCount(0);
+        datosSeccion = daoSeccion.consultar(txtCriterioSeccion.getText());
+        for (Object[] obj : datosSeccion) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosSeccion.setModel(modelo);
+    }
+    public void cargarTipoArticulo() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDatosSeccion.getModel();
         modelo.setRowCount(0);
         datosSeccion = daoSeccion.consultar(txtCriterioSeccion.getText());
@@ -391,6 +405,12 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         txtCriterioSeccion = new org.jdesktop.swingx.JXTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaDatosSeccion = new javax.swing.JTable();
+        BuscadorTipoArticulo = new javax.swing.JDialog();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel18 = new javax.swing.JLabel();
+        txtCriterioTipoArticulo = new org.jdesktop.swingx.JXTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        tablaDatosTipoArticulo = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -740,6 +760,101 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         BuscadorSeccionLayout.setVerticalGroup(
             BuscadorSeccionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel18.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel18.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel18.setText("BUSCADOR DE TIPOS DE ARTÍCULOS");
+        jLabel18.setOpaque(true);
+
+        txtCriterioTipoArticulo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioTipoArticulo.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioTipoArticulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioTipoArticuloActionPerformed(evt);
+            }
+        });
+        txtCriterioTipoArticulo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioTipoArticuloKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioTipoArticuloKeyTyped(evt);
+            }
+        });
+
+        tablaDatosTipoArticulo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosTipoArticulo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosTipoArticulo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosTipoArticuloMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(tablaDatosTipoArticulo);
+        if (tablaDatosTipoArticulo.getColumnModel().getColumnCount() > 0) {
+            tablaDatosTipoArticulo.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosTipoArticulo.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosTipoArticulo.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioTipoArticulo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioTipoArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorTipoArticuloLayout = new javax.swing.GroupLayout(BuscadorTipoArticulo.getContentPane());
+        BuscadorTipoArticulo.getContentPane().setLayout(BuscadorTipoArticuloLayout);
+        BuscadorTipoArticuloLayout.setHorizontalGroup(
+            BuscadorTipoArticuloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorTipoArticuloLayout.setVerticalGroup(
+            BuscadorTipoArticuloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setClosable(true);
@@ -1659,7 +1774,21 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDescripcionSeccionKeyTyped
 
     private void txtCodigoTipoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoTipoArticuloActionPerformed
-        // TODO add your handling code here:
+        if (txtCodigoTipoArticulo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idtipo = Integer.parseInt(txtCodigoTipoArticulo.getText());
+            ta.setIdtipo(idtipo);
+            boolean resultado = daoTipoArticulo.consultarDatos(ta);
+            if (resultado == true) {
+                txtDescripcionTipoArticulo.setText(ta.getDescripcion());
+                txtCodigoTipoArticulo.grabFocus();
+            } else {
+                txtCodigoTipoArticulo.setText(null);
+                txtDescripcionTipoArticulo.setText(null);
+                txtCodigoTipoArticulo.grabFocus();
+            }
+        }
     }//GEN-LAST:event_txtCodigoTipoArticuloActionPerformed
 
     private void txtCodigoTipoArticuloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoArticuloKeyPressed
@@ -1836,11 +1965,39 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tablaDatosSeccionMouseClicked
 
+    private void txtCriterioTipoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioTipoArticuloActionPerformed
+        buscarTipoArticulo();
+    }//GEN-LAST:event_txtCriterioTipoArticuloActionPerformed
+
+    private void txtCriterioTipoArticuloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioTipoArticuloKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoTipoArticulo.setText(null);
+            txtDescripcionTipoArticulo.setText(null);
+            txtCodigoTipoArticulo.grabFocus();
+            BuscadorTipoArticulo.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioTipoArticuloKeyPressed
+
+    private void txtCriterioTipoArticuloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioTipoArticuloKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterioTipoArticulo.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioTipoArticuloKeyTyped
+
+    private void tablaDatosTipoArticuloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosTipoArticuloMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tablaDatosTipoArticuloMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog BuscadorLinea;
     private javax.swing.JDialog BuscadorMarca;
     private javax.swing.JDialog BuscadorSeccion;
+    private javax.swing.JDialog BuscadorTipoArticulo;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
@@ -1856,6 +2013,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1869,10 +2027,12 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JPopupMenu menuDesplegable;
     private javax.swing.JTabbedPane pestanha;
     private javax.swing.JPanel pestanhaABM;
@@ -1883,6 +2043,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JTable tablaDatosLinea;
     private javax.swing.JTable tablaDatosMarca;
     private javax.swing.JTable tablaDatosSeccion;
+    private javax.swing.JTable tablaDatosTipoArticulo;
     private org.jdesktop.swingx.JXTextField txtCodigo;
     private org.jdesktop.swingx.JXTextField txtCodigoAlfanumerico;
     private org.jdesktop.swingx.JXTextField txtCodigoBarra;
@@ -1896,6 +2057,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private org.jdesktop.swingx.JXTextField txtCriterioLinea;
     private org.jdesktop.swingx.JXTextField txtCriterioMarca;
     private org.jdesktop.swingx.JXTextField txtCriterioSeccion;
+    private org.jdesktop.swingx.JXTextField txtCriterioTipoArticulo;
     private org.jdesktop.swingx.JXTextField txtDescripcion;
     private org.jdesktop.swingx.JXTextField txtDescripcionImpuesto;
     private org.jdesktop.swingx.JXTextField txtDescripcionLinea;
