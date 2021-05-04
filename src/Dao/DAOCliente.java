@@ -1,6 +1,8 @@
 package Dao;
 
 import Controladores.Database;
+import Controladores.OperacionesCliente;
+import Modelos.Cliente;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,35 +10,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Modelos.TipoCliente;
-import Controladores.OperacionesTipoCliente;
 
 /**
  *
  * @author armando
  */
-public class DAOTipoCliente implements OperacionesTipoCliente {
+public class DAOCliente implements OperacionesCliente {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();
-    TipoCliente tc = new TipoCliente();
+    Cliente c = new Cliente();
 
     @Override
     public boolean agregar(Object obj) {
-        tc = (TipoCliente) obj;
-        String sql = "INSERT INTO TIPO_CLIENTE VALUES(?, ?);";
+        c = (Cliente) obj;
+        String sql = "INSERT INTO CLIENTE VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, tc.getIdtipo());
-            ps.setString(2, tc.getDescripcion());
+            ps.setInt(1, c.getIdcliente());
+            ps.setString(2, c.getNombre());
+            ps.setString(3, c.getApellido());
+            ps.setString(4, c.getRuc());
+            ps.setString(5, c.getTelefono());
+            ps.setString(6, c.getDireccion());
+            ps.setString(7, c.getEstado());
+            ps.setInt(8, c.getIdtipo());
+
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -50,20 +57,36 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
 
     @Override
     public boolean modificar(Object obj) {
-        tc = (TipoCliente) obj;
-        String sql = "UPDATE TIPO_CLIENTE SET descripcion = ? WHERE idtipo = ?;";
+        c = (Cliente) obj;
+        String sql = "UPDATE cliente\n"
+                + "	SET\n"
+                + "		nombre=?,\n"
+                + "		apellido=?,\n"
+                + "		ruc=?,\n"
+                + "		telefono=?,\n"
+                + "		direccion=?,\n"
+                + "		estado=?,\n"
+                + "		idtipo=?\n"
+                + "	WHERE idcliente=?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, tc.getDescripcion());
-            ps.setInt(2, tc.getIdtipo());
+            ps.setString(1, c.getNombre());
+            ps.setString(2, c.getApellido());
+            ps.setString(3, c.getRuc());
+            ps.setString(4, c.getTelefono());
+            ps.setString(5, c.getDireccion());
+            ps.setString(6, c.getEstado());
+            ps.setInt(7, c.getIdtipo());
+            ps.setInt(8, c.getIdcliente());
+
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -77,19 +100,19 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
 
     @Override
     public boolean eliminar(Object obj) {
-        tc = (TipoCliente) obj;
-        String sql = "DELETE FROM TIPO_CLIENTE WHERE idtipo = ?;";
+        c = (Cliente) obj;
+        String sql = "DELETE FROM CLIENTE WHERE idcliente = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, tc.getIdtipo());
+            ps.setInt(1, c.getIdcliente());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -103,15 +126,15 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
 
     @Override
     public int nuevoID() {
-        String sql = "select idtipo + 1 as proximo_cod_libre\n"
-                + "  from (select 0 as idtipo\n"
+        String sql = "select idcliente + 1 as proximo_cod_libre\n"
+                + "  from (select 0 as idcliente\n"
                 + "         union all\n"
-                + "        select idtipo\n"
-                + "          from TIPO_CLIENTE) t1\n"
+                + "        select idcliente\n"
+                + "          from cliente) t1\n"
                 + " where not exists (select null\n"
-                + "                     from TIPO_CLIENTE t2\n"
-                + "                    where t2.idtipo = t1.idtipo + 1)\n"
-                + " order by idtipo\n"
+                + "                     from cliente t2\n"
+                + "                    where t2.idcliente = t1.idcliente + 1)\n"
+                + " order by idcliente\n"
                 + " LIMIT 1;";
         Connection con;
         PreparedStatement ps;
@@ -134,7 +157,15 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_CLIENTE WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT\n"
+                + "C.idcliente,\n"
+                + "C.nombre,\n"
+                + "C.apellido,\n"
+                + "C.ruc,\n"
+                + "IF(estado = 'A', 'ACTIVO', 'INACTIVO') AS estado\n"
+                + "FROM cliente AS C\n"
+                + "WHERE CONCAT(C.nombre, C.apellido, C.ruc, C.telefono) LIKE ?\n"
+                + "ORDER BY C.nombre;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -144,11 +175,14 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + criterio + "%");
-            rs = ps.executeQuery();        
+            rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[2];
+                Object[] fila = new Object[5];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
+                fila[2] = rs.getString(3);
+                fila[3] = rs.getString(4);
+                fila[4] = rs.getString(5);
                 datos.add(fila);
             }
             con.close();
@@ -160,8 +194,8 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
 
     @Override
     public boolean consultarDatos(Object obj) {
-        tc = (TipoCliente) obj;
-        String sql = "SELECT * FROM TIPO_CLIENTE WHERE idtipo = ?;";
+        c = (Cliente) obj;
+        String sql = "SELECT * FROM CLIENTE WHERE idcliente = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -169,15 +203,21 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, tc.getIdtipo());
+            ps.setInt(1, c.getIdcliente());
             rs = ps.executeQuery();
             if (rs.next()) {
-                tc.setIdtipo(rs.getInt(1));
-                tc.setDescripcion(rs.getString(2));
+                c.setIdcliente(rs.getInt(1));
+                c.setNombre(rs.getString(2));
+                c.setApellido(rs.getString(3));
+                c.setRuc(rs.getString(4));
+                c.setTelefono(rs.getString(5));
+                c.setDireccion(rs.getString(6));
+                c.setEstado(rs.getString(7));
+                c.setIdtipo(rs.getInt(8));
                 con.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "NO EXISTE TIPO DE CLIENTE CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "NO EXISTE CLIENTE CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 con.close();
                 return false;
             }
@@ -186,5 +226,4 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
             return false;
         }
     }
-
 }

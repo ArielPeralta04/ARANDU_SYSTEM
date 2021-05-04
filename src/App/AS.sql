@@ -14,7 +14,7 @@
 
 
 -- Volcando estructura de base de datos para as
-CREATE DATABASE IF NOT EXISTS `as` /*!40100 DEFAULT CHARACTER SET utf8 */;	
+CREATE DATABASE IF NOT EXISTS `as` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `as`;
 
 -- Volcando estructura para tabla as.articulo
@@ -85,6 +85,25 @@ REPLACE INTO `caja` (`idcaja`, `descripcion`) VALUES
 	(1, 'CAJA GUARANIES'),
 	(2, 'CAJA DOLARES');
 /*!40000 ALTER TABLE `caja` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.cliente
+CREATE TABLE IF NOT EXISTS `cliente` (
+  `idcliente` int NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `apellido` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ruc` varchar(25) NOT NULL,
+  `telefono` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `direccion` varchar(250) DEFAULT NULL,
+  `estado` varchar(1) NOT NULL,
+  `idtipo` int NOT NULL,
+  PRIMARY KEY (`idcliente`),
+  KEY `FK_CLIENTE_TIPO_CLIENTE` (`idtipo`),
+  CONSTRAINT `FK_CLIENTE_TIPO_CLIENTE` FOREIGN KEY (`idtipo`) REFERENCES `tipo_cliente` (`idtipo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- Volcando datos para la tabla as.cliente: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.cotizacion
 CREATE TABLE IF NOT EXISTS `cotizacion` (
