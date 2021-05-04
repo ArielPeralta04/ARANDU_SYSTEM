@@ -86,13 +86,13 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         this.tablaDatosSeccion.setModel(modelo);
     }
     public void cargarTipoArticulo() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaDatosSeccion.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosTipoArticulo.getModel();
         modelo.setRowCount(0);
-        datosSeccion = daoSeccion.consultar(txtCriterioSeccion.getText());
-        for (Object[] obj : datosSeccion) {
+        datosTipoArticulo = daoTipoArticulo.consultar(txtCriterioTipoArticulo.getText());
+        for (Object[] obj : datosTipoArticulo) {
             modelo.addRow(obj);
         }
-        this.tablaDatosSeccion.setModel(modelo);
+        this.tablaDatosTipoArticulo.setModel(modelo);
     }
 
     public void habilitarCampos(String accion) {
@@ -371,6 +371,21 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         } else {
             txtCodigoSeccion.setText(null);
             txtDescripcionSeccion.setText(null);
+        }
+    }
+    private void buscarTipoArticulo() {
+        cargarTipoArticulo();
+        BuscadorTipoArticulo.setModal(true);
+        BuscadorTipoArticulo.setSize(540, 285);
+        BuscadorTipoArticulo.setLocationRelativeTo(this);
+        BuscadorTipoArticulo.setVisible(true);
+        int fila = tablaDatosTipoArticulo.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoTipoArticulo.setText(tablaDatosTipoArticulo.getValueAt(fila, 0).toString());
+            txtDescripcionTipoArticulo.setText(tablaDatosTipoArticulo.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoTipoArticulo.setText(null);
+            txtDescripcionTipoArticulo.setText(null);
         }
     }
 
@@ -1746,7 +1761,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             boolean resultado = daoSeccion.consultarDatos(s);
             if (resultado == true) {
                 txtDescripcionSeccion.setText(s.getDescripcion());
-                txtCodigoSeccion.grabFocus();
+                txtCodigoTipoArticulo.grabFocus();
             } else {
                 txtCodigoSeccion.setText(null);
                 txtDescripcionSeccion.setText(null);
@@ -1782,7 +1797,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             boolean resultado = daoTipoArticulo.consultarDatos(ta);
             if (resultado == true) {
                 txtDescripcionTipoArticulo.setText(ta.getDescripcion());
-                txtCodigoTipoArticulo.grabFocus();
+                txtCodigoUnidadMedida.grabFocus();
             } else {
                 txtCodigoTipoArticulo.setText(null);
                 txtDescripcionTipoArticulo.setText(null);
@@ -1792,11 +1807,20 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCodigoTipoArticuloActionPerformed
 
     private void txtCodigoTipoArticuloKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoArticuloKeyPressed
-        // TODO add your handling code here:
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarTipoArticulo();
+        }
     }//GEN-LAST:event_txtCodigoTipoArticuloKeyPressed
 
     private void txtCodigoTipoArticuloKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoArticuloKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoTipoArticulo.getText().length() == 10) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoTipoArticuloKeyTyped
 
     private void txtDescripcionTipoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionTipoArticuloActionPerformed
@@ -1989,7 +2013,14 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCriterioTipoArticuloKeyTyped
 
     private void tablaDatosTipoArticuloMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosTipoArticuloMouseClicked
-        // TODO add your handling code here:
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosTipoArticulo.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioTipoArticulo.setText(null);
+                BuscadorTipoArticulo.dispose();
+            }
+        }
     }//GEN-LAST:event_tablaDatosTipoArticuloMouseClicked
 
 

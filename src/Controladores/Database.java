@@ -15,7 +15,7 @@ public class Database {
         this.url = "jdbc:mysql://localhost:3306/AS?characterEncoding=latin1&useConfigs=maxPerformance";
         this.driver = "com.mysql.jdbc.Driver";
         this.user = "root";
-        this.pass = "root";
+        this.pass = "";
     }
 
     public String getUrl() {
