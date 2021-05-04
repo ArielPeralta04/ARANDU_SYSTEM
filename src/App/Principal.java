@@ -21,6 +21,7 @@ import Vistas.JFrmSeccion;
 import Vistas.JFrmTipoArticulo;
 import Vistas.JFrmTipoCliente;
 import Vistas.JFrmTipoComprobante;
+import Vistas.JFrmTipoMovimiento;
 import Vistas.JFrmTipoProveedor;
 import Vistas.JFrmTipoTarjeta;
 import Vistas.JFrmUnidadMedida;
@@ -90,6 +91,7 @@ public class Principal extends javax.swing.JFrame {
         itemBanco = new javax.swing.JMenuItem();
         itemCotizacion = new javax.swing.JMenuItem();
         itemPeriodo = new javax.swing.JMenuItem();
+        itemTipoMovimiento = new javax.swing.JMenuItem();
         menuMovimientoCompra1 = new javax.swing.JMenu();
         menuMovimientoCompra7 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -363,6 +365,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemPeriodo);
+
+        itemTipoMovimiento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoMovimiento.setText("Mantenimiento de Movimientos");
+        itemTipoMovimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoMovimientoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemTipoMovimiento);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -669,6 +680,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemArticuloActionPerformed
 
+    private void itemTipoMovimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoMovimientoActionPerformed
+        JFrmTipoMovimiento fm = new JFrmTipoMovimiento();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemTipoMovimientoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -721,6 +746,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemTipoArticulo;
     private javax.swing.JMenuItem itemTipoCliente;
     private javax.swing.JMenuItem itemTipoComprobante;
+    private javax.swing.JMenuItem itemTipoMovimiento;
     private javax.swing.JMenuItem itemTipoProveedor;
     private javax.swing.JMenuItem itemTipoTarjeta;
     private javax.swing.JMenuItem itemUnidadMedida;

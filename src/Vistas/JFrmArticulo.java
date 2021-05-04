@@ -1,15 +1,19 @@
 package Vistas;
 
 import Dao.DAOArticulo;
+import Dao.DAOImpuesto;
 import Dao.DAOLinea;
 import Dao.DAOMarca;
 import Dao.DAOSeccion;
 import Dao.DAOTipoArticulo;
+import Dao.DAOUnidadMedida;
 import Modelos.Articulo;
+import Modelos.Impuesto;
 import Modelos.Linea;
 import Modelos.Marca;
 import Modelos.Seccion;
 import Modelos.TipoArticulo;
+import Modelos.UnidadMedida;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -25,16 +29,24 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     Linea l = new Linea();
     Seccion s = new Seccion();
     TipoArticulo ta = new TipoArticulo();
+    UnidadMedida um = new UnidadMedida();
+    Impuesto i = new Impuesto();
+
     DAOArticulo dao = new DAOArticulo();
     DAOMarca daoMarca = new DAOMarca();
     DAOLinea daoLinea = new DAOLinea();
     DAOSeccion daoSeccion = new DAOSeccion();
     DAOTipoArticulo daoTipoArticulo = new DAOTipoArticulo();
+    DAOUnidadMedida daoUnidadMedida = new DAOUnidadMedida();
+    DAOImpuesto daoImpuesto = new DAOImpuesto();
+
     ArrayList<Object[]> datos = new ArrayList<>();
     ArrayList<Object[]> datosMarca = new ArrayList<>();
     ArrayList<Object[]> datosLinea = new ArrayList<>();
     ArrayList<Object[]> datosSeccion = new ArrayList<>();
     ArrayList<Object[]> datosTipoArticulo = new ArrayList<>();
+    ArrayList<Object[]> datosUnidadMedida = new ArrayList<>();
+    ArrayList<Object[]> datosImpuesto = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
@@ -67,6 +79,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         }
         this.tablaDatosMarca.setModel(modelo);
     }
+
     public void cargarLinea() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDatosLinea.getModel();
         modelo.setRowCount(0);
@@ -76,6 +89,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         }
         this.tablaDatosLinea.setModel(modelo);
     }
+
     public void cargarSeccion() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDatosSeccion.getModel();
         modelo.setRowCount(0);
@@ -85,6 +99,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         }
         this.tablaDatosSeccion.setModel(modelo);
     }
+
     public void cargarTipoArticulo() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDatosTipoArticulo.getModel();
         modelo.setRowCount(0);
@@ -93,6 +108,26 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             modelo.addRow(obj);
         }
         this.tablaDatosTipoArticulo.setModel(modelo);
+    }
+
+    public void cargarUnidadMedida() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosUnidadMedida.getModel();
+        modelo.setRowCount(0);
+        datosUnidadMedida = daoUnidadMedida.consultar(txtCriterioUnidadMedida.getText());
+        for (Object[] obj : datosUnidadMedida) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosUnidadMedida.setModel(modelo);
+    }
+
+    public void cargarImpuesto() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosImpuesto.getModel();
+        modelo.setRowCount(0);
+        datosImpuesto = daoImpuesto.consultar(txtCriterioImpuesto.getText());
+        for (Object[] obj : datosImpuesto) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosImpuesto.setModel(modelo);
     }
 
     public void habilitarCampos(String accion) {
@@ -280,9 +315,38 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
                 if (descripcion.isEmpty()) {
                     error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
                 }
+                if (idmarca == 0) {
+                    error += "NO HA SELECCIONADO UNA MARCA PARA EL ARTÍCULO.\n";
+                }
+                if (idlinea == 0) {
+                    error += "NO HA SELECCIONADO UNA LÍNEA PARA EL ARTÍCULO.\n";
+                }
+                if (idseccion == 0) {
+                    error += "NO HA SELECCIONADO UNA SECCION PARA EL ARTÍCULO.\n";
+                }
+                if (idtipoarticulo == 0) {
+                    error += "NO HA SELECCIONADO UN TIPO DE ARTÍCULO PARA EL ARTÍCULO.\n";
+                }
+                if (idunidadmedida == 0) {
+                    error += "NO HA SELECCIONADO UNA UNIDAD DE MEDIDA PARA EL ARTÍCULO.\n";
+                }
+                if (idimpuesto == 0) {
+                    error += "NO HA SELECCIONADO UN IMPUESTO PARA EL ARTÍCULO.\n";
+                }
                 if (error.isEmpty()) {
-//                    a.setIdcaja(id);
+                    a.setIdarticulo(id);
                     a.setDescripcion(descripcion);
+                    a.setReferencia(referencia);
+                    a.setCodigoalfanumerico(cod_alfanumerico);
+                    a.setCodigobarra(cod_barra);
+                    a.setEstado(estado);
+                    a.setObservacion(observacion);
+                    a.setIdmarca(idmarca);
+                    a.setIdlinea(idlinea);
+                    a.setIdseccion(idseccion);
+                    a.setIdtipo(idtipoarticulo);
+                    a.setIdunidad(idunidadmedida);
+                    a.setIdimpuesto(idimpuesto);
                     dao.agregar(a);
                     cargar();
                 } else {
@@ -293,9 +357,38 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
                 if (descripcion.isEmpty()) {
                     error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
                 }
+                if (idmarca == 0) {
+                    error += "NO HA SELECCIONADO UNA MARCA PARA EL ARTÍCULO.\n";
+                }
+                if (idlinea == 0) {
+                    error += "NO HA SELECCIONADO UNA LÍNEA PARA EL ARTÍCULO.\n";
+                }
+                if (idseccion == 0) {
+                    error += "NO HA SELECCIONADO UNA SECCION PARA EL ARTÍCULO.\n";
+                }
+                if (idtipoarticulo == 0) {
+                    error += "NO HA SELECCIONADO UN TIPO DE ARTÍCULO PARA EL ARTÍCULO.\n";
+                }
+                if (idunidadmedida == 0) {
+                    error += "NO HA SELECCIONADO UNA UNIDAD DE MEDIDA PARA EL ARTÍCULO.\n";
+                }
+                if (idimpuesto == 0) {
+                    error += "NO HA SELECCIONADO UN IMPUESTO PARA EL ARTÍCULO.\n";
+                }
                 if (error.isEmpty()) {
-//                    a.setIdcaja(id);
                     a.setDescripcion(descripcion);
+                    a.setReferencia(referencia);
+                    a.setCodigoalfanumerico(cod_alfanumerico);
+                    a.setCodigobarra(cod_barra);
+                    a.setEstado(estado);
+                    a.setObservacion(observacion);
+                    a.setIdmarca(idmarca);
+                    a.setIdlinea(idlinea);
+                    a.setIdseccion(idseccion);
+                    a.setIdtipo(idtipoarticulo);
+                    a.setIdunidad(idunidadmedida);
+                    a.setIdimpuesto(idimpuesto);
+                    a.setIdarticulo(id);
                     dao.modificar(a);
                     cargar();
                 } else {
@@ -304,7 +397,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-//                    a.setIdcaja(id);
+                    a.setIdarticulo(id);
                     dao.eliminar(a);
                     cargar();
                 }
@@ -317,11 +410,78 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
 
     public void recuperarDatos() {
         int fila = tablaDatos.getSelectedRow();
+        String referencia = null;
+        String codigoalfanumerico = null;
+        String codigobarra = null;
+        String estado = null;
+        String observacion = null;
+        int idmarca = 0;
+        int idlinea = 0;
+        int idseccion = 0;
+        int idtipo = 0;
+        int idunidad = 0;
+        int idimpuesto = 0;
+
         if (fila >= 0) {
-            String id = tablaDatos.getValueAt(fila, 0).toString();
+            int id = Integer.parseInt(tablaDatos.getValueAt(fila, 0).toString());
+            System.out.println("" + id);
             String descripcion = tablaDatos.getValueAt(fila, 1).toString();
-            txtCodigo.setText(id);
+            a.setIdarticulo(id);
+            dao.consultarDatos(a);
+            referencia = a.getDescripcion();
+            codigoalfanumerico = a.getCodigoalfanumerico();
+            codigobarra = a.getCodigobarra();
+            estado = a.getEstado();
+            observacion = a.getObservacion();
+            idmarca = a.getIdmarca();
+            idlinea = a.getIdlinea();
+            idseccion = a.getIdseccion();
+            idtipo = a.getIdtipo();
+            idunidad = a.getIdunidad();
+            idimpuesto = a.getIdimpuesto();
+            //ASIGNAMOS LOS VALORES RECUPERADOS A LOS CAMPOS DEL PROGRAMA
+            txtCodigo.setText("" + id);
             txtDescripcion.setText(descripcion);
+            txtReferencia.setText(referencia);
+            txtCodigoAlfanumerico.setText(codigoalfanumerico);
+            txtCodigoBarra.setText(codigobarra);
+            if (estado.equals("A")) {
+                rbActivo.setSelected(true);
+            } else {
+                rbInactivo.setSelected(true);
+            }
+            txtObservacion.setText(observacion);
+
+            m.setIdmarca(idmarca);
+            daoMarca.consultarDatos(m);
+            txtCodigoMarca.setText("" + idmarca);
+            txtDescripcionMarca.setText(m.getDescripcion());
+
+            l.setIdlinea(idlinea);
+            daoLinea.consultarDatos(l);
+            txtCodigoLinea.setText("" + idlinea);
+            txtDescripcionLinea.setText(l.getDescripcion());
+
+            s.setIdseccion(idseccion);
+            daoSeccion.consultarDatos(s);
+            txtCodigoSeccion.setText("" + idseccion);
+            txtDescripcionSeccion.setText(s.getDescripcion());
+
+            ta.setIdtipo(idtipo);
+            daoTipoArticulo.consultarDatos(ta);
+            txtCodigoTipoArticulo.setText("" + idtipo);
+            txtDescripcionTipoArticulo.setText(ta.getDescripcion());
+
+            um.setIdunidad(idunidad);
+            daoUnidadMedida.consultarDatos(um);
+            txtCodigoUnidadMedida.setText("" + idunidad);
+            txtDescripcionUnidadMedida.setText(um.getDescripcion());
+
+            i.setIdimpuesto(idimpuesto);
+            daoImpuesto.consultarDatos(i);
+            txtCodigoImpuesto.setText("" + idimpuesto);
+            txtDescripcionImpuesto.setText(i.getDescripcion());
+
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -343,6 +503,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             txtDescripcionMarca.setText(null);
         }
     }
+
     private void buscarLinea() {
         cargarLinea();
         BuscadorLinea.setModal(true);
@@ -358,6 +519,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             txtDescripcionLinea.setText(null);
         }
     }
+
     private void buscarSeccion() {
         cargarSeccion();
         BuscadorSeccion.setModal(true);
@@ -373,6 +535,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             txtDescripcionSeccion.setText(null);
         }
     }
+
     private void buscarTipoArticulo() {
         cargarTipoArticulo();
         BuscadorTipoArticulo.setModal(true);
@@ -386,6 +549,38 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         } else {
             txtCodigoTipoArticulo.setText(null);
             txtDescripcionTipoArticulo.setText(null);
+        }
+    }
+
+    private void buscarUnidadMedida() {
+        cargarUnidadMedida();
+        BuscadorUnidadMedida.setModal(true);
+        BuscadorUnidadMedida.setSize(540, 285);
+        BuscadorUnidadMedida.setLocationRelativeTo(this);
+        BuscadorUnidadMedida.setVisible(true);
+        int fila = tablaDatosUnidadMedida.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoUnidadMedida.setText(tablaDatosUnidadMedida.getValueAt(fila, 0).toString());
+            txtDescripcionUnidadMedida.setText(tablaDatosUnidadMedida.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoUnidadMedida.setText(null);
+            txtDescripcionUnidadMedida.setText(null);
+        }
+    }
+
+    private void buscarImpuesto() {
+        cargarImpuesto();
+        BuscadorImpuesto.setModal(true);
+        BuscadorImpuesto.setSize(540, 285);
+        BuscadorImpuesto.setLocationRelativeTo(this);
+        BuscadorImpuesto.setVisible(true);
+        int fila = tablaDatosImpuesto.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoImpuesto.setText(tablaDatosImpuesto.getValueAt(fila, 0).toString());
+            txtDescripcionImpuesto.setText(tablaDatosImpuesto.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoImpuesto.setText(null);
+            txtDescripcionImpuesto.setText(null);
         }
     }
 
@@ -426,6 +621,18 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         txtCriterioTipoArticulo = new org.jdesktop.swingx.JXTextField();
         jScrollPane5 = new javax.swing.JScrollPane();
         tablaDatosTipoArticulo = new javax.swing.JTable();
+        BuscadorUnidadMedida = new javax.swing.JDialog();
+        jPanel7 = new javax.swing.JPanel();
+        jLabel19 = new javax.swing.JLabel();
+        txtCriterioUnidadMedida = new org.jdesktop.swingx.JXTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        tablaDatosUnidadMedida = new javax.swing.JTable();
+        BuscadorImpuesto = new javax.swing.JDialog();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        txtCriterioImpuesto = new org.jdesktop.swingx.JXTextField();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tablaDatosImpuesto = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -872,6 +1079,202 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
+        jPanel7.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel19.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel19.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel19.setText("BUSCADOR DE UNIDADES DE MEDIDAS");
+        jLabel19.setOpaque(true);
+
+        txtCriterioUnidadMedida.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioUnidadMedida.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioUnidadMedidaActionPerformed(evt);
+            }
+        });
+        txtCriterioUnidadMedida.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioUnidadMedidaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioUnidadMedidaKeyTyped(evt);
+            }
+        });
+
+        tablaDatosUnidadMedida.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosUnidadMedida.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Simbolo</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosUnidadMedida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosUnidadMedidaMouseClicked(evt);
+            }
+        });
+        jScrollPane6.setViewportView(tablaDatosUnidadMedida);
+        if (tablaDatosUnidadMedida.getColumnModel().getColumnCount() > 0) {
+            tablaDatosUnidadMedida.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosUnidadMedida.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosUnidadMedida.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosUnidadMedida.getColumnModel().getColumn(2).setMinWidth(0);
+            tablaDatosUnidadMedida.getColumnModel().getColumn(2).setPreferredWidth(0);
+            tablaDatosUnidadMedida.getColumnModel().getColumn(2).setMaxWidth(0);
+        }
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioUnidadMedida, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel7Layout.createSequentialGroup()
+                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioUnidadMedida, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorUnidadMedidaLayout = new javax.swing.GroupLayout(BuscadorUnidadMedida.getContentPane());
+        BuscadorUnidadMedida.getContentPane().setLayout(BuscadorUnidadMedidaLayout);
+        BuscadorUnidadMedidaLayout.setHorizontalGroup(
+            BuscadorUnidadMedidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorUnidadMedidaLayout.setVerticalGroup(
+            BuscadorUnidadMedidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel8.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel20.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel20.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel20.setText("BUSCADOR DE IMPUESTOS");
+        jLabel20.setOpaque(true);
+
+        txtCriterioImpuesto.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioImpuesto.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioImpuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioImpuestoActionPerformed(evt);
+            }
+        });
+        txtCriterioImpuesto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioImpuestoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioImpuestoKeyTyped(evt);
+            }
+        });
+
+        tablaDatosImpuesto.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosImpuesto.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Porcentaje</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosImpuesto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosImpuestoMouseClicked(evt);
+            }
+        });
+        jScrollPane7.setViewportView(tablaDatosImpuesto);
+        if (tablaDatosImpuesto.getColumnModel().getColumnCount() > 0) {
+            tablaDatosImpuesto.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosImpuesto.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosImpuesto.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosImpuesto.getColumnModel().getColumn(2).setMinWidth(0);
+            tablaDatosImpuesto.getColumnModel().getColumn(2).setPreferredWidth(0);
+            tablaDatosImpuesto.getColumnModel().getColumn(2).setMaxWidth(0);
+        }
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioImpuesto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioImpuesto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorImpuestoLayout = new javax.swing.GroupLayout(BuscadorImpuesto.getContentPane());
+        BuscadorImpuesto.getContentPane().setLayout(BuscadorImpuestoLayout);
+        BuscadorImpuestoLayout.setHorizontalGroup(
+            BuscadorImpuestoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorImpuestoLayout.setVerticalGroup(
+            BuscadorImpuestoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setClosable(true);
         setIconifiable(true);
 
@@ -949,9 +1352,6 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             tablaDatos.getColumnModel().getColumn(0).setMinWidth(60);
             tablaDatos.getColumnModel().getColumn(0).setPreferredWidth(60);
             tablaDatos.getColumnModel().getColumn(0).setMaxWidth(60);
-            tablaDatos.getColumnModel().getColumn(2).setMinWidth(150);
-            tablaDatos.getColumnModel().getColumn(2).setPreferredWidth(150);
-            tablaDatos.getColumnModel().getColumn(2).setMaxWidth(150);
             tablaDatos.getColumnModel().getColumn(3).setMinWidth(150);
             tablaDatos.getColumnModel().getColumn(3).setPreferredWidth(150);
             tablaDatos.getColumnModel().getColumn(3).setMaxWidth(150);
@@ -1625,7 +2025,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             //VALIDACIONES PARA QUE NO EXISTAN DOS CODIGOS ALFANUMÉRICOS IGUALES
             if (dao.verificarCodigoAlfanumerico(txtCodigoAlfanumerico.getText(), txtCodigo.getText()) == false) {
                 txtCodigoBarra.grabFocus();
-            }  
+            }
         }
     }//GEN-LAST:event_txtCodigoAlfanumericoActionPerformed
 
@@ -1642,7 +2042,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             //VALIDACIONES PARA QUE NO EXISTAN DOS CODIGOS ALFANUMÉRICOS IGUALES
             if (dao.verificarCodigoBarra(txtCodigoBarra.getText(), txtCodigo.getText()) == false) {
                 rbActivo.grabFocus();
-            } 
+            }
         }
     }//GEN-LAST:event_txtCodigoBarraActionPerformed
 
@@ -1777,7 +2177,14 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtCodigoSeccionKeyPressed
 
     private void txtCodigoSeccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoSeccionKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoSeccion.getText().length() == 10) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoSeccionKeyTyped
 
     private void txtDescripcionSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionSeccionActionPerformed
@@ -1832,27 +2239,73 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtDescripcionTipoArticuloKeyTyped
 
     private void txtCodigoUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoUnidadMedidaActionPerformed
-        // TODO add your handling code here:
+        if (txtCodigoUnidadMedida.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idunidadmedida = Integer.parseInt(txtCodigoUnidadMedida.getText());
+            um.setIdunidad(idunidadmedida);
+            boolean resultado = daoUnidadMedida.consultarDatos(um);
+            if (resultado == true) {
+                txtDescripcionUnidadMedida.setText(um.getDescripcion());
+                txtCodigoImpuesto.grabFocus();
+            } else {
+                txtCodigoUnidadMedida.setText(null);
+                txtDescripcionUnidadMedida.setText(null);
+                txtCodigoUnidadMedida.grabFocus();
+            }
+        }
     }//GEN-LAST:event_txtCodigoUnidadMedidaActionPerformed
 
     private void txtCodigoUnidadMedidaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUnidadMedidaKeyPressed
-        // TODO add your handling code here:
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarUnidadMedida();
+        }
     }//GEN-LAST:event_txtCodigoUnidadMedidaKeyPressed
 
     private void txtCodigoUnidadMedidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUnidadMedidaKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoUnidadMedida.getText().length() == 10) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoUnidadMedidaKeyTyped
 
     private void txtCodigoImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoImpuestoActionPerformed
-        // TODO add your handling code here:
+        if (txtCodigoImpuesto.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idimpuesto = Integer.parseInt(txtCodigoImpuesto.getText());
+            i.setIdimpuesto(idimpuesto);
+            boolean resultado = daoImpuesto.consultarDatos(i);
+            if (resultado == true) {
+                txtDescripcionImpuesto.setText(i.getDescripcion());
+                btnConfirmar.grabFocus();
+            } else {
+                txtCodigoImpuesto.setText(null);
+                txtDescripcionImpuesto.setText(null);
+                txtCodigoImpuesto.grabFocus();
+            }
+        }
     }//GEN-LAST:event_txtCodigoImpuestoActionPerformed
 
     private void txtCodigoImpuestoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoImpuestoKeyPressed
-        // TODO add your handling code here:
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarImpuesto();
+        }
     }//GEN-LAST:event_txtCodigoImpuestoKeyPressed
 
     private void txtCodigoImpuestoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoImpuestoKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoImpuesto.getText().length() == 10) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoImpuestoKeyTyped
 
     private void txtDescripcionImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionImpuestoActionPerformed
@@ -2023,12 +2476,82 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tablaDatosTipoArticuloMouseClicked
 
+    private void txtCriterioUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioUnidadMedidaActionPerformed
+        buscarUnidadMedida();
+    }//GEN-LAST:event_txtCriterioUnidadMedidaActionPerformed
+
+    private void txtCriterioUnidadMedidaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioUnidadMedidaKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoUnidadMedida.setText(null);
+            txtDescripcionUnidadMedida.setText(null);
+            txtCodigoUnidadMedida.grabFocus();
+            BuscadorUnidadMedida.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioUnidadMedidaKeyPressed
+
+    private void txtCriterioUnidadMedidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioUnidadMedidaKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterioUnidadMedida.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioUnidadMedidaKeyTyped
+
+    private void tablaDatosUnidadMedidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosUnidadMedidaMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosUnidadMedida.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioUnidadMedida.setText(null);
+                BuscadorUnidadMedida.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosUnidadMedidaMouseClicked
+
+    private void txtCriterioImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioImpuestoActionPerformed
+        buscarImpuesto();
+    }//GEN-LAST:event_txtCriterioImpuestoActionPerformed
+
+    private void txtCriterioImpuestoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioImpuestoKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoImpuesto.setText(null);
+            txtDescripcionImpuesto.setText(null);
+            txtCodigoImpuesto.grabFocus();
+            BuscadorImpuesto.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioImpuestoKeyPressed
+
+    private void txtCriterioImpuestoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioImpuestoKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterioImpuesto.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioImpuestoKeyTyped
+
+    private void tablaDatosImpuestoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosImpuestoMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosImpuesto.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioImpuesto.setText(null);
+                BuscadorImpuesto.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosImpuestoMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog BuscadorImpuesto;
     private javax.swing.JDialog BuscadorLinea;
     private javax.swing.JDialog BuscadorMarca;
     private javax.swing.JDialog BuscadorSeccion;
     private javax.swing.JDialog BuscadorTipoArticulo;
+    private javax.swing.JDialog BuscadorUnidadMedida;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
@@ -2045,7 +2568,9 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -2059,11 +2584,15 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JPopupMenu menuDesplegable;
     private javax.swing.JTabbedPane pestanha;
     private javax.swing.JPanel pestanhaABM;
@@ -2071,10 +2600,12 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rbActivo;
     private javax.swing.JRadioButton rbInactivo;
     private javax.swing.JTable tablaDatos;
+    private javax.swing.JTable tablaDatosImpuesto;
     private javax.swing.JTable tablaDatosLinea;
     private javax.swing.JTable tablaDatosMarca;
     private javax.swing.JTable tablaDatosSeccion;
     private javax.swing.JTable tablaDatosTipoArticulo;
+    private javax.swing.JTable tablaDatosUnidadMedida;
     private org.jdesktop.swingx.JXTextField txtCodigo;
     private org.jdesktop.swingx.JXTextField txtCodigoAlfanumerico;
     private org.jdesktop.swingx.JXTextField txtCodigoBarra;
@@ -2085,10 +2616,12 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     private org.jdesktop.swingx.JXTextField txtCodigoTipoArticulo;
     private org.jdesktop.swingx.JXTextField txtCodigoUnidadMedida;
     private org.jdesktop.swingx.JXTextField txtCriterio;
+    private org.jdesktop.swingx.JXTextField txtCriterioImpuesto;
     private org.jdesktop.swingx.JXTextField txtCriterioLinea;
     private org.jdesktop.swingx.JXTextField txtCriterioMarca;
     private org.jdesktop.swingx.JXTextField txtCriterioSeccion;
     private org.jdesktop.swingx.JXTextField txtCriterioTipoArticulo;
+    private org.jdesktop.swingx.JXTextField txtCriterioUnidadMedida;
     private org.jdesktop.swingx.JXTextField txtDescripcion;
     private org.jdesktop.swingx.JXTextField txtDescripcionImpuesto;
     private org.jdesktop.swingx.JXTextField txtDescripcionLinea;

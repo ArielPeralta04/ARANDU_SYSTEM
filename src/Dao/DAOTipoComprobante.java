@@ -158,4 +158,33 @@ public class DAOTipoComprobante implements OperacionesTipoComprobante {
         return datos;
     }
 
+    @Override
+    public boolean consultarDatos(Object obj) {
+        tc = (TipoComprobante) obj;
+        String sql = "SELECT * FROM TIPO_COMPROBANTE WHERE idtipo = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, tc.getIdtipo());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                tc.setIdtipo(rs.getInt(1));
+                tc.setDescripcion(rs.getString(2));
+                con.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "NO EXISTE TIPO DE COMPROBANTE CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                con.close();
+                return false;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
 }

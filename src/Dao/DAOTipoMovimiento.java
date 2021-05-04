@@ -1,6 +1,8 @@
 package Dao;
 
 import Controladores.Database;
+import Controladores.OperacionesTipoMovimiento;
+import Modelos.TipoMovimiento;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,36 +10,35 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Controladores.OperacionesImpuesto;
-import Modelos.Impuesto;
 
 /**
  *
  * @author armando
  */
-public class DAOImpuesto implements OperacionesImpuesto {
+public class DAOTipoMovimiento implements OperacionesTipoMovimiento {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();
-    Impuesto i = new Impuesto();
+    TipoMovimiento tm = new TipoMovimiento();
 
     @Override
     public boolean agregar(Object obj) {
-        i = (Impuesto) obj;
-        String sql = "INSERT INTO IMPUESTO VALUES(?, ?, ?);";
+        tm = (TipoMovimiento) obj;
+        String sql = "INSERT INTO TIPO_MOVIMIENTO VALUES(?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, i.getIdimpuesto());
-            ps.setString(2, i.getDescripcion());
-            ps.setDouble(3, i.getPorcentaje());
+            ps.setInt(1, tm.getIdtipomovimiento());
+            ps.setString(2, tm.getDescripcion());
+            ps.setString(3, tm.getAbreviacion());
+            ps.setInt(4, tm.getIdtipo());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -51,21 +52,27 @@ public class DAOImpuesto implements OperacionesImpuesto {
 
     @Override
     public boolean modificar(Object obj) {
-        i = (Impuesto) obj;
-        String sql = "UPDATE IMPUESTO SET descripcion = ?, porcentaje = ? WHERE idimpuesto = ?;";
+        tm = (TipoMovimiento) obj;
+        String sql = "UPDATE tipo_movimiento\n"
+                + "	SET\n"
+                + "		descripcion=?,\n"
+                + "		abreviacion=?,\n"
+                + "		idtipo=?\n"
+                + "	WHERE idtipomovimiento=?;;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, i.getDescripcion());
-            ps.setDouble(2, i.getPorcentaje());
-            ps.setInt(3, i.getIdimpuesto());
+            ps.setString(1, tm.getDescripcion());
+            ps.setString(2, tm.getAbreviacion());
+            ps.setInt(3, tm.getIdtipo());
+            ps.setInt(4, tm.getIdtipomovimiento());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -79,19 +86,19 @@ public class DAOImpuesto implements OperacionesImpuesto {
 
     @Override
     public boolean eliminar(Object obj) {
-        i = (Impuesto) obj;
-        String sql = "DELETE FROM IMPUESTO WHERE idimpuesto = ?;";
+        tm = (TipoMovimiento) obj;
+        String sql = "DELETE FROM TIPO_MOVIMIENTO WHERE idtipomovimiento = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, i.getIdimpuesto());
+            ps.setInt(1, tm.getIdtipomovimiento());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -105,15 +112,15 @@ public class DAOImpuesto implements OperacionesImpuesto {
 
     @Override
     public int nuevoID() {
-        String sql = "select idimpuesto + 1 as proximo_cod_libre\n"
-                + "  from (select 0 as idimpuesto\n"
+        String sql = "select idtipomovimiento + 1 as proximo_cod_libre\n"
+                + "  from (select 0 as idtipomovimiento\n"
                 + "         union all\n"
-                + "        select idimpuesto\n"
-                + "          from impuesto) t1\n"
+                + "        select idtipomovimiento\n"
+                + "          from TIPO_MOVIMIENTO) t1\n"
                 + " where not exists (select null\n"
-                + "                     from impuesto t2\n"
-                + "                    where t2.idimpuesto = t1.idimpuesto + 1)\n"
-                + " order by idimpuesto\n"
+                + "                     from TIPO_MOVIMIENTO t2\n"
+                + "                    where t2.idtipomovimiento = t1.idtipomovimiento + 1)\n"
+                + " order by idtipomovimiento\n"
                 + " LIMIT 1;";
         Connection con;
         PreparedStatement ps;
@@ -136,7 +143,16 @@ public class DAOImpuesto implements OperacionesImpuesto {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM IMPUESTO WHERE CONCAT(descripcion, porcentaje, idimpuesto) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT \n"
+                + "TM.idtipomovimiento, \n"
+                + "TM.descripcion, \n"
+                + "TM.abreviacion, \n"
+                + "TM.idtipo,\n"
+                + "TC.descripcion\n"
+                + "FROM tipo_movimiento AS TM\n"
+                + "INNER JOIN tipo_comprobante AS TC ON TC.idtipo = TM.idtipo\n"
+                + "WHERE CONCAT(TM.descripcion, TM.abreviacion, TM.idtipo, TC.descripcion) LIKE ?\n"
+                + "ORDER BY TM.descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -146,12 +162,14 @@ public class DAOImpuesto implements OperacionesImpuesto {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + criterio + "%");
-            rs = ps.executeQuery();        
+            rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[3];
+                Object[] fila = new Object[5];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
-                fila[2] = rs.getDouble(3);
+                fila[2] = rs.getString(3);
+                fila[3] = rs.getInt(4);
+                fila[4] = rs.getString(5);
                 datos.add(fila);
             }
             con.close();
@@ -163,8 +181,8 @@ public class DAOImpuesto implements OperacionesImpuesto {
 
     @Override
     public boolean consultarDatos(Object obj) {
-        i = (Impuesto) obj;
-        String sql = "SELECT * FROM IMPUESTO WHERE idimpuesto = ?;";
+        tm = (TipoMovimiento) obj;
+        String sql = "SELECT * FROM TIPO_MOVIMIENTO WHERE idtipomovimiento = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -172,16 +190,17 @@ public class DAOImpuesto implements OperacionesImpuesto {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, i.getIdimpuesto());
+            ps.setInt(1, tm.getIdtipomovimiento());
             rs = ps.executeQuery();
             if (rs.next()) {
-                i.setIdimpuesto(rs.getInt(1));
-                i.setDescripcion(rs.getString(2));
-                i.setPorcentaje(rs.getDouble(3));
+                tm.setIdtipo(rs.getInt(1));
+                tm.setDescripcion(rs.getString(2));
+                tm.setAbreviacion(rs.getString(3));
+                tm.setIdtipo(rs.getInt(4));
                 con.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "NO EXISTE IMPUESTO CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "NO EXISTE TIPO DE MOVIMIENTO CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 con.close();
                 return false;
             }
