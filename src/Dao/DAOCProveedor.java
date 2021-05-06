@@ -1,6 +1,8 @@
 package Dao;
 
 import Controladores.Database;
+import Controladores.OperacionesProveedor;
+import Modelos.Proveedor;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,35 +10,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
-import Modelos.TipoProveedor;
-import Controladores.OperacionesTipoProveedor;
 
 /**
  *
  * @author armando
  */
-public class DAOTipoProveedor implements OperacionesTipoProveedor {
+public class DAOCProveedor implements OperacionesProveedor {
 
     //CONEXION A LAS CLASE DE MODELOS Y CONTROLADORES
     Database db = new Database();
-    TipoProveedor tp = new TipoProveedor();
+    Proveedor p = new Proveedor();
 
     @Override
     public boolean agregar(Object obj) {
-        tp = (TipoProveedor) obj;
-        String sql = "INSERT INTO TIPO_PROVEEDOR VALUES(?, ?);";
+        p = (Proveedor) obj;
+        String sql = "INSERT INTO PROVEEDOR VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, tp.getIdtipo());
-            ps.setString(2, tp.getDescripcion());
+            ps.setInt(1, p.getIdproveedor());
+            ps.setString(2, p.getRazonsocial());
+            ps.setString(3, p.getPropietario());
+            ps.setString(4, p.getRuc());
+            ps.setString(5, p.getTelefono());
+            ps.setString(6, p.getDireccion());
+            ps.setString(7, p.getEstado());
+            ps.setInt(8, p.getIdtipo());
+
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -50,20 +57,36 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
 
     @Override
     public boolean modificar(Object obj) {
-        tp = (TipoProveedor) obj;
-        String sql = "UPDATE TIPO_PROVEEDOR SET descripcion = ? WHERE idtipo = ?;";
+        p = (Proveedor) obj;
+        String sql = "UPDATE PROVEEDOR\n"
+                + "	SET\n"
+                + "		razonsocial=?,\n"
+                + "		propietario=?,\n"
+                + "		ruc=?,\n"
+                + "		telefono=?,\n"
+                + "		direccion=?,\n"
+                + "		estado=?,\n"
+                + "		idtipo=?\n"
+                + "	WHERE idproveedor=?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, tp.getDescripcion());
-            ps.setInt(2, tp.getIdtipo());
+            ps.setString(1, p.getRazonsocial());
+            ps.setString(2, p.getPropietario());
+            ps.setString(3, p.getRuc());
+            ps.setString(4, p.getTelefono());
+            ps.setString(5, p.getDireccion());
+            ps.setString(6, p.getEstado());
+            ps.setInt(7, p.getIdtipo());
+            ps.setInt(8, p.getIdproveedor());
+
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -77,19 +100,19 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
 
     @Override
     public boolean eliminar(Object obj) {
-        tp = (TipoProveedor) obj;
-        String sql = "DELETE FROM TIPO_PROVEEDOR WHERE idtipo = ?;";
+        p = (Proveedor) obj;
+        String sql = "DELETE FROM PROVEEDOR WHERE idproveedor = ?;";
         Connection con;
         PreparedStatement ps;
         try {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, tp.getIdtipo());
+            ps.setInt(1, p.getIdproveedor());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -103,15 +126,15 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
 
     @Override
     public int nuevoID() {
-        String sql = "select idtipo + 1 as proximo_cod_libre\n"
-                + "  from (select 0 as idtipo\n"
+        String sql = "select idproveedor + 1 as proximo_cod_libre\n"
+                + "  from (select 0 as idproveedor\n"
                 + "         union all\n"
-                + "        select idtipo\n"
-                + "          from TIPO_PROVEEDOR) t1\n"
+                + "        select idproveedor\n"
+                + "          from proveedor) t1\n"
                 + " where not exists (select null\n"
-                + "                     from TIPO_PROVEEDOR t2\n"
-                + "                    where t2.idtipo = t1.idtipo + 1)\n"
-                + " order by idtipo\n"
+                + "                     from proveedor t2\n"
+                + "                    where t2.idproveedor = t1.idproveedor + 1)\n"
+                + " order by idproveedor\n"
                 + " LIMIT 1;";
         Connection con;
         PreparedStatement ps;
@@ -134,7 +157,15 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_PROVEEDOR WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT\n"
+                + "C.idproveedor,\n"
+                + "C.razonsocial,\n"
+                + "C.propietario,\n"
+                + "C.ruc,\n"
+                + "IF(estado = 'A', 'ACTIVO', 'INACTIVO') AS estado\n"
+                + "FROM proveedor AS C\n"
+                + "WHERE CONCAT(C.razonsocial, C.propietario, C.ruc, C.telefono) LIKE ?\n"
+                + "ORDER BY C.razonsocial;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -144,11 +175,14 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + criterio + "%");
-            rs = ps.executeQuery();        
+            rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[2];
+                Object[] fila = new Object[5];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
+                fila[2] = rs.getString(3);
+                fila[3] = rs.getString(4);
+                fila[4] = rs.getString(5);
                 datos.add(fila);
             }
             con.close();
@@ -160,8 +194,8 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
 
     @Override
     public boolean consultarDatos(Object obj) {
-        tp = (TipoProveedor) obj;
-        String sql = "SELECT * FROM TIPO_PROVEEDOR WHERE idtipo = ?;";
+        p = (Proveedor) obj;
+        String sql = "SELECT * FROM PROVEEDOR WHERE idproveedor = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -169,15 +203,21 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, tp.getIdtipo());
+            ps.setInt(1, p.getIdproveedor());
             rs = ps.executeQuery();
             if (rs.next()) {
-                tp.setIdtipo(rs.getInt(1));
-                tp.setDescripcion(rs.getString(2));
+                p.setIdproveedor(rs.getInt(1));
+                p.setRazonsocial(rs.getString(2));
+                p.setPropietario(rs.getString(3));
+                p.setRuc(rs.getString(4));
+                p.setTelefono(rs.getString(5));
+                p.setDireccion(rs.getString(6));
+                p.setEstado(rs.getString(7));
+                p.setIdtipo(rs.getInt(8));
                 con.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "NO EXISTE TIPO DE PROVEEDOR CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "NO EXISTE PROVEEDOR CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 con.close();
                 return false;
             }
@@ -186,5 +226,4 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
             return false;
         }
     }
-
 }

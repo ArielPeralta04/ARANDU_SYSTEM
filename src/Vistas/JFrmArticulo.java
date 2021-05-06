@@ -424,7 +424,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
 
         if (fila >= 0) {
             int id = Integer.parseInt(tablaDatos.getValueAt(fila, 0).toString());
-            System.out.println("" + id);
+            //System.out.println("" + id);
             String descripcion = tablaDatos.getValueAt(fila, 1).toString();
             a.setIdarticulo(id);
             dao.consultarDatos(a);

@@ -1,9 +1,9 @@
 package Vistas;
 
-import Dao.DAOCliente;
-import Dao.DAOTipoCliente;
-import Modelos.Cliente;
-import Modelos.TipoCliente;
+import Dao.DAOCProveedor;
+import Dao.DAOTipoProveedor;
+import Modelos.Proveedor;
+import Modelos.TipoProveedor;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -12,25 +12,25 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author armando
  */
-public class JFrmCliente extends javax.swing.JInternalFrame {
+public class JFrmProveedor extends javax.swing.JInternalFrame {
 
-    Cliente c = new Cliente();
-    TipoCliente tc = new TipoCliente();
+    Proveedor p = new Proveedor();
+    TipoProveedor tp = new TipoProveedor();
 
-    DAOCliente dao = new DAOCliente();
-    DAOTipoCliente daoTipoCliente = new DAOTipoCliente();
+    DAOCProveedor dao = new DAOCProveedor();
+    DAOTipoProveedor daoTipoProveedor = new DAOTipoProveedor();
 
     ArrayList<Object[]> datos = new ArrayList<>();
-    ArrayList<Object[]> datosTipoCliente = new ArrayList<>();
+    ArrayList<Object[]> datosTipoProveedor = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
 
     /**
-     * Creates new form JFrmCliente
+     * Creates new form JFrmProveedor
      */
-    public JFrmCliente() {
-        setTitle("JFrmCliente");
+    public JFrmProveedor() {
+        setTitle("JFrmProveedor");
         initComponents();
         cargar();
     }
@@ -46,13 +46,13 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
     }
 
     public void cargarTipoCliente() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaDatosTipoCliente.getModel();
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosTipoProveedor.getModel();
         modelo.setRowCount(0);
-        datosTipoCliente = daoTipoCliente.consultar(txtCriterioTipoCliente.getText());
-        for (Object[] obj : datosTipoCliente) {
+        datosTipoProveedor = daoTipoProveedor.consultar(txtCriterioTipoProveedor.getText());
+        for (Object[] obj : datosTipoProveedor) {
             modelo.addRow(obj);
         }
-        this.tablaDatosTipoCliente.setModel(modelo);
+        this.tablaDatosTipoProveedor.setModel(modelo);
     }
 
     public void habilitarCampos(String accion) {
@@ -60,51 +60,51 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
             case "NUEVO":
                 //CAMPOS
                 txtCodigo.setEnabled(false);
-                txtNombre.setEnabled(true);
-                txtApellido.setEnabled(true);
+                txtRazonSocial.setEnabled(true);
+                txtPropietario.setEnabled(true);
                 txtRuc.setEnabled(true);
                 txtTelefono.setEnabled(true);
                 rbActivo.setEnabled(true);
                 rbInactivo.setEnabled(true);
                 txtDireccion.setEnabled(true);
-                txtCodigoTipoCliente.setEnabled(true);
+                txtCodigoTipoProveedor.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
                 btnCancelar.setEnabled(true);
                 //REDIRECIONAMOS
-                txtNombre.grabFocus();
+                txtRazonSocial.grabFocus();
                 break;
             case "MODIFICAR":
                 //CAMPOS
                 txtCodigo.setEnabled(false);
-                txtNombre.setEnabled(true);
-                txtApellido.setEnabled(true);
+                txtRazonSocial.setEnabled(true);
+                txtPropietario.setEnabled(true);
                 txtRuc.setEnabled(true);
                 txtTelefono.setEnabled(true);
                 rbActivo.setEnabled(true);
                 rbInactivo.setEnabled(true);
                 txtDireccion.setEnabled(true);
-                txtCodigoTipoCliente.setEnabled(true);
+                txtCodigoTipoProveedor.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
                 btnCancelar.setEnabled(true);
                 //REDIRECIONAMOS
                 pestanha.setSelectedIndex(1);
-                txtNombre.grabFocus();
+                txtRazonSocial.grabFocus();
                 break;
             case "ELIMINAR":
                 //CAMPOS
                 txtCodigo.setEnabled(false);
-                txtNombre.setEnabled(false);
-                txtApellido.setEnabled(false);
+                txtRazonSocial.setEnabled(false);
+                txtPropietario.setEnabled(false);
                 txtRuc.setEnabled(false);
                 txtTelefono.setEnabled(false);
                 rbActivo.setEnabled(false);
                 rbInactivo.setEnabled(false);
                 txtDireccion.setEnabled(false);
-                txtCodigoTipoCliente.setEnabled(false);
+                txtCodigoTipoProveedor.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -116,14 +116,14 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
             case "CANCELAR":
                 //CAMPOS
                 txtCodigo.setEnabled(false);
-                txtNombre.setEnabled(false);
-                txtApellido.setEnabled(false);
+                txtRazonSocial.setEnabled(false);
+                txtPropietario.setEnabled(false);
                 txtRuc.setEnabled(false);
                 txtTelefono.setEnabled(false);
                 rbActivo.setEnabled(false);
                 rbInactivo.setEnabled(false);
                 txtDireccion.setEnabled(false);
-                txtCodigoTipoCliente.setEnabled(false);
+                txtCodigoTipoProveedor.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -135,14 +135,14 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
             case "GUARDAR":
                 //CAMPOS
                 txtCodigo.setEnabled(false);
-                txtNombre.setEnabled(false);
-                txtApellido.setEnabled(false);
+                txtRazonSocial.setEnabled(false);
+                txtPropietario.setEnabled(false);
                 txtRuc.setEnabled(false);
                 txtTelefono.setEnabled(false);
                 rbActivo.setEnabled(false);
                 rbInactivo.setEnabled(false);
                 txtDireccion.setEnabled(false);
-                txtCodigoTipoCliente.setEnabled(false);
+                txtCodigoTipoProveedor.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -157,16 +157,16 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
     public void limpiarCampos() {
         txtCriterio.setText(null);
-        txtCriterioTipoCliente.setText(null);
+        txtCriterioTipoProveedor.setText(null);
         txtCodigo.setText(null);
-        txtNombre.setText(null);
-        txtApellido.setText(null);
+        txtRazonSocial.setText(null);
+        txtPropietario.setText(null);
         txtRuc.setText(null);
         txtTelefono.setText(null);
         rbActivo.setSelected(true);
         txtDireccion.setText(null);
-        txtCodigoTipoCliente.setText(null);
-        txtDescripcionTipoCliente.setText(null);
+        txtCodigoTipoProveedor.setText(null);
+        txtDescripcionTipoProveedor.setText(null);
         operacion = "";
     }
 
@@ -183,8 +183,8 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                 id = Integer.parseInt(txtCodigo.getText());
             }
         }
-        String nombre = txtNombre.getText();
-        String apellido = txtApellido.getText();
+        String razonsocial = txtRazonSocial.getText();
+        String propietario = txtPropietario.getText();
         String ruc = txtRuc.getText();
         String telefono = txtTelefono.getText();
         String direccion = txtDireccion.getText();
@@ -194,54 +194,48 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         } else {
             estado = "I";
         }
-        int codigoTipoCliente = Integer.parseInt(txtCodigoTipoCliente.getText());
+        int codigoTipoCliente = Integer.parseInt(txtCodigoTipoProveedor.getText());
         switch (accion) {
             case "NUEVO":
-                if (nombre.isEmpty()) {
+                if (razonsocial.isEmpty()) {
                     error += "NO PUEDE DEJAR EL CAMPO DE NOMBRE VACIO.\n";
-                }
-                if (apellido.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE APELLIDO VACIO.\n";
                 }
                 if (codigoTipoCliente == 0) {
                     error += "NO HA SELECCIONADO UN TIPO DE CLIENTE.\n";
                 }
 
                 if (error.isEmpty()) {
-                    c.setIdcliente(id);
-                    c.setNombre(nombre);
-                    c.setApellido(apellido);
-                    c.setRuc(ruc);
-                    c.setTelefono(telefono);
-                    c.setDireccion(direccion);
-                    c.setEstado(estado);
-                    c.setIdtipo(codigoTipoCliente);
-                    dao.agregar(c);
+                    p.setIdproveedor(id);
+                    p.setRazonsocial(razonsocial);
+                    p.setPropietario(propietario);
+                    p.setRuc(ruc);
+                    p.setTelefono(telefono);
+                    p.setDireccion(direccion);
+                    p.setEstado(estado);
+                    p.setIdtipo(codigoTipoCliente);
+                    dao.agregar(p);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
             case "MODIFICAR":
-                if (nombre.isEmpty()) {
+                if (razonsocial.isEmpty()) {
                     error += "NO PUEDE DEJAR EL CAMPO DE NOMBRE VACIO.\n";
-                }
-                if (apellido.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE APELLIDO VACIO.\n";
                 }
                 if (codigoTipoCliente == 0) {
                     error += "NO HA SELECCIONADO UN TIPO DE CLIENTE.\n";
                 }
                 if (error.isEmpty()) {
-                    c.setNombre(nombre);
-                    c.setApellido(apellido);
-                    c.setRuc(ruc);
-                    c.setTelefono(telefono);
-                    c.setDireccion(direccion);
-                    c.setEstado(estado);
-                    c.setIdtipo(codigoTipoCliente);
-                    c.setIdcliente(id);
-                    dao.modificar(c);
+                    p.setRazonsocial(razonsocial);
+                    p.setPropietario(propietario);
+                    p.setRuc(ruc);
+                    p.setTelefono(telefono);
+                    p.setDireccion(direccion);
+                    p.setEstado(estado);
+                    p.setIdtipo(codigoTipoCliente);
+                    p.setIdproveedor(id);
+                    dao.modificar(p);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
@@ -249,8 +243,8 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    c.setIdcliente(id);
-                    dao.eliminar(c);
+                    p.setIdproveedor(id);
+                    dao.eliminar(p);
                     cargar();
                 }
                 break;
@@ -264,18 +258,18 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         int fila = tablaDatos.getSelectedRow();
         if (fila >= 0) {
             int id = Integer.parseInt(tablaDatos.getValueAt(fila, 0).toString());
-            c.setIdcliente(id);
-            dao.consultarDatos(c);
-            String nombre = c.getNombre();
-            String apellido = c.getApellido();
-            String ruc = c.getRuc();
-            String telefono = c.getTelefono();
-            String direccion = c.getDireccion();
-            String estado = c.getEstado();
-            int idtipo = c.getIdtipo();
-            txtCodigo.setText(""+id);
-            txtNombre.setText(nombre);
-            txtApellido.setText(apellido);
+            p.setIdproveedor(id);
+            dao.consultarDatos(p);
+            String nombre = p.getRazonsocial();
+            String apellido = p.getPropietario();
+            String ruc = p.getRuc();
+            String telefono = p.getTelefono();
+            String direccion = p.getDireccion();
+            String estado = p.getEstado();
+            int idtipo = p.getIdtipo();
+            txtCodigo.setText("" + id);
+            txtRazonSocial.setText(nombre);
+            txtPropietario.setText(apellido);
             txtRuc.setText(ruc);
             txtTelefono.setText(telefono);
             txtDireccion.setText(direccion);
@@ -284,10 +278,10 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
             } else {
                 rbInactivo.setSelected(true);
             }
-            tc.setIdtipo(idtipo);
-            daoTipoCliente.consultarDatos(tc);
-            txtCodigoTipoCliente.setText(""+tc.getIdtipo());
-            txtDescripcionTipoCliente.setText(tc.getDescripcion());
+            tp.setIdtipo(idtipo);
+            daoTipoProveedor.consultarDatos(tp);
+            txtCodigoTipoProveedor.setText("" + tp.getIdtipo());
+            txtDescripcionTipoProveedor.setText(tp.getDescripcion());
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -296,17 +290,17 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
     private void buscarTipoCliente() {
         cargarTipoCliente();
-        BuscadorTipoCliente.setModal(true);
-        BuscadorTipoCliente.setSize(540, 285);
-        BuscadorTipoCliente.setLocationRelativeTo(this);
-        BuscadorTipoCliente.setVisible(true);
-        int fila = tablaDatosTipoCliente.getSelectedRow();
+        BuscadorTipoProveedor.setModal(true);
+        BuscadorTipoProveedor.setSize(540, 285);
+        BuscadorTipoProveedor.setLocationRelativeTo(this);
+        BuscadorTipoProveedor.setVisible(true);
+        int fila = tablaDatosTipoProveedor.getSelectedRow();
         if (fila >= 0) {
-            txtCodigoTipoCliente.setText(tablaDatosTipoCliente.getValueAt(fila, 0).toString());
-            txtDescripcionTipoCliente.setText(tablaDatosTipoCliente.getValueAt(fila, 1).toString());
+            txtCodigoTipoProveedor.setText(tablaDatosTipoProveedor.getValueAt(fila, 0).toString());
+            txtDescripcionTipoProveedor.setText(tablaDatosTipoProveedor.getValueAt(fila, 1).toString());
         } else {
-            txtCodigoTipoCliente.setText(null);
-            txtDescripcionTipoCliente.setText(null);
+            txtCodigoTipoProveedor.setText(null);
+            txtDescripcionTipoProveedor.setText(null);
         }
     }
 
@@ -322,12 +316,12 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         menuDesplegable = new javax.swing.JPopupMenu();
         Modificar = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
-        BuscadorTipoCliente = new javax.swing.JDialog();
+        BuscadorTipoProveedor = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        txtCriterioTipoCliente = new org.jdesktop.swingx.JXTextField();
+        txtCriterioTipoProveedor = new org.jdesktop.swingx.JXTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tablaDatosTipoCliente = new javax.swing.JTable();
+        tablaDatosTipoProveedor = new javax.swing.JTable();
         grupoEstado = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -338,18 +332,18 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDatos = new javax.swing.JTable();
         pestanhaABM = new javax.swing.JPanel();
-        txtNombre = new org.jdesktop.swingx.JXTextField();
+        txtRazonSocial = new org.jdesktop.swingx.JXTextField();
         jLabel2 = new javax.swing.JLabel();
         txtCodigo = new org.jdesktop.swingx.JXTextField();
         btnCancelar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        txtCodigoTipoCliente = new org.jdesktop.swingx.JXTextField();
-        txtDescripcionTipoCliente = new org.jdesktop.swingx.JXTextField();
+        txtCodigoTipoProveedor = new org.jdesktop.swingx.JXTextField();
+        txtDescripcionTipoProveedor = new org.jdesktop.swingx.JXTextField();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        txtApellido = new org.jdesktop.swingx.JXTextField();
+        txtPropietario = new org.jdesktop.swingx.JXTextField();
         jLabel8 = new javax.swing.JLabel();
         txtRuc = new org.jdesktop.swingx.JXTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -386,27 +380,27 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("BUSCADOR DE TIPOS DE CLIENTES");
+        jLabel5.setText("BUSCADOR DE TIPOS DE PROVEEDORES");
         jLabel5.setOpaque(true);
 
-        txtCriterioTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCriterioTipoCliente.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
-        txtCriterioTipoCliente.addActionListener(new java.awt.event.ActionListener() {
+        txtCriterioTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioTipoProveedor.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioTipoProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCriterioTipoClienteActionPerformed(evt);
+                txtCriterioTipoProveedorActionPerformed(evt);
             }
         });
-        txtCriterioTipoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCriterioTipoProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCriterioTipoClienteKeyPressed(evt);
+                txtCriterioTipoProveedorKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCriterioTipoClienteKeyTyped(evt);
+                txtCriterioTipoProveedorKeyTyped(evt);
             }
         });
 
-        tablaDatosTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        tablaDatosTipoCliente.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDatosTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosTipoProveedor.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -429,16 +423,16 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaDatosTipoCliente.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaDatosTipoProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaDatosTipoClienteMouseClicked(evt);
+                tablaDatosTipoProveedorMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tablaDatosTipoCliente);
-        if (tablaDatosTipoCliente.getColumnModel().getColumnCount() > 0) {
-            tablaDatosTipoCliente.getColumnModel().getColumn(0).setMinWidth(60);
-            tablaDatosTipoCliente.getColumnModel().getColumn(0).setPreferredWidth(60);
-            tablaDatosTipoCliente.getColumnModel().getColumn(0).setMaxWidth(60);
+        jScrollPane2.setViewportView(tablaDatosTipoProveedor);
+        if (tablaDatosTipoProveedor.getColumnModel().getColumnCount() > 0) {
+            tablaDatosTipoProveedor.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosTipoProveedor.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosTipoProveedor.getColumnModel().getColumn(0).setMaxWidth(60);
         }
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -449,7 +443,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCriterioTipoCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(txtCriterioTipoProveedor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -458,20 +452,20 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCriterioTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCriterioTipoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout BuscadorTipoClienteLayout = new javax.swing.GroupLayout(BuscadorTipoCliente.getContentPane());
-        BuscadorTipoCliente.getContentPane().setLayout(BuscadorTipoClienteLayout);
-        BuscadorTipoClienteLayout.setHorizontalGroup(
-            BuscadorTipoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout BuscadorTipoProveedorLayout = new javax.swing.GroupLayout(BuscadorTipoProveedor.getContentPane());
+        BuscadorTipoProveedor.getContentPane().setLayout(BuscadorTipoProveedorLayout);
+        BuscadorTipoProveedorLayout.setHorizontalGroup(
+            BuscadorTipoProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        BuscadorTipoClienteLayout.setVerticalGroup(
-            BuscadorTipoClienteLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        BuscadorTipoProveedorLayout.setVerticalGroup(
+            BuscadorTipoProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -482,7 +476,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mantenimiento de Clientes");
+        jLabel1.setText("Mantenimiento de Proveedores");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -528,7 +522,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nombre</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Apellido</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">C.I./R.U.C.</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Estado</span></span></span></p></html> "
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Razón Social</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Propietario</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">C.I./R.U.C.</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Estado</span></span></span></p></html> "
             }
         ) {
             Class[] types = new Class [] {
@@ -585,17 +579,17 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
         pestanhaABM.setBackground(new java.awt.Color(255, 255, 255));
 
-        txtNombre.setEnabled(false);
-        txtNombre.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtNombre.setPrompt("Nombre del cliente...");
-        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+        txtRazonSocial.setEnabled(false);
+        txtRazonSocial.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtRazonSocial.setPrompt("Nombre del proveedor...");
+        txtRazonSocial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreActionPerformed(evt);
+                txtRazonSocialActionPerformed(evt);
             }
         });
-        txtNombre.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtRazonSocial.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNombreKeyTyped(evt);
+                txtRazonSocialKeyTyped(evt);
             }
         });
 
@@ -642,56 +636,56 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel4.setText("T. Cliente:");
+        jLabel4.setText("T. Prov.:");
 
-        txtCodigoTipoCliente.setEnabled(false);
-        txtCodigoTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCodigoTipoCliente.setPrompt("Cód. T.C.");
-        txtCodigoTipoCliente.addActionListener(new java.awt.event.ActionListener() {
+        txtCodigoTipoProveedor.setEnabled(false);
+        txtCodigoTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoTipoProveedor.setPrompt("Cód. T.P.");
+        txtCodigoTipoProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoTipoClienteActionPerformed(evt);
+                txtCodigoTipoProveedorActionPerformed(evt);
             }
         });
-        txtCodigoTipoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigoTipoProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCodigoTipoClienteKeyPressed(evt);
+                txtCodigoTipoProveedorKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoTipoClienteKeyTyped(evt);
+                txtCodigoTipoProveedorKeyTyped(evt);
             }
         });
 
-        txtDescripcionTipoCliente.setEnabled(false);
-        txtDescripcionTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDescripcionTipoCliente.setPrompt("Descripción o nombre del tipo de cliente...");
-        txtDescripcionTipoCliente.addActionListener(new java.awt.event.ActionListener() {
+        txtDescripcionTipoProveedor.setEnabled(false);
+        txtDescripcionTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionTipoProveedor.setPrompt("Descripción o nombre del tipo de proveedor...");
+        txtDescripcionTipoProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionTipoClienteActionPerformed(evt);
+                txtDescripcionTipoProveedorActionPerformed(evt);
             }
         });
-        txtDescripcionTipoCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtDescripcionTipoProveedor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionTipoClienteKeyTyped(evt);
+                txtDescripcionTipoProveedorKeyTyped(evt);
             }
         });
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel6.setText("Nombre:");
+        jLabel6.setText("R. Social:");
 
         jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel7.setText("Apellido:");
+        jLabel7.setText("Propietario:");
 
-        txtApellido.setEnabled(false);
-        txtApellido.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtApellido.setPrompt("Apellido del cliente...");
-        txtApellido.addActionListener(new java.awt.event.ActionListener() {
+        txtPropietario.setEnabled(false);
+        txtPropietario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtPropietario.setPrompt("Propietario de la empresa...");
+        txtPropietario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtApellidoActionPerformed(evt);
+                txtPropietarioActionPerformed(evt);
             }
         });
-        txtApellido.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPropietario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtApellidoKeyTyped(evt);
+                txtPropietarioKeyTyped(evt);
             }
         });
 
@@ -700,7 +694,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
         txtRuc.setEnabled(false);
         txtRuc.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtRuc.setPrompt("Cédula de identidad o ruc del cliente...");
+        txtRuc.setPrompt("Ruc del proveedor...");
         txtRuc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtRucActionPerformed(evt);
@@ -717,7 +711,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
         txtTelefono.setEnabled(false);
         txtTelefono.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtTelefono.setPrompt("Teléfono del cliente...");
+        txtTelefono.setPrompt("Teléfono del proveedor...");
         txtTelefono.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTelefonoActionPerformed(evt);
@@ -766,7 +760,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
         txtDireccion.setEnabled(false);
         txtDireccion.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDireccion.setPrompt("Dirección del cliente...");
+        txtDireccion.setPrompt("Dirección del proveedor...");
         txtDireccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDireccionActionPerformed(evt);
@@ -791,9 +785,9 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pestanhaABMLayout.createSequentialGroup()
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtCodigoTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtCodigoTipoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtDescripcionTipoCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(txtDescripcionTipoProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pestanhaABMLayout.createSequentialGroup()
                                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -819,11 +813,11 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pestanhaABMLayout.createSequentialGroup()
-                                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtPropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pestanhaABMLayout.createSequentialGroup()
                                 .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))))
@@ -845,10 +839,10 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                     .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtRazonSocial, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(jLabel7)
-                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtPropietario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtRuc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -865,8 +859,8 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtCodigoTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDescripcionTipoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCodigoTipoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcionTipoProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 195, Short.MAX_VALUE)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -874,8 +868,6 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
                     .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        txtDescripcionTipoCliente.getAccessibleContext().setAccessibleDescription("Descripción o nombre del tipo de cliente...");
 
         pestanha.addTab("Operaciónes", pestanhaABM);
 
@@ -929,23 +921,23 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtCriterioKeyTyped
 
-    private void txtNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreKeyTyped
+    private void txtRazonSocialKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRazonSocialKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLowerCase(c)) {
             evt.setKeyChar(Character.toUpperCase(c));
         }
-        if (txtNombre.getText().length() == 100) {
+        if (txtRazonSocial.getText().length() == 100) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtNombreKeyTyped
+    }//GEN-LAST:event_txtRazonSocialKeyTyped
 
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-        if (txtNombre.getText().isEmpty()) {
+    private void txtRazonSocialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRazonSocialActionPerformed
+        if (txtRazonSocial.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            txtApellido.grabFocus();
+            txtPropietario.grabFocus();
         }
-    }//GEN-LAST:event_txtNombreActionPerformed
+    }//GEN-LAST:event_txtRazonSocialActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         limpiarCampos();
@@ -978,48 +970,48 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         recuperarDatos();
     }//GEN-LAST:event_EliminarActionPerformed
 
-    private void txtCodigoTipoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoTipoClienteActionPerformed
-        if (txtCodigoTipoCliente.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TIPO DE CLIENTE VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+    private void txtCodigoTipoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoTipoProveedorActionPerformed
+        if (txtCodigoTipoProveedor.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TIPO DE PROVEEDOR VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            int idtipocliente = Integer.parseInt(txtCodigoTipoCliente.getText());
-            tc.setIdtipo(idtipocliente);
-            boolean resultado = daoTipoCliente.consultarDatos(tc);
+            int idtipocliente = Integer.parseInt(txtCodigoTipoProveedor.getText());
+            tp.setIdtipo(idtipocliente);
+            boolean resultado = daoTipoProveedor.consultarDatos(tp);
             if (resultado == true) {
-                txtDescripcionTipoCliente.setText(tc.getDescripcion());
+                txtDescripcionTipoProveedor.setText(tp.getDescripcion());
                 btnConfirmar.grabFocus();
             } else {
-                txtCodigoTipoCliente.setText(null);
-                txtDescripcionTipoCliente.setText(null);
-                txtCodigoTipoCliente.grabFocus();
+                txtCodigoTipoProveedor.setText(null);
+                txtDescripcionTipoProveedor.setText(null);
+                txtCodigoTipoProveedor.grabFocus();
             }
         }
-    }//GEN-LAST:event_txtCodigoTipoClienteActionPerformed
+    }//GEN-LAST:event_txtCodigoTipoProveedorActionPerformed
 
-    private void txtCodigoTipoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoClienteKeyTyped
+    private void txtCodigoTipoProveedorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoProveedorKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
         }
-        if (txtCodigoTipoCliente.getText().length() == 10) {
+        if (txtCodigoTipoProveedor.getText().length() == 10) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtCodigoTipoClienteKeyTyped
+    }//GEN-LAST:event_txtCodigoTipoProveedorKeyTyped
 
-    private void txtDescripcionTipoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionTipoClienteActionPerformed
+    private void txtDescripcionTipoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionTipoProveedorActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionTipoClienteActionPerformed
+    }//GEN-LAST:event_txtDescripcionTipoProveedorActionPerformed
 
-    private void txtDescripcionTipoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionTipoClienteKeyTyped
+    private void txtDescripcionTipoProveedorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionTipoProveedorKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionTipoClienteKeyTyped
+    }//GEN-LAST:event_txtDescripcionTipoProveedorKeyTyped
 
-    private void txtCriterioTipoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioTipoClienteActionPerformed
+    private void txtCriterioTipoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioTipoProveedorActionPerformed
         cargarTipoCliente();
-    }//GEN-LAST:event_txtCriterioTipoClienteActionPerformed
+    }//GEN-LAST:event_txtCriterioTipoProveedorActionPerformed
 
-    private void txtCriterioTipoClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioTipoClienteKeyTyped
+    private void txtCriterioTipoProveedorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioTipoProveedorKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLowerCase(c)) {
             evt.setKeyChar(Character.toUpperCase(c));
@@ -1027,51 +1019,47 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
         if (txtCriterio.getText().length() == 100) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtCriterioTipoClienteKeyTyped
+    }//GEN-LAST:event_txtCriterioTipoProveedorKeyTyped
 
-    private void txtCriterioTipoClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioTipoClienteKeyPressed
+    private void txtCriterioTipoProveedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioTipoProveedorKeyPressed
         if (evt.VK_ESCAPE == evt.getKeyCode()) {
-            txtCodigoTipoCliente.setText(null);
-            txtDescripcionTipoCliente.setText(null);
-            txtCodigoTipoCliente.grabFocus();
-            BuscadorTipoCliente.dispose();
+            txtCodigoTipoProveedor.setText(null);
+            txtDescripcionTipoProveedor.setText(null);
+            txtCodigoTipoProveedor.grabFocus();
+            BuscadorTipoProveedor.dispose();
         }
-    }//GEN-LAST:event_txtCriterioTipoClienteKeyPressed
+    }//GEN-LAST:event_txtCriterioTipoProveedorKeyPressed
 
-    private void tablaDatosTipoClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosTipoClienteMouseClicked
+    private void tablaDatosTipoProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosTipoProveedorMouseClicked
         if (evt.getClickCount() == 2) {
-            if (tablaDatosTipoCliente.getSelectedRowCount() == 0) {
+            if (tablaDatosTipoProveedor.getSelectedRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
             } else {
-                txtCriterioTipoCliente.setText(null);
-                BuscadorTipoCliente.dispose();
+                txtCriterioTipoProveedor.setText(null);
+                BuscadorTipoProveedor.dispose();
             }
         }
-    }//GEN-LAST:event_tablaDatosTipoClienteMouseClicked
+    }//GEN-LAST:event_tablaDatosTipoProveedorMouseClicked
 
-    private void txtCodigoTipoClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoClienteKeyPressed
+    private void txtCodigoTipoProveedorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoTipoProveedorKeyPressed
         if (evt.VK_F1 == evt.getKeyCode()) {
             buscarTipoCliente();
         }
-    }//GEN-LAST:event_txtCodigoTipoClienteKeyPressed
+    }//GEN-LAST:event_txtCodigoTipoProveedorKeyPressed
 
-    private void txtApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoActionPerformed
-        if (txtApellido.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
-        } else {
-            txtRuc.grabFocus();
-        }
-    }//GEN-LAST:event_txtApellidoActionPerformed
+    private void txtPropietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPropietarioActionPerformed
+        txtRuc.grabFocus();
+    }//GEN-LAST:event_txtPropietarioActionPerformed
 
-    private void txtApellidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtApellidoKeyTyped
+    private void txtPropietarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPropietarioKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLowerCase(c)) {
             evt.setKeyChar(Character.toUpperCase(c));
         }
-        if (txtApellido.getText().length() == 100) {
+        if (txtPropietario.getText().length() == 100) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtApellidoKeyTyped
+    }//GEN-LAST:event_txtPropietarioKeyTyped
 
     private void txtRucActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRucActionPerformed
         txtTelefono.grabFocus();
@@ -1118,7 +1106,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_rbActivoKeyPressed
 
     private void txtDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDireccionActionPerformed
-        txtCodigoTipoCliente.grabFocus();
+        txtCodigoTipoProveedor.grabFocus();
     }//GEN-LAST:event_txtDireccionActionPerformed
 
     private void txtDireccionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDireccionKeyTyped
@@ -1133,7 +1121,7 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog BuscadorTipoCliente;
+    private javax.swing.JDialog BuscadorTipoProveedor;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
@@ -1162,15 +1150,15 @@ public class JFrmCliente extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton rbActivo;
     private javax.swing.JRadioButton rbInactivo;
     private javax.swing.JTable tablaDatos;
-    private javax.swing.JTable tablaDatosTipoCliente;
-    private org.jdesktop.swingx.JXTextField txtApellido;
+    private javax.swing.JTable tablaDatosTipoProveedor;
     private org.jdesktop.swingx.JXTextField txtCodigo;
-    private org.jdesktop.swingx.JXTextField txtCodigoTipoCliente;
+    private org.jdesktop.swingx.JXTextField txtCodigoTipoProveedor;
     private org.jdesktop.swingx.JXTextField txtCriterio;
-    private org.jdesktop.swingx.JXTextField txtCriterioTipoCliente;
-    private org.jdesktop.swingx.JXTextField txtDescripcionTipoCliente;
+    private org.jdesktop.swingx.JXTextField txtCriterioTipoProveedor;
+    private org.jdesktop.swingx.JXTextField txtDescripcionTipoProveedor;
     private org.jdesktop.swingx.JXTextField txtDireccion;
-    private org.jdesktop.swingx.JXTextField txtNombre;
+    private org.jdesktop.swingx.JXTextField txtPropietario;
+    private org.jdesktop.swingx.JXTextField txtRazonSocial;
     private org.jdesktop.swingx.JXTextField txtRuc;
     private org.jdesktop.swingx.JXTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
