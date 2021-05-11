@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         8.0.24 - MySQL Community Server - GPL
+-- Versión del servidor:         10.4.14-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             11.2.0.6213
+-- HeidiSQL Versión:             11.1.0.6116
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,24 +14,24 @@
 
 
 -- Volcando estructura de base de datos para as
-CREATE DATABASE IF NOT EXISTS `as` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE IF NOT EXISTS `as` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
 USE `as`;
 
 -- Volcando estructura para tabla as.articulo
 CREATE TABLE IF NOT EXISTS `articulo` (
-  `idarticulo` int NOT NULL,
+  `idarticulo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `referencia` varchar(100) DEFAULT NULL,
   `codigoalfanumerico` varchar(50) DEFAULT NULL,
   `codigobarra` varchar(50) DEFAULT NULL,
   `estado` varchar(1) NOT NULL,
   `observacion` varchar(250) DEFAULT NULL,
-  `idmarca` int NOT NULL,
-  `idlinea` int NOT NULL,
-  `idseccion` int NOT NULL,
-  `idtipo` int NOT NULL,
-  `idunidad` int NOT NULL,
-  `idimpuesto` int NOT NULL,
+  `idmarca` int(11) NOT NULL,
+  `idlinea` int(11) NOT NULL,
+  `idseccion` int(11) NOT NULL,
+  `idtipo` int(11) NOT NULL,
+  `idunidad` int(11) NOT NULL,
+  `idimpuesto` int(11) NOT NULL,
   PRIMARY KEY (`idarticulo`),
   KEY `FK_ARTICULO_MARCA` (`idmarca`),
   KEY `FK_ARTICULO_LINEA` (`idlinea`),
@@ -45,9 +45,9 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   CONSTRAINT `FK_ARTICULO_SECCION` FOREIGN KEY (`idseccion`) REFERENCES `seccion` (`idseccion`),
   CONSTRAINT `FK_ARTICULO_TIPO_ARTICULO` FOREIGN KEY (`idtipo`) REFERENCES `tipo_articulo` (`idtipo`),
   CONSTRAINT `FK_ARTICULO_UNIDAD_MEDIDA` FOREIGN KEY (`idunidad`) REFERENCES `unidad_medida` (`idunidad`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.articulo: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo` DISABLE KEYS */;
 REPLACE INTO `articulo` (`idarticulo`, `descripcion`, `referencia`, `codigoalfanumerico`, `codigobarra`, `estado`, `observacion`, `idmarca`, `idlinea`, `idseccion`, `idtipo`, `idunidad`, `idimpuesto`) VALUES
 	(1, 'CARAMELO CRISTAL', 'MENTA ARCOR', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
@@ -56,15 +56,15 @@ REPLACE INTO `articulo` (`idarticulo`, `descripcion`, `referencia`, `codigoalfan
 
 -- Volcando estructura para tabla as.banco
 CREATE TABLE IF NOT EXISTS `banco` (
-  `idbanco` int NOT NULL,
+  `idbanco` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
-  `idpais` int NOT NULL,
+  `idpais` int(11) NOT NULL,
   PRIMARY KEY (`idbanco`) USING BTREE,
   KEY `FK_BANCO_PAIS` (`idpais`) USING BTREE,
-  CONSTRAINT `FK_BANCO_PAIS` FOREIGN KEY (`idpais`) REFERENCES `pais` (`idpais`)
+  CONSTRAINT `FK_BANCO_PAIS` FOREIGN KEY (`idpais`) REFERENCES `pais` (`idpais`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.banco: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla as.banco: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `banco` DISABLE KEYS */;
 REPLACE INTO `banco` (`idbanco`, `descripcion`, `idpais`) VALUES
 	(1, 'FINANCIERA EL COMERCIO', 1),
@@ -74,7 +74,7 @@ REPLACE INTO `banco` (`idbanco`, `descripcion`, `idpais`) VALUES
 
 -- Volcando estructura para tabla as.caja
 CREATE TABLE IF NOT EXISTS `caja` (
-  `idcaja` int NOT NULL,
+  `idcaja` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idcaja`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -88,40 +88,59 @@ REPLACE INTO `caja` (`idcaja`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.cliente
 CREATE TABLE IF NOT EXISTS `cliente` (
-  `idcliente` int NOT NULL,
+  `idcliente` int(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   `apellido` varchar(100) NOT NULL,
-  `ruc` varchar(25) NOT NULL,
+  `ruc` varchar(25) DEFAULT NULL,
   `telefono` varchar(25) DEFAULT NULL,
   `direccion` varchar(250) DEFAULT NULL,
   `estado` varchar(1) NOT NULL,
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   PRIMARY KEY (`idcliente`),
   KEY `FK_CLIENTE_TIPO_CLIENTE` (`idtipo`),
   CONSTRAINT `FK_CLIENTE_TIPO_CLIENTE` FOREIGN KEY (`idtipo`) REFERENCES `tipo_cliente` (`idtipo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.cliente: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.cliente: ~3 rows (aproximadamente)
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+REPLACE INTO `cliente` (`idcliente`, `nombre`, `apellido`, `ruc`, `telefono`, `direccion`, `estado`, `idtipo`) VALUES
+	(1, 'CLIENTE', 'OCASIONAL', 'XXX', 'XXX', 'XXX', 'A', 1),
+	(2, 'ARIEL', 'PERALTA', '5955455-0', '', '', 'A', 1);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.cotizacion
 CREATE TABLE IF NOT EXISTS `cotizacion` (
-  `idmoneda` int NOT NULL,
+  `idmoneda` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `tasa` double NOT NULL,
   PRIMARY KEY (`fecha`,`idmoneda`) USING BTREE,
   KEY `FK_COTIZACION_MONEDA` (`idmoneda`) USING BTREE,
-  CONSTRAINT `FK_COTIZACION_MONEDA` FOREIGN KEY (`idmoneda`) REFERENCES `moneda` (`idmoneda`)
+  CONSTRAINT `FK_COTIZACION_MONEDA` FOREIGN KEY (`idmoneda`) REFERENCES `moneda` (`idmoneda`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Volcando datos para la tabla as.cotizacion: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.empresa
+CREATE TABLE IF NOT EXISTS `empresa` (
+  `idempresa` int(11) NOT NULL,
+  `razonsocial` varchar(100) NOT NULL DEFAULT '',
+  `ruc` varchar(25) NOT NULL,
+  `telefono` varchar(25) DEFAULT '',
+  `direccion` varchar(250) DEFAULT '',
+  PRIMARY KEY (`idempresa`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.empresa: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
+REPLACE INTO `empresa` (`idempresa`, `razonsocial`, `ruc`, `telefono`, `direccion`) VALUES
+	(1, 'ARANDU SYSTEMS', '5955455-0', '(+595) 975 489 075', 'SAN BLAS - DR. J. EULOGIO ESTIGARRIBIA');
+/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.impuesto
 CREATE TABLE IF NOT EXISTS `impuesto` (
-  `idimpuesto` int NOT NULL,
+  `idimpuesto` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `porcentaje` double NOT NULL,
   PRIMARY KEY (`idimpuesto`) USING BTREE
@@ -137,12 +156,12 @@ REPLACE INTO `impuesto` (`idimpuesto`, `descripcion`, `porcentaje`) VALUES
 
 -- Volcando estructura para tabla as.linea
 CREATE TABLE IF NOT EXISTS `linea` (
-  `idlinea` int NOT NULL,
+  `idlinea` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idlinea`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.linea: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.linea: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `linea` DISABLE KEYS */;
 REPLACE INTO `linea` (`idlinea`, `descripcion`) VALUES
 	(1, 'LÍNEA GENERAL');
@@ -150,12 +169,12 @@ REPLACE INTO `linea` (`idlinea`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.lista_precio
 CREATE TABLE IF NOT EXISTS `lista_precio` (
-  `idlista` int NOT NULL,
+  `idlista` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idlista`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.lista_precio: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla as.lista_precio: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `lista_precio` DISABLE KEYS */;
 REPLACE INTO `lista_precio` (`idlista`, `descripcion`) VALUES
 	(1, 'MINORISTA'),
@@ -165,12 +184,12 @@ REPLACE INTO `lista_precio` (`idlista`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.marca
 CREATE TABLE IF NOT EXISTS `marca` (
-  `idmarca` int NOT NULL,
+  `idmarca` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idmarca`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.marca: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.marca: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `marca` DISABLE KEYS */;
 REPLACE INTO `marca` (`idmarca`, `descripcion`) VALUES
 	(1, 'GENERICA');
@@ -178,7 +197,7 @@ REPLACE INTO `marca` (`idmarca`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.moneda
 CREATE TABLE IF NOT EXISTS `moneda` (
-  `idmoneda` int NOT NULL,
+  `idmoneda` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `simbolo` varchar(5) NOT NULL,
   PRIMARY KEY (`idmoneda`) USING BTREE
@@ -197,7 +216,7 @@ REPLACE INTO `moneda` (`idmoneda`, `descripcion`, `simbolo`) VALUES
 
 -- Volcando estructura para tabla as.motivo_ajuste
 CREATE TABLE IF NOT EXISTS `motivo_ajuste` (
-  `idmotivo` int NOT NULL,
+  `idmotivo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idmotivo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -213,7 +232,7 @@ REPLACE INTO `motivo_ajuste` (`idmotivo`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.pais
 CREATE TABLE IF NOT EXISTS `pais` (
-  `idpais` int NOT NULL,
+  `idpais` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `nacionalidad` varchar(100) NOT NULL,
   PRIMARY KEY (`idpais`) USING BTREE
@@ -231,34 +250,72 @@ REPLACE INTO `pais` (`idpais`, `descripcion`, `nacionalidad`) VALUES
 
 -- Volcando estructura para tabla as.periodo
 CREATE TABLE IF NOT EXISTS `periodo` (
-  `idperiodo` int NOT NULL,
+  `idperiodo` int(11) NOT NULL,
   `fecha_desde` date NOT NULL,
   `fecha_hasta` date NOT NULL,
   PRIMARY KEY (`idperiodo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.periodo: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.periodo: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `periodo` DISABLE KEYS */;
 REPLACE INTO `periodo` (`idperiodo`, `fecha_desde`, `fecha_hasta`) VALUES
 	(1, '2021-05-01', '2021-05-31');
 /*!40000 ALTER TABLE `periodo` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.proveedor
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `idproveedor` int(11) NOT NULL,
+  `razonsocial` varchar(100) NOT NULL,
+  `propietario` varchar(100) DEFAULT NULL,
+  `ruc` varchar(25) DEFAULT NULL,
+  `telefono` varchar(25) DEFAULT NULL,
+  `direccion` varchar(250) DEFAULT NULL,
+  `estado` varchar(1) NOT NULL,
+  `idtipo` int(11) NOT NULL,
+  PRIMARY KEY (`idproveedor`) USING BTREE,
+  KEY `FK_PROVEEDOR_TIPO_PROVEEDOR` (`idtipo`) USING BTREE,
+  CONSTRAINT `FK_PROVEEDOR_TIPO_PROVEEDOR` FOREIGN KEY (`idtipo`) REFERENCES `tipo_proveedor` (`idtipo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- Volcando datos para la tabla as.proveedor: ~1 rows (aproximadamente)
+/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+REPLACE INTO `proveedor` (`idproveedor`, `razonsocial`, `propietario`, `ruc`, `telefono`, `direccion`, `estado`, `idtipo`) VALUES
+	(1, 'PROVEEDOR', 'OCASIONAL', 'XXX', 'XXX', 'XXX', 'A', 3),
+	(2, 'CENTURY SYSTEMS S.R.L.', 'KURT FALK', '', '', '', 'A', 1);
+/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.seccion
 CREATE TABLE IF NOT EXISTS `seccion` (
-  `idseccion` int NOT NULL,
+  `idseccion` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idseccion`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.seccion: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.seccion: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `seccion` DISABLE KEYS */;
 REPLACE INTO `seccion` (`idseccion`, `descripcion`) VALUES
 	(1, 'SECCION GENERAL');
 /*!40000 ALTER TABLE `seccion` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.sucursal
+CREATE TABLE IF NOT EXISTS `sucursal` (
+  `idsucursal` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL DEFAULT '',
+  `telefono` varchar(25) DEFAULT NULL,
+  `direccion` varchar(250) DEFAULT NULL,
+  `idempresa` int(11) NOT NULL,
+  PRIMARY KEY (`idsucursal`),
+  KEY `FK_SUCURSAL_EMPRESA` (`idempresa`),
+  CONSTRAINT `FK_SUCURSAL_EMPRESA` FOREIGN KEY (`idempresa`) REFERENCES `empresa` (`idempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.sucursal: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `sucursal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `sucursal` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.tipo_articulo
 CREATE TABLE IF NOT EXISTS `tipo_articulo` (
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -273,7 +330,7 @@ REPLACE INTO `tipo_articulo` (`idtipo`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.tipo_cliente
 CREATE TABLE IF NOT EXISTS `tipo_cliente` (
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -289,7 +346,7 @@ REPLACE INTO `tipo_cliente` (`idtipo`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.tipo_comprobante
 CREATE TABLE IF NOT EXISTS `tipo_comprobante` (
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -306,16 +363,16 @@ REPLACE INTO `tipo_comprobante` (`idtipo`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.tipo_movimiento
 CREATE TABLE IF NOT EXISTS `tipo_movimiento` (
-  `idtipomovimiento` int NOT NULL,
+  `idtipomovimiento` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `abreviacion` varchar(5) NOT NULL,
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   PRIMARY KEY (`idtipomovimiento`) USING BTREE,
   KEY `FK_TIPO_MOVIMIENTO_TIPO_COMPROBANTE` (`idtipo`) USING BTREE,
   CONSTRAINT `FK_TIPO_MOVIMIENTO_TIPO_COMPROBANTE` FOREIGN KEY (`idtipo`) REFERENCES `tipo_comprobante` (`idtipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.tipo_movimiento: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.tipo_movimiento: ~12 rows (aproximadamente)
 /*!40000 ALTER TABLE `tipo_movimiento` DISABLE KEYS */;
 REPLACE INTO `tipo_movimiento` (`idtipomovimiento`, `descripcion`, `abreviacion`, `idtipo`) VALUES
 	(1, 'FACTURA CONTADO RECIBIDA', 'FCONR', 1),
@@ -334,7 +391,7 @@ REPLACE INTO `tipo_movimiento` (`idtipomovimiento`, `descripcion`, `abreviacion`
 
 -- Volcando estructura para tabla as.tipo_proveedor
 CREATE TABLE IF NOT EXISTS `tipo_proveedor` (
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -349,7 +406,7 @@ REPLACE INTO `tipo_proveedor` (`idtipo`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.tipo_tarjeta
 CREATE TABLE IF NOT EXISTS `tipo_tarjeta` (
-  `idtipo` int NOT NULL,
+  `idtipo` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -363,7 +420,7 @@ REPLACE INTO `tipo_tarjeta` (`idtipo`, `descripcion`) VALUES
 
 -- Volcando estructura para tabla as.unidad_medida
 CREATE TABLE IF NOT EXISTS `unidad_medida` (
-  `idunidad` int NOT NULL,
+  `idunidad` int(11) NOT NULL,
   `descripcion` varchar(100) NOT NULL,
   `simbolo` varchar(5) NOT NULL,
   PRIMARY KEY (`idunidad`) USING BTREE
@@ -380,6 +437,6 @@ REPLACE INTO `unidad_medida` (`idunidad`, `descripcion`, `simbolo`) VALUES
 /*!40000 ALTER TABLE `unidad_medida` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
