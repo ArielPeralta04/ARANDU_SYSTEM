@@ -269,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `programa` (
   PRIMARY KEY (`idprograma`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.programa: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.programa: ~25 rows (aproximadamente)
 /*!40000 ALTER TABLE `programa` DISABLE KEYS */;
 REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(1, 'JFrmPrograma'),
@@ -496,6 +496,17 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Volcando datos para la tabla as.usuario: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.usuario_programa
+CREATE TABLE IF NOT EXISTS `usuario_programa` (
+  `idusuario` int(11) NOT NULL,
+  `idprograma` int(11) NOT NULL,
+  PRIMARY KEY (`idusuario`,`idprograma`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.usuario_programa: 0 rows
+/*!40000 ALTER TABLE `usuario_programa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario_programa` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
