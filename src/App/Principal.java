@@ -10,6 +10,7 @@ import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
 import Vistas.JFrmCliente;
 import Vistas.JFrmCotizacion;
+import Vistas.JFrmEmpresa;
 import Vistas.JFrmImpuesto;
 import Vistas.JFrmLinea;
 import Vistas.JFrmListaPrecio;
@@ -96,6 +97,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoMovimiento = new javax.swing.JMenuItem();
         itemCliente = new javax.swing.JMenuItem();
         itemProveedor = new javax.swing.JMenuItem();
+        itemEmpresa = new javax.swing.JMenuItem();
         menuMovimientoCompra1 = new javax.swing.JMenu();
         menuMovimientoCompra7 = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
@@ -396,6 +398,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemProveedor);
+
+        itemEmpresa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemEmpresa.setText("Mantenimiento de Empresas");
+        itemEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemEmpresaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemEmpresa);
 
         jMenu5.add(menuMantenimientoFinanzas);
 
@@ -744,6 +755,20 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemProveedorActionPerformed
 
+    private void itemEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEmpresaActionPerformed
+        JFrmEmpresa fm = new JFrmEmpresa();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemEmpresaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -785,6 +810,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemCaja;
     private javax.swing.JMenuItem itemCliente;
     private javax.swing.JMenuItem itemCotizacion;
+    private javax.swing.JMenuItem itemEmpresa;
     private javax.swing.JMenuItem itemImpuesto;
     private javax.swing.JMenuItem itemLinea;
     private javax.swing.JMenuItem itemListaPrecio;
