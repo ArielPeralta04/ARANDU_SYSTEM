@@ -12,7 +12,7 @@ public class Database {
     private String pass;
 
     public Database() {
-        this.url = "jdbc:mysql://localhost:3306/AS?characterEncoding=latin1&useConfigs=maxPerformance";
+        this.url = "jdbc:mysql://localhost:3306/AS?useUnicode=true&characterEncoding=UTF-8";
         this.driver = "com.mysql.jdbc.Driver";
         this.user = "root";
         this.pass = "";

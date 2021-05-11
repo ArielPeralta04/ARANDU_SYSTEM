@@ -428,7 +428,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
             String descripcion = tablaDatos.getValueAt(fila, 1).toString();
             a.setIdarticulo(id);
             dao.consultarDatos(a);
-            referencia = a.getDescripcion();
+            referencia = a.getReferencia();
             codigoalfanumerico = a.getCodigoalfanumerico();
             codigobarra = a.getCodigobarra();
             estado = a.getEstado();

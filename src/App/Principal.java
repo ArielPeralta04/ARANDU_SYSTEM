@@ -19,8 +19,10 @@ import Vistas.JFrmMoneda;
 import Vistas.JFrmMotivoAjuste;
 import Vistas.JFrmPais;
 import Vistas.JFrmPeriodo;
+import Vistas.JFrmPrograma;
 import Vistas.JFrmProveedor;
 import Vistas.JFrmSeccion;
+import Vistas.JFrmSucursal;
 import Vistas.JFrmTipoArticulo;
 import Vistas.JFrmTipoCliente;
 import Vistas.JFrmTipoComprobante;
@@ -70,37 +72,42 @@ public class Principal extends javax.swing.JFrame {
         itemImpuesto = new javax.swing.JMenuItem();
         itemPais = new javax.swing.JMenuItem();
         itemUnidadMedida = new javax.swing.JMenuItem();
-        itemMotivoAjuste = new javax.swing.JMenuItem();
         itemArticulo = new javax.swing.JMenuItem();
-        menuMovimientoCompra = new javax.swing.JMenu();
-        menuMovimientoCompra4 = new javax.swing.JMenu();
+        menuMovimientoCompras = new javax.swing.JMenu();
+        menuConsultaCompras = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         menuMantenimientoVentas = new javax.swing.JMenu();
         itemListaPrecio = new javax.swing.JMenuItem();
-        menuMovimientoCompra3 = new javax.swing.JMenu();
-        menuMovimientoCompra5 = new javax.swing.JMenu();
+        menuMovimientoVentas = new javax.swing.JMenu();
+        menuConsultaVentas = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
-        menuMantenimientoVentas1 = new javax.swing.JMenu();
-        menuMovimientoCompra2 = new javax.swing.JMenu();
-        menuMovimientoCompra6 = new javax.swing.JMenu();
+        menuMantenimientoProducciones = new javax.swing.JMenu();
+        menuMovimientoProducciones = new javax.swing.JMenu();
+        menuConsultaProducciones = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         menuMantenimientoFinanzas = new javax.swing.JMenu();
         itemCaja = new javax.swing.JMenuItem();
-        itemMoneda = new javax.swing.JMenuItem();
-        itemTipoCliente = new javax.swing.JMenuItem();
-        itemTipoComprobante = new javax.swing.JMenuItem();
-        itemTipoProveedor = new javax.swing.JMenuItem();
-        itemTipoTarjeta = new javax.swing.JMenuItem();
         itemBanco = new javax.swing.JMenuItem();
         itemCotizacion = new javax.swing.JMenuItem();
-        itemPeriodo = new javax.swing.JMenuItem();
-        itemTipoMovimiento = new javax.swing.JMenuItem();
         itemCliente = new javax.swing.JMenuItem();
         itemProveedor = new javax.swing.JMenuItem();
-        itemEmpresa = new javax.swing.JMenuItem();
-        menuMovimientoCompra1 = new javax.swing.JMenu();
-        menuMovimientoCompra7 = new javax.swing.JMenu();
+        menuMovimientoFinanzas = new javax.swing.JMenu();
+        menuConsultaFinanzas = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        menuMantenimientoSistemas = new javax.swing.JMenu();
+        itemTipoComprobante = new javax.swing.JMenuItem();
+        itemEmpresa = new javax.swing.JMenuItem();
+        itemSucursal = new javax.swing.JMenuItem();
+        itemTipoMovimiento = new javax.swing.JMenuItem();
+        itemMoneda = new javax.swing.JMenuItem();
+        itemTipoTarjeta = new javax.swing.JMenuItem();
+        itemPeriodo = new javax.swing.JMenuItem();
+        itemTipoCliente = new javax.swing.JMenuItem();
+        itemTipoProveedor = new javax.swing.JMenuItem();
+        itemPrograma = new javax.swing.JMenuItem();
+        itemMotivoAjuste = new javax.swing.JMenuItem();
+        menuConsultasSistemas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -199,15 +206,6 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoCompras.add(itemUnidadMedida);
 
-        itemMotivoAjuste.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemMotivoAjuste.setText("Mantenimiento de Motivos de Ajustes");
-        itemMotivoAjuste.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMotivoAjusteActionPerformed(evt);
-            }
-        });
-        menuMantenimientoCompras.add(itemMotivoAjuste);
-
         itemArticulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemArticulo.setText("Mantenimiento de Artículos");
         itemArticulo.addActionListener(new java.awt.event.ActionListener() {
@@ -219,15 +217,15 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.add(menuMantenimientoCompras);
 
-        menuMovimientoCompra.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
-        menuMovimientoCompra.setText("Movimientos");
-        menuMovimientoCompra.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu2.add(menuMovimientoCompra);
+        menuMovimientoCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
+        menuMovimientoCompras.setText("Movimientos");
+        menuMovimientoCompras.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu2.add(menuMovimientoCompras);
 
-        menuMovimientoCompra4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
-        menuMovimientoCompra4.setText("Consultas");
-        menuMovimientoCompra4.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu2.add(menuMovimientoCompra4);
+        menuConsultaCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
+        menuConsultaCompras.setText("Consultas");
+        menuConsultaCompras.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu2.add(menuConsultaCompras);
 
         jMenuBar1.add(jMenu2);
 
@@ -250,15 +248,15 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu3.add(menuMantenimientoVentas);
 
-        menuMovimientoCompra3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
-        menuMovimientoCompra3.setText("Movimientos");
-        menuMovimientoCompra3.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu3.add(menuMovimientoCompra3);
+        menuMovimientoVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
+        menuMovimientoVentas.setText("Movimientos");
+        menuMovimientoVentas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu3.add(menuMovimientoVentas);
 
-        menuMovimientoCompra5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
-        menuMovimientoCompra5.setText("Consultas");
-        menuMovimientoCompra5.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu3.add(menuMovimientoCompra5);
+        menuConsultaVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
+        menuConsultaVentas.setText("Consultas");
+        menuConsultaVentas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu3.add(menuConsultaVentas);
 
         jMenuBar1.add(jMenu3);
 
@@ -266,20 +264,20 @@ public class Principal extends javax.swing.JFrame {
         jMenu4.setText("Producciónes");
         jMenu4.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
 
-        menuMantenimientoVentas1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_maintenance_16px.png"))); // NOI18N
-        menuMantenimientoVentas1.setText("Mantenimientos");
-        menuMantenimientoVentas1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu4.add(menuMantenimientoVentas1);
+        menuMantenimientoProducciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_maintenance_16px.png"))); // NOI18N
+        menuMantenimientoProducciones.setText("Mantenimientos");
+        menuMantenimientoProducciones.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu4.add(menuMantenimientoProducciones);
 
-        menuMovimientoCompra2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
-        menuMovimientoCompra2.setText("Movimientos");
-        menuMovimientoCompra2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu4.add(menuMovimientoCompra2);
+        menuMovimientoProducciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
+        menuMovimientoProducciones.setText("Movimientos");
+        menuMovimientoProducciones.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu4.add(menuMovimientoProducciones);
 
-        menuMovimientoCompra6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
-        menuMovimientoCompra6.setText("Consultas");
-        menuMovimientoCompra6.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu4.add(menuMovimientoCompra6);
+        menuConsultaProducciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
+        menuConsultaProducciones.setText("Consultas");
+        menuConsultaProducciones.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu4.add(menuConsultaProducciones);
 
         jMenuBar1.add(jMenu4);
 
@@ -300,51 +298,6 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoFinanzas.add(itemCaja);
 
-        itemMoneda.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemMoneda.setText("Mantenimiento de Monedas");
-        itemMoneda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMonedaActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemMoneda);
-
-        itemTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoCliente.setText("Mantenimiento de Tipos de Clientes");
-        itemTipoCliente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoClienteActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemTipoCliente);
-
-        itemTipoComprobante.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoComprobante.setText("Mantenimiento de Tipos de Comprobantes");
-        itemTipoComprobante.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoComprobanteActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemTipoComprobante);
-
-        itemTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoProveedor.setText("Mantenimiento de Tipos de Proveedores");
-        itemTipoProveedor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoProveedorActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemTipoProveedor);
-
-        itemTipoTarjeta.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoTarjeta.setText("Mantenimiento de Tipos de Tarjetas");
-        itemTipoTarjeta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoTarjetaActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemTipoTarjeta);
-
         itemBanco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemBanco.setText("Mantenimiento de Bancos");
         itemBanco.addActionListener(new java.awt.event.ActionListener() {
@@ -362,24 +315,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemCotizacion);
-
-        itemPeriodo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemPeriodo.setText("Mantenimiento de Periodos");
-        itemPeriodo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemPeriodoActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemPeriodo);
-
-        itemTipoMovimiento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoMovimiento.setText("Mantenimiento de Movimientos");
-        itemTipoMovimiento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoMovimientoActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemTipoMovimiento);
 
         itemCliente.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemCliente.setText("Mantenimiento de Clientes");
@@ -399,26 +334,17 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoFinanzas.add(itemProveedor);
 
-        itemEmpresa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemEmpresa.setText("Mantenimiento de Empresas");
-        itemEmpresa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemEmpresaActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemEmpresa);
-
         jMenu5.add(menuMantenimientoFinanzas);
 
-        menuMovimientoCompra1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
-        menuMovimientoCompra1.setText("Movimientos");
-        menuMovimientoCompra1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu5.add(menuMovimientoCompra1);
+        menuMovimientoFinanzas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
+        menuMovimientoFinanzas.setText("Movimientos");
+        menuMovimientoFinanzas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu5.add(menuMovimientoFinanzas);
 
-        menuMovimientoCompra7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
-        menuMovimientoCompra7.setText("Consultas");
-        menuMovimientoCompra7.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        jMenu5.add(menuMovimientoCompra7);
+        menuConsultaFinanzas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
+        menuConsultaFinanzas.setText("Consultas");
+        menuConsultaFinanzas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu5.add(menuConsultaFinanzas);
 
         jMenuBar1.add(jMenu5);
 
@@ -427,13 +353,129 @@ public class Principal extends javax.swing.JFrame {
         jMenu6.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
         jMenuBar1.add(jMenu6);
 
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_automatic_32px.png"))); // NOI18N
+        jMenu7.setText("Sistemas");
+        jMenu7.setFont(new java.awt.Font("SansSerif", 0, 20)); // NOI18N
+
+        menuMantenimientoSistemas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_maintenance_16px.png"))); // NOI18N
+        menuMantenimientoSistemas.setText("Mantenimientos");
+        menuMantenimientoSistemas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        itemTipoComprobante.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoComprobante.setText("Mantenimiento de Tipos de Comprobantes");
+        itemTipoComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoComprobanteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTipoComprobante);
+
+        itemEmpresa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemEmpresa.setText("Mantenimiento de Empresas");
+        itemEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemEmpresaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemEmpresa);
+
+        itemSucursal.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemSucursal.setText("Mantenimiento de Sucursales");
+        itemSucursal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSucursalActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemSucursal);
+
+        itemTipoMovimiento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoMovimiento.setText("Mantenimiento de Movimientos");
+        itemTipoMovimiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoMovimientoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTipoMovimiento);
+
+        itemMoneda.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMoneda.setText("Mantenimiento de Monedas");
+        itemMoneda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMonedaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemMoneda);
+
+        itemTipoTarjeta.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoTarjeta.setText("Mantenimiento de Tipos de Tarjetas");
+        itemTipoTarjeta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoTarjetaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTipoTarjeta);
+
+        itemPeriodo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemPeriodo.setText("Mantenimiento de Periodos");
+        itemPeriodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemPeriodoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemPeriodo);
+
+        itemTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoCliente.setText("Mantenimiento de Tipos de Clientes");
+        itemTipoCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoClienteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTipoCliente);
+
+        itemTipoProveedor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoProveedor.setText("Mantenimiento de Tipos de Proveedores");
+        itemTipoProveedor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoProveedorActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTipoProveedor);
+
+        itemPrograma.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemPrograma.setText("Mantenimiento de Programas");
+        itemPrograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemProgramaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemPrograma);
+
+        itemMotivoAjuste.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMotivoAjuste.setText("Mantenimiento de Motivos de Ajustes");
+        itemMotivoAjuste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMotivoAjusteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemMotivoAjuste);
+
+        jMenu7.add(menuMantenimientoSistemas);
+
+        menuConsultasSistemas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
+        menuConsultasSistemas.setText("Consultas");
+        menuConsultasSistemas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        jMenu7.add(menuConsultasSistemas);
+
+        jMenuBar1.add(jMenu7);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 878, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1389, Short.MAX_VALUE)
             .addComponent(panelInterno)
         );
         layout.setVerticalGroup(
@@ -769,6 +811,34 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemEmpresaActionPerformed
 
+    private void itemSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSucursalActionPerformed
+        JFrmSucursal fm = new JFrmSucursal();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemSucursalActionPerformed
+
+    private void itemProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemProgramaActionPerformed
+        JFrmPrograma fm = new JFrmPrograma();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemProgramaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -819,8 +889,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemMotivoAjuste;
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemPeriodo;
+    private javax.swing.JMenuItem itemPrograma;
     private javax.swing.JMenuItem itemProveedor;
     private javax.swing.JMenuItem itemSeccion;
+    private javax.swing.JMenuItem itemSucursal;
     private javax.swing.JMenuItem itemTipoArticulo;
     private javax.swing.JMenuItem itemTipoCliente;
     private javax.swing.JMenuItem itemTipoComprobante;
@@ -835,19 +907,22 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu menuConsultaCompras;
+    private javax.swing.JMenu menuConsultaFinanzas;
+    private javax.swing.JMenu menuConsultaProducciones;
+    private javax.swing.JMenu menuConsultaVentas;
+    private javax.swing.JMenu menuConsultasSistemas;
     private javax.swing.JMenu menuMantenimientoCompras;
     private javax.swing.JMenu menuMantenimientoFinanzas;
+    private javax.swing.JMenu menuMantenimientoProducciones;
+    private javax.swing.JMenu menuMantenimientoSistemas;
     private javax.swing.JMenu menuMantenimientoVentas;
-    private javax.swing.JMenu menuMantenimientoVentas1;
-    private javax.swing.JMenu menuMovimientoCompra;
-    private javax.swing.JMenu menuMovimientoCompra1;
-    private javax.swing.JMenu menuMovimientoCompra2;
-    private javax.swing.JMenu menuMovimientoCompra3;
-    private javax.swing.JMenu menuMovimientoCompra4;
-    private javax.swing.JMenu menuMovimientoCompra5;
-    private javax.swing.JMenu menuMovimientoCompra6;
-    private javax.swing.JMenu menuMovimientoCompra7;
+    private javax.swing.JMenu menuMovimientoCompras;
+    private javax.swing.JMenu menuMovimientoFinanzas;
+    private javax.swing.JMenu menuMovimientoProducciones;
+    private javax.swing.JMenu menuMovimientoVentas;
     private javax.swing.JDesktopPane panelInterno;
     // End of variables declaration//GEN-END:variables
 }
