@@ -30,6 +30,8 @@ import Vistas.JFrmTipoMovimiento;
 import Vistas.JFrmTipoProveedor;
 import Vistas.JFrmTipoTarjeta;
 import Vistas.JFrmUnidadMedida;
+import Vistas.JFrmUsuario;
+import Vistas.JFrmUsuarioPrograma;
 import com.formdev.flatlaf.FlatLightLaf;
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
@@ -107,6 +109,8 @@ public class Principal extends javax.swing.JFrame {
         itemTipoProveedor = new javax.swing.JMenuItem();
         itemPrograma = new javax.swing.JMenuItem();
         itemMotivoAjuste = new javax.swing.JMenuItem();
+        itemUsuarios = new javax.swing.JMenuItem();
+        itemUsuarios1 = new javax.swing.JMenuItem();
         menuConsultasSistemas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -459,6 +463,24 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoSistemas.add(itemMotivoAjuste);
+
+        itemUsuarios.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemUsuarios.setText("Mantenimiento de Usuarios");
+        itemUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemUsuariosActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemUsuarios);
+
+        itemUsuarios1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemUsuarios1.setText("Mantenimiento de Programas a Usuarios");
+        itemUsuarios1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemUsuarios1ActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemUsuarios1);
 
         jMenu7.add(menuMantenimientoSistemas);
 
@@ -839,6 +861,34 @@ public class Principal extends javax.swing.JFrame {
         fm.show();
     }//GEN-LAST:event_itemProgramaActionPerformed
 
+    private void itemUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuariosActionPerformed
+        JFrmUsuario fm = new JFrmUsuario();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemUsuariosActionPerformed
+
+    private void itemUsuarios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuarios1ActionPerformed
+        JFrmUsuarioPrograma fm = new JFrmUsuarioPrograma();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        fm.show();
+    }//GEN-LAST:event_itemUsuarios1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -900,6 +950,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemTipoProveedor;
     private javax.swing.JMenuItem itemTipoTarjeta;
     private javax.swing.JMenuItem itemUnidadMedida;
+    private javax.swing.JMenuItem itemUsuarios;
+    private javax.swing.JMenuItem itemUsuarios1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

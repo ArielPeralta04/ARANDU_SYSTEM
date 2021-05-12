@@ -10,6 +10,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -76,16 +78,14 @@ public class DAOUsuarioPrograma implements OperacionesUsuarioPrograma {
     }
 
     @Override
-    public ArrayList<Object[]> consultar(String criterio) {
+    public ArrayList<Object[]> consultar(int id) {
         String sql = "SELECT \n"
-                + "UP.idusuario, \n"
-                + "CONCAT(U.nombre,' ',U.apellido) AS usuario,\n"
                 + "UP.idprograma,\n"
                 + "P.descripcion\n"
                 + "FROM usuario_programa AS UP\n"
                 + "INNER JOIN USUARIO AS U ON U.idusuario = UP.idusuario\n"
                 + "INNER JOIN PROGRAMA AS P ON P.idprograma = UP.idprograma\n"
-                + "WHERE CONCAT(U.nombre, U.apellido, U.alias, P.descripcion) LIKE ?\n"
+                + "WHERE UP.idusuario = ?\n"
                 + "ORDER BY U.nombre;";
         Connection con;
         PreparedStatement ps;
@@ -95,14 +95,12 @@ public class DAOUsuarioPrograma implements OperacionesUsuarioPrograma {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + criterio + "%");
+            ps.setInt(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[4];
+                Object[] fila = new Object[2];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
-                fila[2] = rs.getInt(3);
-                fila[3] = rs.getString(4);
                 datos.add(fila);
             }
             con.close();
@@ -140,6 +138,13 @@ public class DAOUsuarioPrograma implements OperacionesUsuarioPrograma {
             JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+    }
+
+    @Override
+    public void addCheckBox(int column, JTable table) {
+        TableColumn tc = table.getColumnModel().getColumn(column);
+        tc.setCellEditor(table.getDefaultEditor(Boolean.class));
+        tc.setCellRenderer(table.getDefaultRenderer(Boolean.class));
     }
 
 }

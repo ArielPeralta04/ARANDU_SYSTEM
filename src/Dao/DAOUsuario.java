@@ -169,7 +169,6 @@ public class DAOUsuario implements OperacionesUsuario {
                 + "U.telefono, \n"
                 + "U.direccion, \n"
                 + "U.alias, \n"
-                + "U.clave, \n"
                 + "U.idempresa, \n"
                 + "E.razonsocial,\n"
                 + "U.idsucursal,\n"
@@ -190,7 +189,7 @@ public class DAOUsuario implements OperacionesUsuario {
             ps.setString(1, "%" + criterio + "%");
             rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[12];
+                Object[] fila = new Object[11];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
                 fila[2] = rs.getString(3);
@@ -198,11 +197,10 @@ public class DAOUsuario implements OperacionesUsuario {
                 fila[4] = rs.getString(5);
                 fila[5] = rs.getString(6);
                 fila[6] = rs.getString(7);
-                fila[7] = rs.getString(8);
-                fila[8] = rs.getInt(9);
-                fila[9] = rs.getString(10);
-                fila[10] = rs.getInt(11);
-                fila[11] = rs.getString(12);
+                fila[7] = rs.getInt(8);
+                fila[8] = rs.getString(9);
+                fila[9] = rs.getInt(10);
+                fila[10] = rs.getString(11);
                 datos.add(fila);
             }
             con.close();

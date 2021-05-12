@@ -189,11 +189,11 @@ public class DAOSucursal implements OperacionesSucursal {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, s.getIdempresa());
+            ps.setInt(1, s.getIdsucursal());
             rs = ps.executeQuery();
             if (rs.next()) {
                 s.setIdsucursal(rs.getInt(1));
-                s.setDireccion(rs.getString(2));
+                s.setDescripcion(rs.getString(2));
                 s.setTelefono(rs.getString(3));
                 s.setDireccion(rs.getString(4));
                 s.setIdempresa(rs.getInt(5));

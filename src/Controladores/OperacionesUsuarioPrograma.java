@@ -1,6 +1,7 @@
 package Controladores;
 
 import java.util.ArrayList;
+import javax.swing.JTable;
 
 /**
  *
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 public interface OperacionesUsuarioPrograma {
     public boolean agregar(Object obj);
     public boolean eliminar(Object obj);
-    public ArrayList<Object[]> consultar(String criterio);
+    public ArrayList<Object[]> consultar(int id);
     public boolean consultarDatos(Object obj);
+    public void addCheckBox(int column, JTable table);
 }

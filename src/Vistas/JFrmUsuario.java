@@ -9,6 +9,7 @@ import Modelos.Usuario;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  *
@@ -19,11 +20,11 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     Usuario u = new Usuario();
     Empresa e = new Empresa();
     Sucursal s = new Sucursal();
-    
+
     DAOUsuario dao = new DAOUsuario();
     DAOEmpresa daoEmpresa = new DAOEmpresa();
     DAOSucursal daoSucursal = new DAOSucursal();
-    
+
     ArrayList<Object[]> datos = new ArrayList<>();
     ArrayList<Object[]> datosEmpresa = new ArrayList<>();
     ArrayList<Object[]> datosSucursal = new ArrayList<>();
@@ -48,6 +49,26 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
             modelo.addRow(obj);
         }
         this.tablaDatos.setModel(modelo);
+    }
+
+    public void cargarEmpresa() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosEmpresa.getModel();
+        modelo.setRowCount(0);
+        datosEmpresa = daoEmpresa.consultar(txtCriterioEmpresa.getText());
+        for (Object[] obj : datosEmpresa) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosEmpresa.setModel(modelo);
+    }
+
+    public void cargarSucursal() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosSucursal.getModel();
+        modelo.setRowCount(0);
+        datosSucursal = daoSucursal.consultar(txtCriterioSucursal.getText());
+        for (Object[] obj : datosSucursal) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosSucursal.setModel(modelo);
     }
 
     public void habilitarCampos(String accion) {
@@ -195,18 +216,56 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
         String apellido = txtApellido.getText();
         String cedula = txtCedula.getText();
         String telefono = txtTelefono.getText();
-        String direccion = txtAlias.getText();
+        String direccion = txtDireccion.getText();
         String alias = txtAlias.getText();
         String clave;
         String repetirClave;
+        int idempresa = Integer.parseInt(txtCodigoEmpresa.getText());
+        int idsucursal = Integer.parseInt(txtCodigoSucursal.getText());
         switch (accion) {
             case "NUEVO":
+                clave = new String(txtClave.getPassword());
+                repetirClave = new String(txtRepetirClave.getPassword());
+
                 if (nombre.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
+                    error += "NO PUEDE DEJAR EL CAMPO DE NOMBRE VACIO.\n";
+                }
+                if (apellido.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE APELLIDO VACIO.\n";
+                }
+                if (cedula.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE CÉDULA VACIO.\n";
+                }
+                if (idempresa == 0) {
+                    error += "NO HA SELECCIONADO UNA EMPRESA.\n";
+                }
+                if (idsucursal == 0) {
+                    error += "NO HA SELECCIONADO UNA SUCURSAL.\n";
+                }
+                if (alias.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE ALIAS VACIO.\n";
+                }
+                if (clave.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE LA CONTRASEÑA VACIA.\n";
+                } else {
+                    if (!repetirClave.equals(clave)) {
+                        error += "LAS CLAVES INGRESADAS NO COINCIDEN. VUELVA A VERIFICAR.\n";
+                    }
                 }
                 if (error.isEmpty()) {
-                    u.setIdcaja(id);
-                    u.setDescripcion(nombre);
+                    String claveCifrado;
+                    String texto = clave;
+                    claveCifrado = DigestUtils.md5Hex(texto);
+                    u.setIdusuario(id);
+                    u.setNombre(nombre);
+                    u.setApellido(apellido);
+                    u.setCedula(cedula);
+                    u.setTelefono(telefono);
+                    u.setDireccion(direccion);
+                    u.setAlias(alias);
+                    u.setClave(claveCifrado);
+                    u.setIdempresa(idempresa);
+                    u.setIdsucursal(idsucursal);
                     dao.agregar(u);
                     cargar();
                 } else {
@@ -214,12 +273,49 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
                 }
                 break;
             case "MODIFICAR":
+                clave = new String(txtClave.getPassword());
+                repetirClave = new String(txtRepetirClave.getPassword());
+
                 if (nombre.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
+                    error += "NO PUEDE DEJAR EL CAMPO DE NOMBRE VACIO.\n";
+                }
+                if (apellido.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE APELLIDO VACIO.\n";
+                }
+                if (cedula.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE CÉDULA VACIO.\n";
+                }
+                if (idempresa == 0) {
+                    error += "NO HA SELECCIONADO UNA EMPRESA.\n";
+                }
+                if (idsucursal == 0) {
+                    error += "NO HA SELECCIONADO UNA SUCURSAL.\n";
+                }
+                if (alias.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE ALIAS VACIO.\n";
+                }
+                if (clave.isEmpty()) {
+                    error += "NO PUEDE DEJAR EL CAMPO DE LA CONTRASEÑA VACIA.\n";
+                } else {
+                    if (!repetirClave.equals(clave)) {
+                        error += "LAS CLAVES INGRESADAS NO COINCIDEN. VUELVA A VERIFICAR.\n";
+                    }
                 }
                 if (error.isEmpty()) {
-                    u.setIdcaja(id);
-                    u.setDescripcion(nombre);
+                    String claveCifrado;
+                    String texto = clave;
+                    claveCifrado = DigestUtils.md5Hex(texto);
+
+                    u.setIdusuario(id);
+                    u.setNombre(nombre);
+                    u.setApellido(apellido);
+                    u.setCedula(cedula);
+                    u.setTelefono(telefono);
+                    u.setDireccion(direccion);
+                    u.setAlias(alias);
+                    u.setClave(claveCifrado);
+                    u.setIdempresa(idempresa);
+                    u.setIdsucursal(idsucursal);
                     dao.modificar(u);
                     cargar();
                 } else {
@@ -228,7 +324,7 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
                 break;
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    u.setIdcaja(id);
+                    u.setIdusuario(id);
                     dao.eliminar(u);
                     cargar();
                 }
@@ -242,13 +338,63 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     public void recuperarDatos() {
         int fila = tablaDatos.getSelectedRow();
         if (fila >= 0) {
-            String id = tablaDatos.getValueAt(fila, 0).toString();
-            String descripcion = tablaDatos.getValueAt(fila, 1).toString();
-            txtCodigo.setText(id);
-            txtNombre.setText(descripcion);
+            int id = Integer.parseInt(tablaDatos.getValueAt(fila, 0).toString());
+            u.setIdusuario(id);
+            dao.consultarDatos(u);
+            txtCodigo.setText("" + u.getIdusuario());
+            txtNombre.setText(u.getNombre());
+            txtApellido.setText(u.getApellido());
+            txtCedula.setText(u.getCedula());
+            txtTelefono.setText(u.getTelefono());
+            txtDireccion.setText(u.getDireccion());
+            txtAlias.setText(u.getAlias());
+
+            int idempresa = u.getIdempresa();
+            e.setIdempresa(idempresa);
+            daoEmpresa.consultarDatos(e);
+            txtCodigoEmpresa.setText("" + e.getIdempresa());
+            txtDescripcionEmpresa.setText(e.getRazonsocial());
+
+            int idsucursal = u.getIdsucursal();
+            s.setIdsucursal(idsucursal);
+            daoSucursal.consultarDatos(s);
+            txtCodigoSucursal.setText("" + s.getIdsucursal());
+            txtDescripcionSucursal.setText(s.getDescripcion());
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void buscarEmpresa() {
+        cargarEmpresa();
+        BuscadorEmpresa.setModal(true);
+        BuscadorEmpresa.setSize(540, 285);
+        BuscadorEmpresa.setLocationRelativeTo(this);
+        BuscadorEmpresa.setVisible(true);
+        int fila = tablaDatosEmpresa.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoEmpresa.setText(tablaDatosEmpresa.getValueAt(fila, 0).toString());
+            txtDescripcionEmpresa.setText(tablaDatosEmpresa.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoEmpresa.setText(null);
+            txtDescripcionEmpresa.setText(null);
+        }
+    }
+
+    private void buscarSucursal() {
+        cargarSucursal();
+        BuscadorSucursal.setModal(true);
+        BuscadorSucursal.setSize(540, 285);
+        BuscadorSucursal.setLocationRelativeTo(this);
+        BuscadorSucursal.setVisible(true);
+        int fila = tablaDatosSucursal.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoSucursal.setText(tablaDatosSucursal.getValueAt(fila, 0).toString());
+            txtDescripcionSucursal.setText(tablaDatosSucursal.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoSucursal.setText(null);
+            txtDescripcionSucursal.setText(null);
         }
     }
 
@@ -264,6 +410,18 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
         menuDesplegable = new javax.swing.JPopupMenu();
         Modificar = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
+        BuscadorEmpresa = new javax.swing.JDialog();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        txtCriterioEmpresa = new org.jdesktop.swingx.JXTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaDatosEmpresa = new javax.swing.JTable();
+        BuscadorSucursal = new javax.swing.JDialog();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel14 = new javax.swing.JLabel();
+        txtCriterioSucursal = new org.jdesktop.swingx.JXTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaDatosSucursal = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -321,6 +479,217 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
         });
         menuDesplegable.add(Eliminar);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel13.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel13.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("BUSCADOR DE EMPRESAS");
+        jLabel13.setOpaque(true);
+
+        txtCriterioEmpresa.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioEmpresa.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioEmpresa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioEmpresaActionPerformed(evt);
+            }
+        });
+        txtCriterioEmpresa.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioEmpresaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioEmpresaKeyTyped(evt);
+            }
+        });
+
+        tablaDatosEmpresa.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosEmpresa.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Razón Social</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Ruc</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Telefono</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Direccion</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosEmpresa.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosEmpresaMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaDatosEmpresa);
+        if (tablaDatosEmpresa.getColumnModel().getColumnCount() > 0) {
+            tablaDatosEmpresa.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosEmpresa.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosEmpresa.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosEmpresa.getColumnModel().getColumn(2).setMinWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(2).setPreferredWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(2).setMaxWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(3).setMinWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(3).setMaxWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(4).setMinWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tablaDatosEmpresa.getColumnModel().getColumn(4).setMaxWidth(0);
+        }
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioEmpresa, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorEmpresaLayout = new javax.swing.GroupLayout(BuscadorEmpresa.getContentPane());
+        BuscadorEmpresa.getContentPane().setLayout(BuscadorEmpresaLayout);
+        BuscadorEmpresaLayout.setHorizontalGroup(
+            BuscadorEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorEmpresaLayout.setVerticalGroup(
+            BuscadorEmpresaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel14.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel14.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("BUSCADOR DE SUCURSALES");
+        jLabel14.setOpaque(true);
+
+        txtCriterioSucursal.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioSucursal.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioSucursal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioSucursalActionPerformed(evt);
+            }
+        });
+        txtCriterioSucursal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioSucursalKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioSucursalKeyTyped(evt);
+            }
+        });
+
+        tablaDatosSucursal.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosSucursal.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Telefono</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Direccion</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Codigo Empresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Empresa</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosSucursal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosSucursalMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tablaDatosSucursal);
+        if (tablaDatosSucursal.getColumnModel().getColumnCount() > 0) {
+            tablaDatosSucursal.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosSucursal.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosSucursal.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosSucursal.getColumnModel().getColumn(2).setMinWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(2).setPreferredWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(2).setMaxWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(3).setMinWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(3).setMaxWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(4).setMinWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(4).setMaxWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(5).setMinWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tablaDatosSucursal.getColumnModel().getColumn(5).setMaxWidth(0);
+        }
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioSucursal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorSucursalLayout = new javax.swing.GroupLayout(BuscadorSucursal.getContentPane());
+        BuscadorSucursal.getContentPane().setLayout(BuscadorSucursalLayout);
+        BuscadorSucursalLayout.setHorizontalGroup(
+            BuscadorSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorSucursalLayout.setVerticalGroup(
+            BuscadorSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setClosable(true);
         setIconifiable(true);
 
@@ -374,14 +743,14 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> "
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nombre</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Apellido</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cédula</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Teléfono</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Dirección</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Alias</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código Empresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Empresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código Sucursal</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Sucursal</span></span></span></p></html> "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -398,6 +767,21 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
             tablaDatos.getColumnModel().getColumn(0).setMinWidth(60);
             tablaDatos.getColumnModel().getColumn(0).setPreferredWidth(60);
             tablaDatos.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatos.getColumnModel().getColumn(5).setMinWidth(0);
+            tablaDatos.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tablaDatos.getColumnModel().getColumn(5).setMaxWidth(0);
+            tablaDatos.getColumnModel().getColumn(7).setMinWidth(0);
+            tablaDatos.getColumnModel().getColumn(7).setPreferredWidth(0);
+            tablaDatos.getColumnModel().getColumn(7).setMaxWidth(0);
+            tablaDatos.getColumnModel().getColumn(8).setMinWidth(0);
+            tablaDatos.getColumnModel().getColumn(8).setPreferredWidth(0);
+            tablaDatos.getColumnModel().getColumn(8).setMaxWidth(0);
+            tablaDatos.getColumnModel().getColumn(9).setMinWidth(0);
+            tablaDatos.getColumnModel().getColumn(9).setPreferredWidth(0);
+            tablaDatos.getColumnModel().getColumn(9).setMaxWidth(0);
+            tablaDatos.getColumnModel().getColumn(10).setMinWidth(0);
+            tablaDatos.getColumnModel().getColumn(10).setPreferredWidth(0);
+            tablaDatos.getColumnModel().getColumn(10).setMaxWidth(0);
         }
 
         javax.swing.GroupLayout pestanhaListaLayout = new javax.swing.GroupLayout(pestanhaLista);
@@ -577,6 +961,7 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
         txtRepetirClave.setForeground(new java.awt.Color(0, 0, 0));
         txtRepetirClave.setColorMaterial(new java.awt.Color(0, 0, 0));
+        txtRepetirClave.setEnabled(false);
         txtRepetirClave.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtRepetirClave.setPhColor(new java.awt.Color(0, 0, 0));
         txtRepetirClave.setPlaceholder("Repetir clave del usuario...");
@@ -593,6 +978,7 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
         txtClave.setForeground(new java.awt.Color(0, 0, 0));
         txtClave.setColorMaterial(new java.awt.Color(0, 0, 0));
+        txtClave.setEnabled(false);
         txtClave.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         txtClave.setPhColor(new java.awt.Color(0, 0, 0));
         txtClave.setPlaceholder("Clave del usuario...");
@@ -612,7 +998,7 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
         txtCodigoEmpresa.setEnabled(false);
         txtCodigoEmpresa.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCodigoEmpresa.setPrompt("Cód. Pais");
+        txtCodigoEmpresa.setPrompt("Cód. Empr.");
         txtCodigoEmpresa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoEmpresaActionPerformed(evt);
@@ -629,24 +1015,14 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
         txtDescripcionEmpresa.setEnabled(false);
         txtDescripcionEmpresa.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDescripcionEmpresa.setPrompt("Descripción o nombre del pais...");
-        txtDescripcionEmpresa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionEmpresaActionPerformed(evt);
-            }
-        });
-        txtDescripcionEmpresa.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionEmpresaKeyTyped(evt);
-            }
-        });
+        txtDescripcionEmpresa.setPrompt("Descripción o nombre de la empresa...");
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel12.setText("Sucursal:");
 
         txtCodigoSucursal.setEnabled(false);
         txtCodigoSucursal.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCodigoSucursal.setPrompt("Cód. Pais");
+        txtCodigoSucursal.setPrompt("Cód. Suc.");
         txtCodigoSucursal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCodigoSucursalActionPerformed(evt);
@@ -663,17 +1039,7 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
         txtDescripcionSucursal.setEnabled(false);
         txtDescripcionSucursal.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDescripcionSucursal.setPrompt("Descripción o nombre del pais...");
-        txtDescripcionSucursal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionSucursalActionPerformed(evt);
-            }
-        });
-        txtDescripcionSucursal.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionSucursalKeyTyped(evt);
-            }
-        });
+        txtDescripcionSucursal.setPrompt("Descripción o nombre de la sucursal...");
 
         javax.swing.GroupLayout pestanhaABMLayout = new javax.swing.GroupLayout(pestanhaABM);
         pestanhaABM.setLayout(pestanhaABMLayout);
@@ -983,10 +1349,10 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE EMPRESA VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
             int idempresa = Integer.parseInt(txtCodigoEmpresa.getText());
-            p.setIdpais(idempresa);
-            boolean resultado = daoPais.consultarDatos(p);
+            e.setIdempresa(idempresa);
+            boolean resultado = daoEmpresa.consultarDatos(e);
             if (resultado == true) {
-                txtDescripcionEmpresa.setText(p.getDescripcion());
+                txtDescripcionEmpresa.setText(e.getRazonsocial());
                 txtCodigoSucursal.grabFocus();
             } else {
                 txtCodigoEmpresa.setText(null);
@@ -998,7 +1364,7 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
 
     private void txtCodigoEmpresaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoEmpresaKeyPressed
         if (evt.VK_F1 == evt.getKeyCode()) {
-            buscarPais();
+            buscarEmpresa();
         }
     }//GEN-LAST:event_txtCodigoEmpresaKeyPressed
 
@@ -1013,33 +1379,40 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtCodigoEmpresaKeyTyped
 
-    private void txtDescripcionEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionEmpresaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionEmpresaActionPerformed
-
-    private void txtDescripcionEmpresaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionEmpresaKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionEmpresaKeyTyped
-
     private void txtCodigoSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoSucursalActionPerformed
-        // TODO add your handling code here:
+        if (txtCodigoSucursal.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE SUCURSAL VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idsucursal = Integer.parseInt(txtCodigoSucursal.getText());
+            s.setIdsucursal(idsucursal);
+            boolean resultado = daoSucursal.consultarDatos(s);
+            if (resultado == true) {
+                txtDescripcionSucursal.setText(s.getDescripcion());
+                btnConfirmar.grabFocus();
+            } else {
+                txtCodigoSucursal.setText(null);
+                txtDescripcionSucursal.setText(null);
+                txtCodigoSucursal.grabFocus();
+            }
+        }
     }//GEN-LAST:event_txtCodigoSucursalActionPerformed
 
     private void txtCodigoSucursalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoSucursalKeyPressed
-        // TODO add your handling code here:
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarSucursal();
+        }
     }//GEN-LAST:event_txtCodigoSucursalKeyPressed
 
     private void txtCodigoSucursalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoSucursalKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoSucursal.getText().length() == 10) {
+            evt.consume();
+        }
     }//GEN-LAST:event_txtCodigoSucursalKeyTyped
-
-    private void txtDescripcionSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionSucursalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionSucursalActionPerformed
-
-    private void txtDescripcionSucursalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionSucursalKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionSucursalKeyTyped
 
     private void txtClaveKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtClaveKeyTyped
         char c = evt.getKeyChar();
@@ -1062,7 +1435,8 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtRepetirClaveKeyTyped
 
     private void txtClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtClaveActionPerformed
-        if (txtClave.getText().isEmpty()) {
+        String clave = new String(txtClave.getPassword());
+        if (clave.isEmpty()) {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
             txtRepetirClave.grabFocus();
@@ -1070,15 +1444,92 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtClaveActionPerformed
 
     private void txtRepetirClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRepetirClaveActionPerformed
-        if (txtRepetirClave.getText().isEmpty()) {
+        String clave = new String(txtClave.getPassword());
+        String repetirClave = new String(txtRepetirClave.getPassword());
+        if (repetirClave.isEmpty()) {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            txtCodigoEmpresa.grabFocus();
+
+            if (repetirClave.equals(clave)) {
+                txtCodigoEmpresa.grabFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "LA CLAVES INGRESADAS NO COINCIDEN", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_txtRepetirClaveActionPerformed
 
+    private void txtCriterioEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioEmpresaActionPerformed
+        cargarEmpresa();
+    }//GEN-LAST:event_txtCriterioEmpresaActionPerformed
+
+    private void txtCriterioEmpresaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioEmpresaKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoEmpresa.setText(null);
+            txtDescripcionEmpresa.setText(null);
+            txtCodigoEmpresa.grabFocus();
+            BuscadorEmpresa.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioEmpresaKeyPressed
+
+    private void txtCriterioEmpresaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioEmpresaKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterio.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioEmpresaKeyTyped
+
+    private void tablaDatosEmpresaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosEmpresaMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosEmpresa.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioEmpresa.setText(null);
+                BuscadorEmpresa.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosEmpresaMouseClicked
+
+    private void txtCriterioSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioSucursalActionPerformed
+        cargarSucursal();
+    }//GEN-LAST:event_txtCriterioSucursalActionPerformed
+
+    private void txtCriterioSucursalKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioSucursalKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoSucursal.setText(null);
+            txtDescripcionSucursal.setText(null);
+            txtCodigoSucursal.grabFocus();
+            BuscadorSucursal.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioSucursalKeyPressed
+
+    private void txtCriterioSucursalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioSucursalKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterio.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioSucursalKeyTyped
+
+    private void tablaDatosSucursalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosSucursalMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosSucursal.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioSucursal.setText(null);
+                BuscadorSucursal.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosSucursalMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog BuscadorEmpresa;
+    private javax.swing.JDialog BuscadorSucursal;
     private javax.swing.JMenuItem Eliminar;
     private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
@@ -1088,6 +1539,8 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1098,12 +1551,18 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPopupMenu menuDesplegable;
     private javax.swing.JTabbedPane pestanha;
     private javax.swing.JPanel pestanhaABM;
     private javax.swing.JPanel pestanhaLista;
     private javax.swing.JTable tablaDatos;
+    private javax.swing.JTable tablaDatosEmpresa;
+    private javax.swing.JTable tablaDatosSucursal;
     private org.jdesktop.swingx.JXTextField txtAlias;
     private org.jdesktop.swingx.JXTextField txtApellido;
     private org.jdesktop.swingx.JXTextField txtCedula;
@@ -1112,6 +1571,8 @@ public class JFrmUsuario extends javax.swing.JInternalFrame {
     private org.jdesktop.swingx.JXTextField txtCodigoEmpresa;
     private org.jdesktop.swingx.JXTextField txtCodigoSucursal;
     private org.jdesktop.swingx.JXTextField txtCriterio;
+    private org.jdesktop.swingx.JXTextField txtCriterioEmpresa;
+    private org.jdesktop.swingx.JXTextField txtCriterioSucursal;
     private org.jdesktop.swingx.JXTextField txtDescripcionEmpresa;
     private org.jdesktop.swingx.JXTextField txtDescripcionSucursal;
     private org.jdesktop.swingx.JXTextField txtDireccion;
