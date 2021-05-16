@@ -130,7 +130,7 @@ public class DAOUsuarioPrograma implements OperacionesUsuarioPrograma {
                 con.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "EL USUARIO INGRESADO NO TIENE PERMISOS PARA ACCEDER AL PROGRAMA...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "EL USUARIO INGRESADO NO TIENE PERMISOS PARA ACCEDER AL PROGRAMA...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 con.close();
                 return false;
             }

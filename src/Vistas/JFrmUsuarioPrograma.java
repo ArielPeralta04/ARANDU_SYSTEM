@@ -1,7 +1,10 @@
 package Vistas;
 
-
+import Dao.DAOPrograma;
+import Dao.DAOUsuario;
 import Dao.DAOUsuarioPrograma;
+import Modelos.Programa;
+import Modelos.Usuario;
 import Modelos.UsuarioPrograma;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -14,11 +17,16 @@ import javax.swing.table.DefaultTableModel;
 public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
 
     UsuarioPrograma up = new UsuarioPrograma();
-//    Pais p = new Pais();
+    Usuario u = new Usuario();
+    Programa p = new Programa();
+
     DAOUsuarioPrograma dao = new DAOUsuarioPrograma();
-//    DAOPais daoPais = new DAOPais();
+    DAOUsuario daoUsuario = new DAOUsuario();
+    DAOPrograma daoPrograma = new DAOPrograma();
+
     ArrayList<Object[]> datos = new ArrayList<>();
-    ArrayList<Object[]> datosPais = new ArrayList<>();
+    ArrayList<Object[]> datosUsuario = new ArrayList<>();
+    ArrayList<Object[]> datosPrograma = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
@@ -35,55 +43,78 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
     public void cargar() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDatos.getModel();
         modelo.setRowCount(0);
-        datos = dao.consultar(Integer.parseInt(txtCriterio.getText()));
+        int idusuario = 0;
+        if (txtCodigoUsuarioCriterio.getText().isEmpty()) {
+            idusuario = 0;
+        } else {
+            idusuario = Integer.parseInt(txtCodigoUsuarioCriterio.getText());
+        }
+        datos = dao.consultar(idusuario);
         for (Object[] obj : datos) {
             modelo.addRow(obj);
         }
         this.tablaDatos.setModel(modelo);
     }
 
-    public void cargarPais() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaDatosPais.getModel();
+    public void cargarUsuario() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosUsuario.getModel();
         modelo.setRowCount(0);
-        datosPais = daoPais.consultar(txtCriterioPais.getText());
-        for (Object[] obj : datosPais) {
+        datosUsuario = daoUsuario.consultar(txtCriterioUsuario.getText());
+        for (Object[] obj : datosUsuario) {
             modelo.addRow(obj);
         }
-        this.tablaDatosPais.setModel(modelo);
+        this.tablaDatosUsuario.setModel(modelo);
+    }
+
+    public void cargarUsuarioDos() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosUsuarioDos.getModel();
+        modelo.setRowCount(0);
+        datosUsuario = daoUsuario.consultar(txtCriterioUsuarioDos.getText());
+        for (Object[] obj : datosUsuario) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosUsuarioDos.setModel(modelo);
+    }
+
+    public void cargarPrograma() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosPrograma.getModel();
+        modelo.setRowCount(0);
+        datosPrograma = daoPrograma.consultar(txtCriterioPrograma.getText());
+        for (Object[] obj : datosPrograma) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosPrograma.setModel(modelo);
     }
 
     public void habilitarCampos(String accion) {
         switch (accion) {
             case "NUEVO":
                 //CAMPOS
-                txtCodigo.setEnabled(false);
-                txtDescripcion.setEnabled(true);
-                txtCodigoPais.setEnabled(true);
+                txtCodigoUsuario.setEnabled(true);
+                txtCodigoPrograma.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
                 btnCancelar.setEnabled(true);
                 //REDIRECIONAMOS
-                txtDescripcion.grabFocus();
+                txtCodigoUsuario.grabFocus();
                 break;
             case "MODIFICAR":
                 //CAMPOS
-                txtCodigo.setEnabled(false);
-                txtDescripcion.setEnabled(true);
-                txtCodigoPais.setEnabled(true);
+                txtCodigoUsuario.setEnabled(true);
+                txtCodigoPrograma.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
                 btnCancelar.setEnabled(true);
                 //REDIRECIONAMOS
                 pestanha.setSelectedIndex(1);
-                txtDescripcion.grabFocus();
+                txtCodigoUsuario.grabFocus();
                 break;
             case "ELIMINAR":
                 //CAMPOS
-                txtCodigo.setEnabled(false);
-                txtDescripcion.setEnabled(false);
-                txtCodigoPais.setEnabled(false);
+                txtCodigoUsuario.setEnabled(false);
+                txtCodigoPrograma.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -94,22 +125,20 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
                 break;
             case "CANCELAR":
                 //CAMPOS
-                txtCodigo.setEnabled(false);
-                txtDescripcion.setEnabled(false);
-                txtCodigoPais.setEnabled(false);
+                txtCodigoUsuario.setEnabled(false);
+                txtCodigoPrograma.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
                 btnCancelar.setEnabled(false);
                 //REDIRECIONAMOS
                 pestanha.setSelectedIndex(0);
-                txtCriterio.grabFocus();
+                //txtCriterio.grabFocus();
                 break;
             case "GUARDAR":
                 //CAMPOS
-                txtCodigo.setEnabled(false);
-                txtDescripcion.setEnabled(false);
-                txtCodigoPais.setEnabled(false);
+                txtCodigoUsuario.setEnabled(false);
+                txtCodigoPrograma.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -123,69 +152,59 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
     }
 
     public void limpiarCampos() {
-        txtCriterio.setText(null);
-        txtCriterioPais.setText(null);
-        txtCodigo.setText(null);
-        txtDescripcion.setText(null);
-        txtCodigoPais.setText(null);
-        txtDescripcionPais.setText(null);
+        txtCriterioUsuario.setText(null);
+        txtCodigoUsuario.setText(null);
+        txtDescripcionUsuario.setText(null);
+        txtCodigoPrograma.setText(null);
+        txtDescripcionPrograma.setText(null);
+        txtCodigoUsuarioCriterio.setText(null);
+        txtDescripcionUsuarioCriterio.setText(null);
         operacion = "";
     }
 
     public void guardar(String accion) {
         //CAPTURA Y VALIDACIONES DE LOS DATOS RECIBIDOS
         String error = "";
-        int id = 0;
-        if (accion.equals("NUEVO")) {
-            id = dao.nuevoID();
-        } else {
-            if (txtCodigo.getText().isEmpty()) {
-                id = 0;
-            } else {
-                id = Integer.parseInt(txtCodigo.getText());
-            }
-        }
-        String descripcion = txtDescripcion.getText();
-        int codigoPais = Integer.parseInt(txtCodigoPais.getText());
+
+        int idusuario = Integer.parseInt(txtCodigoUsuario.getText());
+        int idprograma = Integer.parseInt(txtCodigoPrograma.getText());
         switch (accion) {
             case "NUEVO":
-                if (descripcion.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
+                if (idusuario == 0) {
+                    error += "NO HA SELECCIONADO UN USUARIO.\n";
                 }
-                if (codigoPais == 0) {
-                    error += "NO HA SELECCIONADO UN PAIS.\n";
+                if (idprograma == 0) {
+                    error += "NO HA SELECCIONADO UN PROGRAMA.\n";
                 }
-
                 if (error.isEmpty()) {
-                    up.setIdbanco(id);
-                    up.setDescripcion(descripcion);
-                    up.setIdpais(codigoPais);
+                    up.setIdusuario(idusuario);
+                    up.setIdprograma(idprograma);
                     dao.agregar(up);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
                 }
                 break;
-            case "MODIFICAR":
-                if (descripcion.isEmpty()) {
-                    error += "NO PUEDE DEJAR EL CAMPO DE DESCRIPCIÓN VACIO.\n";
+            /*case "MODIFICAR":
+                if (idusuario == 0) {
+                    error += "NO HA SELECCIONADO UN USUARIO.\n";
                 }
-                if (codigoPais == 0) {
-                    error += "NO HA SELECCIONADO UN PAIS.\n";
+                if (idprograma == 0) {
+                    error += "NO HA SELECCIONADO UN PROGRAMA.\n";
                 }
                 if (error.isEmpty()) {
-                    up.setDescripcion(descripcion);
-                    up.setIdpais(codigoPais);
-                    up.setIdbanco(id);
+                    up.setIdusuario(idusuario);
+                    up.setIdprograma(idprograma);
                     dao.modificar(up);
                     cargar();
                 } else {
                     JOptionPane.showMessageDialog(null, error, "ERRORES", JOptionPane.ERROR_MESSAGE);
                 }
-                break;
+                break;*/
             case "ELIMINAR":
                 if (error.isEmpty()) {
-                    up.setIdbanco(id);
+                    up.setIdusuario(idusuario);
+                    up.setIdprograma(idprograma);
                     dao.eliminar(up);
                     cargar();
                 }
@@ -199,32 +218,65 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
     public void recuperarDatos() {
         int fila = tablaDatos.getSelectedRow();
         if (fila >= 0) {
-            String id = tablaDatos.getValueAt(fila, 0).toString();
-            String descripcion = tablaDatos.getValueAt(fila, 1).toString();
-            String idpais = tablaDatos.getValueAt(fila, 2).toString();
-            String pais = tablaDatos.getValueAt(fila, 3).toString();
-            txtCodigo.setText(id);
-            txtDescripcion.setText(descripcion);
-            txtCodigoPais.setText(idpais);
-            txtDescripcionPais.setText(pais);
+            String idusuario = txtCodigoUsuarioCriterio.getText();
+            String usuariodescripcion = txtDescripcionUsuarioCriterio.getText();
+            String idprograma = tablaDatos.getValueAt(fila, 0).toString();
+            String programadescripcion = tablaDatos.getValueAt(fila, 1).toString();
+            txtCodigoUsuario.setText(idusuario);
+            txtDescripcionUsuario.setText(usuariodescripcion);
+            txtCodigoPrograma.setText(idprograma);
+            txtDescripcionPrograma.setText(programadescripcion);
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private void buscarPais() {
-        cargarPais();
-        BuscadorPais.setModal(true);
-        BuscadorPais.setSize(540, 285);
-        BuscadorPais.setLocationRelativeTo(this);
-        BuscadorPais.setVisible(true);
-        int fila = tablaDatosPais.getSelectedRow();
+
+    private void buscarUsuario() {
+        cargarUsuario();
+        BuscadorUsuarioCriterio.setModal(true);
+        BuscadorUsuarioCriterio.setSize(540, 285);
+        BuscadorUsuarioCriterio.setLocationRelativeTo(this);
+        BuscadorUsuarioCriterio.setVisible(true);
+        int fila = tablaDatosUsuario.getSelectedRow();
         if (fila >= 0) {
-            txtCodigoPais.setText(tablaDatosPais.getValueAt(fila, 0).toString());
-            txtDescripcionPais.setText(tablaDatosPais.getValueAt(fila, 1).toString());
+            txtCodigoUsuarioCriterio.setText(tablaDatosUsuario.getValueAt(fila, 0).toString());
+            txtDescripcionUsuarioCriterio.setText(tablaDatosUsuario.getValueAt(fila, 1).toString());
         } else {
-            txtCodigoPais.setText(null);
-            txtDescripcionPais.setText(null);
+            txtCodigoUsuarioCriterio.setText(null);
+            txtDescripcionUsuarioCriterio.setText(null);
+        }
+    }
+
+    private void buscarUsuarioDos() {
+        cargarUsuarioDos();
+        BuscadorUsuario.setModal(true);
+        BuscadorUsuario.setSize(540, 285);
+        BuscadorUsuario.setLocationRelativeTo(this);
+        BuscadorUsuario.setVisible(true);
+        int fila = tablaDatosUsuarioDos.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoUsuario.setText(tablaDatosUsuarioDos.getValueAt(fila, 0).toString());
+            txtDescripcionUsuario.setText(tablaDatosUsuarioDos.getValueAt(fila, 1).toString()+" "+tablaDatosUsuarioDos.getValueAt(fila, 2).toString());
+        } else {
+            txtCodigoUsuario.setText(null);
+            txtDescripcionUsuario.setText(null);
+        }
+    }
+
+    private void buscarPrograma() {
+        cargarPrograma();
+        BuscadorPrograma.setModal(true);
+        BuscadorPrograma.setSize(540, 285);
+        BuscadorPrograma.setLocationRelativeTo(this);
+        BuscadorPrograma.setVisible(true);
+        int fila = tablaDatosPrograma.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoPrograma.setText(tablaDatosPrograma.getValueAt(fila, 0).toString());
+            txtDescripcionPrograma.setText(tablaDatosPrograma.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoPrograma.setText(null);
+            txtDescripcionPrograma.setText(null);
         }
     }
 
@@ -238,14 +290,25 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         menuDesplegable = new javax.swing.JPopupMenu();
-        Modificar = new javax.swing.JMenuItem();
         Eliminar = new javax.swing.JMenuItem();
-        BuscadorPais = new javax.swing.JDialog();
+        BuscadorUsuarioCriterio = new javax.swing.JDialog();
         jPanel3 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
-        txtCriterioPais = new org.jdesktop.swingx.JXTextField();
+        txtCriterioUsuario = new org.jdesktop.swingx.JXTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        tablaDatosPais = new javax.swing.JTable();
+        tablaDatosUsuario = new javax.swing.JTable();
+        BuscadorUsuario = new javax.swing.JDialog();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        txtCriterioUsuarioDos = new org.jdesktop.swingx.JXTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaDatosUsuarioDos = new javax.swing.JTable();
+        BuscadorPrograma = new javax.swing.JDialog();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        txtCriterioPrograma = new org.jdesktop.swingx.JXTextField();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tablaDatosPrograma = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -254,29 +317,18 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDatos = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        txtCodigoPais1 = new org.jdesktop.swingx.JXTextField();
-        txtDescripcionPais1 = new org.jdesktop.swingx.JXTextField();
+        txtCodigoUsuarioCriterio = new org.jdesktop.swingx.JXTextField();
+        txtDescripcionUsuarioCriterio = new org.jdesktop.swingx.JXTextField();
         pestanhaABM = new javax.swing.JPanel();
-        txtDescripcion = new org.jdesktop.swingx.JXTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txtCodigo = new org.jdesktop.swingx.JXTextField();
         btnCancelar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        txtCodigoPais = new org.jdesktop.swingx.JXTextField();
-        txtDescripcionPais = new org.jdesktop.swingx.JXTextField();
-
-        Modificar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        Modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_edit_file_16px.png"))); // NOI18N
-        Modificar.setText("Modificar");
-        Modificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ModificarActionPerformed(evt);
-            }
-        });
-        menuDesplegable.add(Modificar);
+        txtCodigoUsuario = new org.jdesktop.swingx.JXTextField();
+        txtDescripcionUsuario = new org.jdesktop.swingx.JXTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtCodigoPrograma = new org.jdesktop.swingx.JXTextField();
+        txtDescripcionPrograma = new org.jdesktop.swingx.JXTextField();
 
         Eliminar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_delete_file_16px.png"))); // NOI18N
@@ -294,27 +346,259 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("BUSCADOR DE PAISES");
+        jLabel5.setText("BUSCADOR DE USUARIOS");
         jLabel5.setOpaque(true);
 
-        txtCriterioPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCriterioPais.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
-        txtCriterioPais.addActionListener(new java.awt.event.ActionListener() {
+        txtCriterioUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioUsuario.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCriterioPaisActionPerformed(evt);
+                txtCriterioUsuarioActionPerformed(evt);
             }
         });
-        txtCriterioPais.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCriterioUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCriterioPaisKeyPressed(evt);
+                txtCriterioUsuarioKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCriterioPaisKeyTyped(evt);
+                txtCriterioUsuarioKeyTyped(evt);
             }
         });
 
-        tablaDatosPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        tablaDatosPais.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDatosUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosUsuario.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nombre</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Apellido</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cédula</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Teléfono</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Dirección</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">alias</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">idempresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">empresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">idsucursal</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">sucursal</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosUsuarioMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaDatosUsuario);
+        if (tablaDatosUsuario.getColumnModel().getColumnCount() > 0) {
+            tablaDatosUsuario.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosUsuario.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosUsuario.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosUsuario.getColumnModel().getColumn(3).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(3).setMaxWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(4).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(4).setMaxWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(5).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(5).setMaxWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(7).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(7).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(7).setMaxWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(8).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(8).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(8).setMaxWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(9).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(9).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(9).setMaxWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(10).setMinWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(10).setPreferredWidth(0);
+            tablaDatosUsuario.getColumnModel().getColumn(10).setMaxWidth(0);
+        }
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioUsuario, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorUsuarioCriterioLayout = new javax.swing.GroupLayout(BuscadorUsuarioCriterio.getContentPane());
+        BuscadorUsuarioCriterio.getContentPane().setLayout(BuscadorUsuarioCriterioLayout);
+        BuscadorUsuarioCriterioLayout.setHorizontalGroup(
+            BuscadorUsuarioCriterioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorUsuarioCriterioLayout.setVerticalGroup(
+            BuscadorUsuarioCriterioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel8.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel8.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("BUSCADOR DE USUARIOS");
+        jLabel8.setOpaque(true);
+
+        txtCriterioUsuarioDos.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioUsuarioDos.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioUsuarioDos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioUsuarioDosActionPerformed(evt);
+            }
+        });
+        txtCriterioUsuarioDos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioUsuarioDosKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioUsuarioDosKeyTyped(evt);
+            }
+        });
+
+        tablaDatosUsuarioDos.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosUsuarioDos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nombre</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Apellido</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cédula</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Teléfono</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Dirección</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">alias</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">idempresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">empresa</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">idsucursal</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">sucursal</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosUsuarioDos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosUsuarioDosMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(tablaDatosUsuarioDos);
+        if (tablaDatosUsuarioDos.getColumnModel().getColumnCount() > 0) {
+            tablaDatosUsuarioDos.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(3).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(3).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(3).setMaxWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(4).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(4).setMaxWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(5).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(5).setMaxWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(7).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(7).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(7).setMaxWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(8).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(8).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(8).setMaxWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(9).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(9).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(9).setMaxWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(10).setMinWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(10).setPreferredWidth(0);
+            tablaDatosUsuarioDos.getColumnModel().getColumn(10).setMaxWidth(0);
+        }
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioUsuarioDos, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioUsuarioDos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorUsuarioLayout = new javax.swing.GroupLayout(BuscadorUsuario.getContentPane());
+        BuscadorUsuario.getContentPane().setLayout(BuscadorUsuarioLayout);
+        BuscadorUsuarioLayout.setHorizontalGroup(
+            BuscadorUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorUsuarioLayout.setVerticalGroup(
+            BuscadorUsuarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel9.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel9.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("BUSCADOR DE PROGRAMAS");
+        jLabel9.setOpaque(true);
+
+        txtCriterioPrograma.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioPrograma.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioPrograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioProgramaActionPerformed(evt);
+            }
+        });
+        txtCriterioPrograma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioProgramaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioProgramaKeyTyped(evt);
+            }
+        });
+
+        tablaDatosPrograma.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosPrograma.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -337,50 +621,50 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaDatosPais.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaDatosPrograma.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaDatosPaisMouseClicked(evt);
+                tablaDatosProgramaMouseClicked(evt);
             }
         });
-        jScrollPane2.setViewportView(tablaDatosPais);
-        if (tablaDatosPais.getColumnModel().getColumnCount() > 0) {
-            tablaDatosPais.getColumnModel().getColumn(0).setMinWidth(60);
-            tablaDatosPais.getColumnModel().getColumn(0).setPreferredWidth(60);
-            tablaDatosPais.getColumnModel().getColumn(0).setMaxWidth(60);
+        jScrollPane4.setViewportView(tablaDatosPrograma);
+        if (tablaDatosPrograma.getColumnModel().getColumnCount() > 0) {
+            tablaDatosPrograma.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosPrograma.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosPrograma.getColumnModel().getColumn(0).setMaxWidth(60);
         }
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtCriterioPais, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioPrograma, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCriterioPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtCriterioPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout BuscadorPaisLayout = new javax.swing.GroupLayout(BuscadorPais.getContentPane());
-        BuscadorPais.getContentPane().setLayout(BuscadorPaisLayout);
-        BuscadorPaisLayout.setHorizontalGroup(
-            BuscadorPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        javax.swing.GroupLayout BuscadorProgramaLayout = new javax.swing.GroupLayout(BuscadorPrograma.getContentPane());
+        BuscadorPrograma.getContentPane().setLayout(BuscadorProgramaLayout);
+        BuscadorProgramaLayout.setHorizontalGroup(
+            BuscadorProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        BuscadorPaisLayout.setVerticalGroup(
-            BuscadorPaisLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        BuscadorProgramaLayout.setVerticalGroup(
+            BuscadorProgramaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setClosable(true);
@@ -390,7 +674,7 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mantenimiento de Bancos");
+        jLabel1.setText("Asignación de Programas a Usuarios");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -452,36 +736,25 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel6.setText("Usuario:");
 
-        txtCodigoPais1.setEnabled(false);
-        txtCodigoPais1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCodigoPais1.setPrompt("Cód. Pais");
-        txtCodigoPais1.addActionListener(new java.awt.event.ActionListener() {
+        txtCodigoUsuarioCriterio.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoUsuarioCriterio.setPrompt("Cód. Usuario");
+        txtCodigoUsuarioCriterio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoPais1ActionPerformed(evt);
+                txtCodigoUsuarioCriterioActionPerformed(evt);
             }
         });
-        txtCodigoPais1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigoUsuarioCriterio.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCodigoPais1KeyPressed(evt);
+                txtCodigoUsuarioCriterioKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoPais1KeyTyped(evt);
+                txtCodigoUsuarioCriterioKeyTyped(evt);
             }
         });
 
-        txtDescripcionPais1.setEnabled(false);
-        txtDescripcionPais1.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDescripcionPais1.setPrompt("Descripción o nombre del pais...");
-        txtDescripcionPais1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionPais1ActionPerformed(evt);
-            }
-        });
-        txtDescripcionPais1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionPais1KeyTyped(evt);
-            }
-        });
+        txtDescripcionUsuarioCriterio.setEnabled(false);
+        txtDescripcionUsuarioCriterio.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionUsuarioCriterio.setPrompt("Descripción o nombre del usuario...");
 
         javax.swing.GroupLayout pestanhaListaLayout = new javax.swing.GroupLayout(pestanhaLista);
         pestanhaLista.setLayout(pestanhaListaLayout);
@@ -494,9 +767,9 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
                     .addGroup(pestanhaListaLayout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtCodigoPais1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigoUsuarioCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtDescripcionPais1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(txtDescripcionUsuarioCriterio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pestanhaListaLayout.setVerticalGroup(
@@ -505,40 +778,16 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(pestanhaListaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtCodigoPais1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDescripcionPais1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 248, Short.MAX_VALUE)
+                    .addComponent(txtCodigoUsuarioCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcionUsuarioCriterio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pestanha.addTab("Listado", pestanhaLista);
 
         pestanhaABM.setBackground(new java.awt.Color(255, 255, 255));
-
-        txtDescripcion.setEnabled(false);
-        txtDescripcion.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDescripcion.setPrompt("Nombre o descripción...");
-        txtDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionActionPerformed(evt);
-            }
-        });
-        txtDescripcion.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionKeyTyped(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel2.setText("Código:");
-
-        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel3.setText("Descripción:");
-
-        txtCodigo.setEnabled(false);
-        txtCodigo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCodigo.setPrompt("Código interno...");
 
         btnCancelar.setBackground(new java.awt.Color(255, 204, 204));
         btnCancelar.setFont(new java.awt.Font("SansSerif", 0, 11)); // NOI18N
@@ -576,38 +825,52 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         });
 
         jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel4.setText("Pais:");
+        jLabel4.setText("Usuario:");
 
-        txtCodigoPais.setEnabled(false);
-        txtCodigoPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtCodigoPais.setPrompt("Cód. Pais");
-        txtCodigoPais.addActionListener(new java.awt.event.ActionListener() {
+        txtCodigoUsuario.setEnabled(false);
+        txtCodigoUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoUsuario.setPrompt("Cód. Usu.");
+        txtCodigoUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCodigoPaisActionPerformed(evt);
+                txtCodigoUsuarioActionPerformed(evt);
             }
         });
-        txtCodigoPais.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigoUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCodigoPaisKeyPressed(evt);
+                txtCodigoUsuarioKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCodigoPaisKeyTyped(evt);
+                txtCodigoUsuarioKeyTyped(evt);
             }
         });
 
-        txtDescripcionPais.setEnabled(false);
-        txtDescripcionPais.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtDescripcionPais.setPrompt("Descripción o nombre del pais...");
-        txtDescripcionPais.addActionListener(new java.awt.event.ActionListener() {
+        txtDescripcionUsuario.setEnabled(false);
+        txtDescripcionUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionUsuario.setPrompt("Descripción o nombre del usuario...");
+
+        jLabel7.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel7.setText("Programa:");
+
+        txtCodigoPrograma.setEnabled(false);
+        txtCodigoPrograma.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoPrograma.setPrompt("Cód. Pro.");
+        txtCodigoPrograma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtDescripcionPaisActionPerformed(evt);
+                txtCodigoProgramaActionPerformed(evt);
             }
         });
-        txtDescripcionPais.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtCodigoPrograma.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoProgramaKeyPressed(evt);
+            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtDescripcionPaisKeyTyped(evt);
+                txtCodigoProgramaKeyTyped(evt);
             }
         });
+
+        txtDescripcionPrograma.setEnabled(false);
+        txtDescripcionPrograma.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionPrograma.setPrompt("Descripción o nombre del programa...");
 
         javax.swing.GroupLayout pestanhaABMLayout = new javax.swing.GroupLayout(pestanhaABM);
         pestanhaABM.setLayout(pestanhaABMLayout);
@@ -616,49 +879,42 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
             .addGroup(pestanhaABMLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pestanhaABMLayout.createSequentialGroup()
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(pestanhaABMLayout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                        .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtDescripcion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
-                                        .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnConfirmar)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
-                                        .addComponent(txtCodigoPais, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtDescripcionPais, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap())))
+                                .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnConfirmar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
+                                .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDescripcionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pestanhaABMLayout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addComponent(txtCodigoPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtDescripcionPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, 405, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         pestanhaABMLayout.setVerticalGroup(
             pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pestanhaABMLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtCodigoPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDescripcionPais, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 159, Short.MAX_VALUE)
+                    .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtCodigoPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcionPrograma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -672,7 +928,7 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pestanha)
                 .addContainerGap())
@@ -704,24 +960,6 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtDescripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isLowerCase(c)) {
-            evt.setKeyChar(Character.toUpperCase(c));
-        }
-        if (txtDescripcion.getText().length() == 100) {
-            evt.consume();
-        }
-    }//GEN-LAST:event_txtDescripcionKeyTyped
-
-    private void txtDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionActionPerformed
-        if (txtDescripcion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
-        } else {
-            txtCodigoPais.grabFocus();
-        }
-    }//GEN-LAST:event_txtDescripcionActionPerformed
-
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         limpiarCampos();
         operacion = "NUEVO";
@@ -732,6 +970,7 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
         operacion = "CANCELAR";
         habilitarCampos(operacion);
         limpiarCampos();
+        cargar();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
@@ -740,147 +979,273 @@ public class JFrmUsuarioPrograma extends javax.swing.JInternalFrame {
             guardar(operacion);
             habilitarCampos("GUARDAR");
             limpiarCampos();
+            cargar();
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
-
-    private void ModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarActionPerformed
-        operacion = "MODIFICAR";
-        recuperarDatos();
-    }//GEN-LAST:event_ModificarActionPerformed
 
     private void EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarActionPerformed
         operacion = "ELIMINAR";
         recuperarDatos();
     }//GEN-LAST:event_EliminarActionPerformed
 
-    private void txtCodigoPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoPaisActionPerformed
-        if (txtCodigoPais.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE PAIS VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+    private void txtCodigoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoUsuarioActionPerformed
+        if (txtCodigoUsuario.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE USUARIO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
-            int idpais = Integer.parseInt(txtCodigoPais.getText());
-            p.setIdpais(idpais);
-            boolean resultado = daoPais.consultarDatos(p);
+            int idusuario = Integer.parseInt(txtCodigoUsuario.getText());
+            u.setIdusuario(idusuario);
+            boolean resultado = daoUsuario.consultarDatos(u);
             if (resultado == true) {
-                txtDescripcionPais.setText(p.getDescripcion());
-                btnConfirmar.grabFocus();
+                txtDescripcionUsuario.setText(u.getNombre() + " " + u.getApellido());
+                txtCodigoPrograma.grabFocus();
             } else {
-                txtCodigoPais.setText(null);
-                txtDescripcionPais.setText(null);
-                txtCodigoPais.grabFocus();
+                txtCodigoUsuario.setText(null);
+                txtDescripcionUsuario.setText(null);
+                txtCodigoUsuario.grabFocus();
             }
         }
-    }//GEN-LAST:event_txtCodigoPaisActionPerformed
+    }//GEN-LAST:event_txtCodigoUsuarioActionPerformed
 
-    private void txtCodigoPaisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPaisKeyTyped
+    private void txtCodigoUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUsuarioKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             getToolkit().beep();
             evt.consume();
         }
-        if (txtCodigoPais.getText().length() == 10) {
+        if (txtCodigoUsuario.getText().length() == 10) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtCodigoPaisKeyTyped
+    }//GEN-LAST:event_txtCodigoUsuarioKeyTyped
 
-    private void txtDescripcionPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionPaisActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionPaisActionPerformed
+    private void txtCriterioUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioUsuarioActionPerformed
+        cargarUsuario();
+    }//GEN-LAST:event_txtCriterioUsuarioActionPerformed
 
-    private void txtDescripcionPaisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionPaisKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionPaisKeyTyped
-
-    private void txtCriterioPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioPaisActionPerformed
-        cargarPais();
-    }//GEN-LAST:event_txtCriterioPaisActionPerformed
-
-    private void txtCriterioPaisKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioPaisKeyTyped
+    private void txtCriterioUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioUsuarioKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLowerCase(c)) {
             evt.setKeyChar(Character.toUpperCase(c));
         }
-        if (txtCriterio.getText().length() == 100) {
+        if (txtCriterioUsuario.getText().length() == 100) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtCriterioPaisKeyTyped
+    }//GEN-LAST:event_txtCriterioUsuarioKeyTyped
 
-    private void txtCriterioPaisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioPaisKeyPressed
+    private void txtCriterioUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioUsuarioKeyPressed
         if (evt.VK_ESCAPE == evt.getKeyCode()) {
-            txtCodigoPais.setText(null);
-            txtDescripcionPais.setText(null);
-            txtCodigoPais.grabFocus();
-            BuscadorPais.dispose();
+            txtCodigoUsuario.setText(null);
+            txtDescripcionUsuario.setText(null);
+            txtCodigoUsuario.grabFocus();
+            BuscadorUsuarioCriterio.dispose();
         }
-    }//GEN-LAST:event_txtCriterioPaisKeyPressed
+    }//GEN-LAST:event_txtCriterioUsuarioKeyPressed
 
-    private void tablaDatosPaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosPaisMouseClicked
+    private void tablaDatosUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosUsuarioMouseClicked
         if (evt.getClickCount() == 2) {
-            if (tablaDatosPais.getSelectedRowCount() == 0) {
+            if (tablaDatosUsuario.getSelectedRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
             } else {
-                txtCriterioPais.setText(null);
-                BuscadorPais.dispose();
+                txtCriterioUsuario.setText(null);
+                BuscadorUsuarioCriterio.dispose();
             }
         }
-    }//GEN-LAST:event_tablaDatosPaisMouseClicked
+    }//GEN-LAST:event_tablaDatosUsuarioMouseClicked
 
-    private void txtCodigoPaisKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPaisKeyPressed
+    private void txtCodigoUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUsuarioKeyPressed
         if (evt.VK_F1 == evt.getKeyCode()) {
-            buscarPais();
+            buscarUsuarioDos();
         }
-    }//GEN-LAST:event_txtCodigoPaisKeyPressed
+    }//GEN-LAST:event_txtCodigoUsuarioKeyPressed
 
-    private void txtCodigoPais1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoPais1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoPais1ActionPerformed
+    private void txtCodigoUsuarioCriterioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoUsuarioCriterioActionPerformed
+        if (txtCodigoUsuarioCriterio.getText().isEmpty()) {
+            txtCodigoUsuarioCriterio.setText(null);
+            txtDescripcionUsuarioCriterio.setText(null);
+            txtCodigoUsuarioCriterio.grabFocus();
+        } else {
+            int idusuario = Integer.parseInt(txtCodigoUsuarioCriterio.getText());
+            u.setIdusuario(idusuario);
+            boolean resultado = daoUsuario.consultarDatos(u);
+            if (resultado == true) {
+                txtDescripcionUsuarioCriterio.setText(u.getNombre() + " " + u.getApellido());
+                cargar();
+            } else {
+                txtCodigoUsuarioCriterio.setText(null);
+                txtDescripcionUsuarioCriterio.setText(null);
+                txtCodigoUsuarioCriterio.grabFocus();
+                cargar();
+            }
+        }
+    }//GEN-LAST:event_txtCodigoUsuarioCriterioActionPerformed
 
-    private void txtCodigoPais1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPais1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoPais1KeyPressed
+    private void txtCodigoUsuarioCriterioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUsuarioCriterioKeyPressed
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarUsuario();
+        }
+    }//GEN-LAST:event_txtCodigoUsuarioCriterioKeyPressed
 
-    private void txtCodigoPais1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoPais1KeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCodigoPais1KeyTyped
+    private void txtCodigoUsuarioCriterioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoUsuarioCriterioKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoUsuarioCriterio.getText().length() == 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodigoUsuarioCriterioKeyTyped
 
-    private void txtDescripcionPais1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionPais1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionPais1ActionPerformed
+    private void txtCodigoProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoProgramaActionPerformed
+        if (txtCodigoPrograma.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE PROGRAMA VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idprograma = Integer.parseInt(txtCodigoPrograma.getText());
+            p.setIdprograma(idprograma);
+            boolean resultado = daoPrograma.consultarDatos(p);
+            if (resultado == true) {
+                txtDescripcionPrograma.setText(p.getDescripcion());
+                up.setIdusuario(Integer.parseInt(txtCodigoUsuario.getText()));
+                up.setIdprograma(idprograma);
+                boolean existe = dao.consultarDatos(up);
+                if (existe == true) {
+                    JOptionPane.showMessageDialog(null, "ESTE PROGRAMA YA ESTA ASIGNADO AL USUARIO SELECCIONADO", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    btnConfirmar.grabFocus();
+                }
+            } else {
+                txtCodigoPrograma.setText(null);
+                txtDescripcionPrograma.setText(null);
+                txtCodigoPrograma.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_txtCodigoProgramaActionPerformed
 
-    private void txtDescripcionPais1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionPais1KeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtDescripcionPais1KeyTyped
+    private void txtCodigoProgramaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoProgramaKeyPressed
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarPrograma();
+        }
+    }//GEN-LAST:event_txtCodigoProgramaKeyPressed
+
+    private void txtCodigoProgramaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoProgramaKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoPrograma.getText().length() == 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodigoProgramaKeyTyped
+
+    private void txtCriterioUsuarioDosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioUsuarioDosActionPerformed
+        cargarUsuarioDos();
+    }//GEN-LAST:event_txtCriterioUsuarioDosActionPerformed
+
+    private void txtCriterioUsuarioDosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioUsuarioDosKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoUsuario.setText(null);
+            txtDescripcionUsuario.setText(null);
+            txtCodigoUsuario.grabFocus();
+            BuscadorUsuario.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioUsuarioDosKeyPressed
+
+    private void txtCriterioUsuarioDosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioUsuarioDosKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterioUsuarioDos.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioUsuarioDosKeyTyped
+
+    private void tablaDatosUsuarioDosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosUsuarioDosMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosUsuarioDos.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioUsuarioDos.setText(null);
+                BuscadorUsuario.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosUsuarioDosMouseClicked
+
+    private void txtCriterioProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioProgramaActionPerformed
+        cargarPrograma();
+    }//GEN-LAST:event_txtCriterioProgramaActionPerformed
+
+    private void txtCriterioProgramaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioProgramaKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoPrograma.setText(null);
+            txtDescripcionPrograma.setText(null);
+            txtCodigoPrograma.grabFocus();
+            BuscadorPrograma.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioProgramaKeyPressed
+
+    private void txtCriterioProgramaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioProgramaKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterioPrograma.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioProgramaKeyTyped
+
+    private void tablaDatosProgramaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosProgramaMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosPrograma.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioPrograma.setText(null);
+                BuscadorPrograma.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosProgramaMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog BuscadorPais;
+    private javax.swing.JDialog BuscadorPrograma;
+    private javax.swing.JDialog BuscadorUsuario;
+    private javax.swing.JDialog BuscadorUsuarioCriterio;
     private javax.swing.JMenuItem Eliminar;
-    private javax.swing.JMenuItem Modificar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnConfirmar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JPopupMenu menuDesplegable;
     private javax.swing.JTabbedPane pestanha;
     private javax.swing.JPanel pestanhaABM;
     private javax.swing.JPanel pestanhaLista;
     private javax.swing.JTable tablaDatos;
-    private javax.swing.JTable tablaDatosPais;
-    private org.jdesktop.swingx.JXTextField txtCodigo;
-    private org.jdesktop.swingx.JXTextField txtCodigoPais;
-    private org.jdesktop.swingx.JXTextField txtCodigoPais1;
-    private org.jdesktop.swingx.JXTextField txtCriterioPais;
-    private org.jdesktop.swingx.JXTextField txtDescripcion;
-    private org.jdesktop.swingx.JXTextField txtDescripcionPais;
-    private org.jdesktop.swingx.JXTextField txtDescripcionPais1;
+    private javax.swing.JTable tablaDatosPrograma;
+    private javax.swing.JTable tablaDatosUsuario;
+    private javax.swing.JTable tablaDatosUsuarioDos;
+    private org.jdesktop.swingx.JXTextField txtCodigoPrograma;
+    private org.jdesktop.swingx.JXTextField txtCodigoUsuario;
+    private org.jdesktop.swingx.JXTextField txtCodigoUsuarioCriterio;
+    private org.jdesktop.swingx.JXTextField txtCriterioPrograma;
+    private org.jdesktop.swingx.JXTextField txtCriterioUsuario;
+    private org.jdesktop.swingx.JXTextField txtCriterioUsuarioDos;
+    private org.jdesktop.swingx.JXTextField txtDescripcionPrograma;
+    private org.jdesktop.swingx.JXTextField txtDescripcionUsuario;
+    private org.jdesktop.swingx.JXTextField txtDescripcionUsuarioCriterio;
     // End of variables declaration//GEN-END:variables
 }
