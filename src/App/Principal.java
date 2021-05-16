@@ -5,6 +5,10 @@
  */
 package App;
 
+import Dao.DAOPrograma;
+import Dao.DAOUsuarioPrograma;
+import Modelos.Programa;
+import Modelos.UsuarioPrograma;
 import Vistas.JFrmArticulo;
 import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
@@ -43,6 +47,12 @@ import javax.swing.JOptionPane;
  */
 public class Principal extends javax.swing.JFrame {
 
+    Programa p = new Programa();
+    UsuarioPrograma up = new UsuarioPrograma();
+
+    DAOPrograma daoPrograma = new DAOPrograma();
+    DAOUsuarioPrograma daoUsuarioPrograma = new DAOUsuarioPrograma();
+
     /**
      * Creates new form Principal
      */
@@ -50,6 +60,16 @@ public class Principal extends javax.swing.JFrame {
         FlatLightLaf.install();
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
+    }
+
+    private boolean verificarPermisos(int idusuario, String programa) {
+        p.setDescripcion(programa);
+        daoPrograma.obtenerPorDescripcion(p);
+        int idprograma = p.getIdprograma();
+        up.setIdusuario(idusuario);
+        up.setIdprograma(idprograma);
+        boolean asignado = daoUsuarioPrograma.consultarDatos(up);
+        return asignado;
     }
 
     /**
@@ -522,7 +542,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemMarcaActionPerformed
 
     private void itemLineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemLineaActionPerformed
@@ -536,7 +560,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemLineaActionPerformed
 
     private void itemSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSeccionActionPerformed
@@ -550,7 +578,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemSeccionActionPerformed
 
     private void itemTipoArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoArticuloActionPerformed
@@ -564,7 +596,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemTipoArticuloActionPerformed
 
     private void itemImpuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemImpuestoActionPerformed
@@ -578,7 +614,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemImpuestoActionPerformed
 
     private void itemPaisActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPaisActionPerformed
@@ -592,7 +632,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemPaisActionPerformed
 
     private void itemUnidadMedidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUnidadMedidaActionPerformed
@@ -606,7 +650,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemUnidadMedidaActionPerformed
 
     private void itemCajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCajaActionPerformed
@@ -620,7 +668,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemCajaActionPerformed
 
     private void itemListaPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemListaPrecioActionPerformed
@@ -634,7 +686,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemListaPrecioActionPerformed
 
     private void itemMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMonedaActionPerformed
@@ -648,7 +704,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemMonedaActionPerformed
 
     private void itemMotivoAjusteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMotivoAjusteActionPerformed
@@ -662,7 +722,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemMotivoAjusteActionPerformed
 
     private void itemTipoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoClienteActionPerformed
@@ -676,7 +740,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemTipoClienteActionPerformed
 
     private void itemTipoComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoComprobanteActionPerformed
@@ -690,7 +758,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemTipoComprobanteActionPerformed
 
     private void itemTipoProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoProveedorActionPerformed
@@ -704,7 +776,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemTipoProveedorActionPerformed
 
     private void itemTipoTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoTarjetaActionPerformed
@@ -718,7 +794,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemTipoTarjetaActionPerformed
 
     private void itemBancoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemBancoActionPerformed
@@ -732,7 +812,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemBancoActionPerformed
 
     private void itemCotizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCotizacionActionPerformed
@@ -746,7 +830,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemCotizacionActionPerformed
 
     private void itemPeriodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPeriodoActionPerformed
@@ -760,7 +848,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemPeriodoActionPerformed
 
     private void itemArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemArticuloActionPerformed
@@ -774,7 +866,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemArticuloActionPerformed
 
     private void itemTipoMovimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTipoMovimientoActionPerformed
@@ -788,7 +884,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemTipoMovimientoActionPerformed
 
     private void itemClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemClienteActionPerformed
@@ -802,7 +902,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemClienteActionPerformed
 
     private void itemProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemProveedorActionPerformed
@@ -816,7 +920,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemProveedorActionPerformed
 
     private void itemEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemEmpresaActionPerformed
@@ -830,7 +938,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemEmpresaActionPerformed
 
     private void itemSucursalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemSucursalActionPerformed
@@ -844,7 +956,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemSucursalActionPerformed
 
     private void itemProgramaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemProgramaActionPerformed
@@ -858,7 +974,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemProgramaActionPerformed
 
     private void itemUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuariosActionPerformed
@@ -872,7 +992,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemUsuariosActionPerformed
 
     private void itemUsuarios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuarios1ActionPerformed
@@ -886,7 +1010,11 @@ public class Principal extends javax.swing.JFrame {
         } catch (PropertyVetoException e) {
             JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        fm.show();
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_itemUsuarios1ActionPerformed
 
     /**

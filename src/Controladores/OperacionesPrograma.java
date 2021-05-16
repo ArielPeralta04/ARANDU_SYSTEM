@@ -13,4 +13,5 @@ public interface OperacionesPrograma {
     public int nuevoID();
     public ArrayList<Object[]> consultar(String criterio);
     public boolean consultarDatos(Object obj);
+    public boolean obtenerPorDescripcion(Object obj);
 }

@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
-
 /**
  *
  * @author armando
@@ -37,7 +36,7 @@ public class DAOPrograma implements OperacionesPrograma {
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "REGISTRO EXITOSO", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -64,7 +63,7 @@ public class DAOPrograma implements OperacionesPrograma {
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ACTUALIZACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -90,7 +89,7 @@ public class DAOPrograma implements OperacionesPrograma {
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA","EXITO",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "ELIMINACIÓN EXITOSA", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -145,7 +144,7 @@ public class DAOPrograma implements OperacionesPrograma {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setString(1, "%" + criterio + "%");
-            rs = ps.executeQuery();        
+            rs = ps.executeQuery();
             while (rs.next()) {
                 Object[] fila = new Object[2];
                 fila[0] = rs.getInt(1);
@@ -179,6 +178,35 @@ public class DAOPrograma implements OperacionesPrograma {
                 return true;
             } else {
                 JOptionPane.showMessageDialog(null, "NO EXISTE PROGRAMA CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                con.close();
+                return false;
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean obtenerPorDescripcion(Object obj) {
+        p = (Programa) obj;
+        String sql = "SELECT * FROM PROGRAMA WHERE descripcion LIKE ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setString(1, p.getDescripcion());
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                p.setIdprograma(rs.getInt(1));
+                p.setDescripcion(rs.getString(2));
+                con.close();
+                return true;
+            } else {
+                JOptionPane.showMessageDialog(null, "NO EXISTE PROGRAMA CON EL TITULO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 con.close();
                 return false;
             }
