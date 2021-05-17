@@ -88,14 +88,14 @@ public class Principal extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
         menuMantenimientoCompras = new javax.swing.JMenu();
+        itemArticulo = new javax.swing.JMenuItem();
+        itemImpuesto = new javax.swing.JMenuItem();
         itemMarca = new javax.swing.JMenuItem();
         itemLinea = new javax.swing.JMenuItem();
+        itemPais = new javax.swing.JMenuItem();
         itemSeccion = new javax.swing.JMenuItem();
         itemTipoArticulo = new javax.swing.JMenuItem();
-        itemImpuesto = new javax.swing.JMenuItem();
-        itemPais = new javax.swing.JMenuItem();
         itemUnidadMedida = new javax.swing.JMenuItem();
-        itemArticulo = new javax.swing.JMenuItem();
         menuMovimientoCompras = new javax.swing.JMenu();
         menuConsultaCompras = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -109,30 +109,30 @@ public class Principal extends javax.swing.JFrame {
         menuConsultaProducciones = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         menuMantenimientoFinanzas = new javax.swing.JMenu();
-        itemCaja = new javax.swing.JMenuItem();
         itemBanco = new javax.swing.JMenuItem();
-        itemCotizacion = new javax.swing.JMenuItem();
+        itemCaja = new javax.swing.JMenuItem();
         itemCliente = new javax.swing.JMenuItem();
+        itemCotizacion = new javax.swing.JMenuItem();
         itemProveedor = new javax.swing.JMenuItem();
         menuMovimientoFinanzas = new javax.swing.JMenu();
         menuConsultaFinanzas = new javax.swing.JMenu();
         jMenu6 = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
         menuMantenimientoSistemas = new javax.swing.JMenu();
-        itemTipoComprobante = new javax.swing.JMenuItem();
-        itemEmpresa = new javax.swing.JMenuItem();
-        itemSucursal = new javax.swing.JMenuItem();
-        itemTipoMovimiento = new javax.swing.JMenuItem();
-        itemMoneda = new javax.swing.JMenuItem();
-        itemTipoTarjeta = new javax.swing.JMenuItem();
-        itemPeriodo = new javax.swing.JMenuItem();
-        itemTipoCliente = new javax.swing.JMenuItem();
-        itemTipoProveedor = new javax.swing.JMenuItem();
-        itemPrograma = new javax.swing.JMenuItem();
-        itemMotivoAjuste = new javax.swing.JMenuItem();
-        itemUsuarios = new javax.swing.JMenuItem();
         itemProgramaUsuario = new javax.swing.JMenuItem();
         itemDeposito = new javax.swing.JMenuItem();
+        itemEmpresa = new javax.swing.JMenuItem();
+        itemMoneda = new javax.swing.JMenuItem();
+        itemMotivoAjuste = new javax.swing.JMenuItem();
+        itemTipoMovimiento = new javax.swing.JMenuItem();
+        itemPeriodo = new javax.swing.JMenuItem();
+        itemPrograma = new javax.swing.JMenuItem();
+        itemSucursal = new javax.swing.JMenuItem();
+        itemTipoComprobante = new javax.swing.JMenuItem();
+        itemTipoCliente = new javax.swing.JMenuItem();
+        itemTipoProveedor = new javax.swing.JMenuItem();
+        itemTipoTarjeta = new javax.swing.JMenuItem();
+        itemUsuarios = new javax.swing.JMenuItem();
         menuConsultasSistemas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -169,6 +169,24 @@ public class Principal extends javax.swing.JFrame {
         menuMantenimientoCompras.setText("Mantenimientos");
         menuMantenimientoCompras.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
+        itemArticulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemArticulo.setText("Mantenimiento de Artículos");
+        itemArticulo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemArticuloActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemArticulo);
+
+        itemImpuesto.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemImpuesto.setText("Mantenimiento de Impuestos");
+        itemImpuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemImpuestoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemImpuesto);
+
         itemMarca.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemMarca.setText("Mantenimiento de Marcas");
         itemMarca.addActionListener(new java.awt.event.ActionListener() {
@@ -186,6 +204,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoCompras.add(itemLinea);
+
+        itemPais.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemPais.setText("Mantenimiento de Países");
+        itemPais.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemPaisActionPerformed(evt);
+            }
+        });
+        menuMantenimientoCompras.add(itemPais);
 
         itemSeccion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemSeccion.setText("Mantenimiento de Secciones");
@@ -205,24 +232,6 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoCompras.add(itemTipoArticulo);
 
-        itemImpuesto.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemImpuesto.setText("Mantenimiento de Impuestos");
-        itemImpuesto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemImpuestoActionPerformed(evt);
-            }
-        });
-        menuMantenimientoCompras.add(itemImpuesto);
-
-        itemPais.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemPais.setText("Mantenimiento de Países");
-        itemPais.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemPaisActionPerformed(evt);
-            }
-        });
-        menuMantenimientoCompras.add(itemPais);
-
         itemUnidadMedida.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemUnidadMedida.setText("Mantenimiento de Unidades de Medidas");
         itemUnidadMedida.addActionListener(new java.awt.event.ActionListener() {
@@ -231,15 +240,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoCompras.add(itemUnidadMedida);
-
-        itemArticulo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemArticulo.setText("Mantenimiento de Artículos");
-        itemArticulo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemArticuloActionPerformed(evt);
-            }
-        });
-        menuMantenimientoCompras.add(itemArticulo);
 
         jMenu2.add(menuMantenimientoCompras);
 
@@ -315,15 +315,6 @@ public class Principal extends javax.swing.JFrame {
         menuMantenimientoFinanzas.setText("Mantenimientos");
         menuMantenimientoFinanzas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        itemCaja.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemCaja.setText("Mantenimiento de Cajas");
-        itemCaja.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCajaActionPerformed(evt);
-            }
-        });
-        menuMantenimientoFinanzas.add(itemCaja);
-
         itemBanco.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemBanco.setText("Mantenimiento de Bancos");
         itemBanco.addActionListener(new java.awt.event.ActionListener() {
@@ -333,14 +324,14 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoFinanzas.add(itemBanco);
 
-        itemCotizacion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemCotizacion.setText("Mantenimiento de Cotizaciónes");
-        itemCotizacion.addActionListener(new java.awt.event.ActionListener() {
+        itemCaja.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemCaja.setText("Mantenimiento de Cajas");
+        itemCaja.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemCotizacionActionPerformed(evt);
+                itemCajaActionPerformed(evt);
             }
         });
-        menuMantenimientoFinanzas.add(itemCotizacion);
+        menuMantenimientoFinanzas.add(itemCaja);
 
         itemCliente.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemCliente.setText("Mantenimiento de Clientes");
@@ -350,6 +341,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemCliente);
+
+        itemCotizacion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemCotizacion.setText("Mantenimiento de Cotizaciónes");
+        itemCotizacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCotizacionActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemCotizacion);
 
         itemProveedor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemProveedor.setText("Mantenimiento de Proveedores");
@@ -387,14 +387,23 @@ public class Principal extends javax.swing.JFrame {
         menuMantenimientoSistemas.setText("Mantenimientos");
         menuMantenimientoSistemas.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
 
-        itemTipoComprobante.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoComprobante.setText("Mantenimiento de Tipos de Comprobantes");
-        itemTipoComprobante.addActionListener(new java.awt.event.ActionListener() {
+        itemProgramaUsuario.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemProgramaUsuario.setText("Asignacion de Programas a Usuarios");
+        itemProgramaUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoComprobanteActionPerformed(evt);
+                itemProgramaUsuarioActionPerformed(evt);
             }
         });
-        menuMantenimientoSistemas.add(itemTipoComprobante);
+        menuMantenimientoSistemas.add(itemProgramaUsuario);
+
+        itemDeposito.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemDeposito.setText("Mantenimiento de Depósitos");
+        itemDeposito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemDepositoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemDeposito);
 
         itemEmpresa.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemEmpresa.setText("Mantenimiento de Empresas");
@@ -405,14 +414,23 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoSistemas.add(itemEmpresa);
 
-        itemSucursal.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemSucursal.setText("Mantenimiento de Sucursales");
-        itemSucursal.addActionListener(new java.awt.event.ActionListener() {
+        itemMoneda.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMoneda.setText("Mantenimiento de Monedas");
+        itemMoneda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemSucursalActionPerformed(evt);
+                itemMonedaActionPerformed(evt);
             }
         });
-        menuMantenimientoSistemas.add(itemSucursal);
+        menuMantenimientoSistemas.add(itemMoneda);
+
+        itemMotivoAjuste.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMotivoAjuste.setText("Mantenimiento de Motivos de Ajustes");
+        itemMotivoAjuste.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMotivoAjusteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemMotivoAjuste);
 
         itemTipoMovimiento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemTipoMovimiento.setText("Mantenimiento de Movimientos");
@@ -423,24 +441,6 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoSistemas.add(itemTipoMovimiento);
 
-        itemMoneda.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemMoneda.setText("Mantenimiento de Monedas");
-        itemMoneda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMonedaActionPerformed(evt);
-            }
-        });
-        menuMantenimientoSistemas.add(itemMoneda);
-
-        itemTipoTarjeta.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemTipoTarjeta.setText("Mantenimiento de Tipos de Tarjetas");
-        itemTipoTarjeta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemTipoTarjetaActionPerformed(evt);
-            }
-        });
-        menuMantenimientoSistemas.add(itemTipoTarjeta);
-
         itemPeriodo.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemPeriodo.setText("Mantenimiento de Periodos");
         itemPeriodo.addActionListener(new java.awt.event.ActionListener() {
@@ -449,6 +449,33 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoSistemas.add(itemPeriodo);
+
+        itemPrograma.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemPrograma.setText("Mantenimiento de Programas");
+        itemPrograma.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemProgramaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemPrograma);
+
+        itemSucursal.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemSucursal.setText("Mantenimiento de Sucursales");
+        itemSucursal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemSucursalActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemSucursal);
+
+        itemTipoComprobante.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoComprobante.setText("Mantenimiento de Tipos de Comprobantes");
+        itemTipoComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTipoComprobanteActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTipoComprobante);
 
         itemTipoCliente.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemTipoCliente.setText("Mantenimiento de Tipos de Clientes");
@@ -468,23 +495,14 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoSistemas.add(itemTipoProveedor);
 
-        itemPrograma.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemPrograma.setText("Mantenimiento de Programas");
-        itemPrograma.addActionListener(new java.awt.event.ActionListener() {
+        itemTipoTarjeta.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTipoTarjeta.setText("Mantenimiento de Tipos de Tarjetas");
+        itemTipoTarjeta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemProgramaActionPerformed(evt);
+                itemTipoTarjetaActionPerformed(evt);
             }
         });
-        menuMantenimientoSistemas.add(itemPrograma);
-
-        itemMotivoAjuste.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemMotivoAjuste.setText("Mantenimiento de Motivos de Ajustes");
-        itemMotivoAjuste.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemMotivoAjusteActionPerformed(evt);
-            }
-        });
-        menuMantenimientoSistemas.add(itemMotivoAjuste);
+        menuMantenimientoSistemas.add(itemTipoTarjeta);
 
         itemUsuarios.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemUsuarios.setText("Mantenimiento de Usuarios");
@@ -494,24 +512,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoSistemas.add(itemUsuarios);
-
-        itemProgramaUsuario.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemProgramaUsuario.setText("Asignacion de Programas a Usuarios");
-        itemProgramaUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemProgramaUsuarioActionPerformed(evt);
-            }
-        });
-        menuMantenimientoSistemas.add(itemProgramaUsuario);
-
-        itemDeposito.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemDeposito.setText("Mantenimiento de Depósitos");
-        itemDeposito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemDepositoActionPerformed(evt);
-            }
-        });
-        menuMantenimientoSistemas.add(itemDeposito);
 
         jMenu7.add(menuMantenimientoSistemas);
 
