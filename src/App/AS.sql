@@ -122,6 +122,23 @@ CREATE TABLE IF NOT EXISTS `cotizacion` (
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.deposito
+CREATE TABLE IF NOT EXISTS `deposito` (
+  `iddeposito` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `idsucursal` int(11) NOT NULL,
+  PRIMARY KEY (`iddeposito`),
+  KEY `FK_DEPOSITO_SUCURSAL` (`idsucursal`),
+  CONSTRAINT `FK_DEPOSITO_SUCURSAL` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.deposito: ~1 rows (aproximadamente)
+/*!40000 ALTER TABLE `deposito` DISABLE KEYS */;
+REPLACE INTO `deposito` (`iddeposito`, `descripcion`, `idsucursal`) VALUES
+	(1, 'SALON', 1),
+	(2, 'AUXILIAR', 1);
+/*!40000 ALTER TABLE `deposito` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.empresa
 CREATE TABLE IF NOT EXISTS `empresa` (
   `idempresa` int(11) NOT NULL,
@@ -298,7 +315,8 @@ REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(24, 'JFrmMotivoAjuste'),
 	(25, 'JFrmArticulo'),
 	(26, 'JFrmUsuario'),
-	(27, 'JFrmUsuarioPrograma');
+	(27, 'JFrmUsuarioPrograma'),
+	(28, 'JFrmDeposito');
 /*!40000 ALTER TABLE `programa` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.proveedor
@@ -495,11 +513,11 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   KEY `FK_USUARIO_SUCURSAL` (`idsucursal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.usuario: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.usuario: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 REPLACE INTO `usuario` (`idusuario`, `nombre`, `apellido`, `cedula`, `telefono`, `direccion`, `alias`, `clave`, `idempresa`, `idsucursal`) VALUES
 	(1, 'ARMANDO ARIEL', 'PERALTA MARTINEZ', '5955455', '0975489075', 'BARRIO SAN JORGE - EX CAMPO 9', 'APERALTA', 'e3e7c47572ad938642bbc9cdcdce7e3f', 1, 1),
-	(2, 'LIZ', 'RAMIREZ', '5556325', '0991222555', 'BARRIO SAN BLAS - EX CAMPO 9', 'LRAMIREZ', 'f7040c59032bdf215419c2bdd8b13c1e', 1, 1);
+	(2, 'LIZ', 'RAMIREZ', '5556325', '0991222555', 'BARRIO SAN BLAS - EX CAMPO 9', 'LRAMIREZ', '86b63c18e635ec42e603d4790f2bf90b', 1, 2);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.usuario_programa
@@ -509,7 +527,7 @@ CREATE TABLE IF NOT EXISTS `usuario_programa` (
   PRIMARY KEY (`idusuario`,`idprograma`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.usuario_programa: 4 rows
+-- Volcando datos para la tabla as.usuario_programa: 28 rows
 /*!40000 ALTER TABLE `usuario_programa` DISABLE KEYS */;
 REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 1),
@@ -538,7 +556,8 @@ REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 24),
 	(1, 25),
 	(1, 26),
-	(1, 27);
+	(1, 27),
+	(1, 28);
 /*!40000 ALTER TABLE `usuario_programa` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -14,6 +14,7 @@ import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
 import Vistas.JFrmCliente;
 import Vistas.JFrmCotizacion;
+import Vistas.JFrmDeposito;
 import Vistas.JFrmEmpresa;
 import Vistas.JFrmImpuesto;
 import Vistas.JFrmLinea;
@@ -130,7 +131,8 @@ public class Principal extends javax.swing.JFrame {
         itemPrograma = new javax.swing.JMenuItem();
         itemMotivoAjuste = new javax.swing.JMenuItem();
         itemUsuarios = new javax.swing.JMenuItem();
-        itemUsuarios1 = new javax.swing.JMenuItem();
+        itemProgramaUsuario = new javax.swing.JMenuItem();
+        itemDeposito = new javax.swing.JMenuItem();
         menuConsultasSistemas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -493,14 +495,23 @@ public class Principal extends javax.swing.JFrame {
         });
         menuMantenimientoSistemas.add(itemUsuarios);
 
-        itemUsuarios1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
-        itemUsuarios1.setText("Mantenimiento de Programas a Usuarios");
-        itemUsuarios1.addActionListener(new java.awt.event.ActionListener() {
+        itemProgramaUsuario.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemProgramaUsuario.setText("Asignacion de Programas a Usuarios");
+        itemProgramaUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                itemUsuarios1ActionPerformed(evt);
+                itemProgramaUsuarioActionPerformed(evt);
             }
         });
-        menuMantenimientoSistemas.add(itemUsuarios1);
+        menuMantenimientoSistemas.add(itemProgramaUsuario);
+
+        itemDeposito.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemDeposito.setText("Mantenimiento de Depósitos");
+        itemDeposito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemDepositoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemDeposito);
 
         jMenu7.add(menuMantenimientoSistemas);
 
@@ -999,7 +1010,7 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemUsuariosActionPerformed
 
-    private void itemUsuarios1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuarios1ActionPerformed
+    private void itemProgramaUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemProgramaUsuarioActionPerformed
         JFrmUsuarioPrograma fm = new JFrmUsuarioPrograma();
         panelInterno.add(fm);
         Dimension desktopSize = panelInterno.getSize();
@@ -1015,7 +1026,25 @@ public class Principal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_itemUsuarios1ActionPerformed
+    }//GEN-LAST:event_itemProgramaUsuarioActionPerformed
+
+    private void itemDepositoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemDepositoActionPerformed
+        JFrmDeposito fm = new JFrmDeposito();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemDepositoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1058,6 +1087,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemCaja;
     private javax.swing.JMenuItem itemCliente;
     private javax.swing.JMenuItem itemCotizacion;
+    private javax.swing.JMenuItem itemDeposito;
     private javax.swing.JMenuItem itemEmpresa;
     private javax.swing.JMenuItem itemImpuesto;
     private javax.swing.JMenuItem itemLinea;
@@ -1068,6 +1098,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemPeriodo;
     private javax.swing.JMenuItem itemPrograma;
+    private javax.swing.JMenuItem itemProgramaUsuario;
     private javax.swing.JMenuItem itemProveedor;
     private javax.swing.JMenuItem itemSeccion;
     private javax.swing.JMenuItem itemSucursal;
@@ -1079,7 +1110,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemTipoTarjeta;
     private javax.swing.JMenuItem itemUnidadMedida;
     private javax.swing.JMenuItem itemUsuarios;
-    private javax.swing.JMenuItem itemUsuarios1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
