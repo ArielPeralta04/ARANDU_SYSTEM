@@ -24,7 +24,7 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
     @Override
     public boolean agregar(Object obj) {
         ti = (TipoArticulo) obj;
-        String sql = "INSERT INTO TIPO_ARTICULO VALUES(?, ?);";
+        String sql = "INSERT INTO tipo_articulo VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
     @Override
     public boolean modificar(Object obj) {
         ti = (TipoArticulo) obj;
-        String sql = "UPDATE TIPO_ARTICULO SET descripcion = ? WHERE idtipo = ?;";
+        String sql = "UPDATE tipo_articulo SET descripcion = ? WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
     @Override
     public boolean eliminar(Object obj) {
         ti = (TipoArticulo) obj;
-        String sql = "DELETE FROM TIPO_ARTICULO WHERE idtipo = ?;";
+        String sql = "DELETE FROM tipo_articulo WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -107,7 +107,7 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
                 + "  from (select 0 as idtipo\n"
                 + "         union all\n"
                 + "        select idtipo\n"
-                + "          from TIPO_ARTICULO) t1\n"
+                + "          from tipo_articulo) t1\n"
                 + " where not exists (select null\n"
                 + "                     from TIPO_ARTICULO t2\n"
                 + "                    where t2.idtipo = t1.idtipo + 1)\n"
@@ -134,7 +134,7 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_ARTICULO WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM tipo_articulo WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOTipoArticulo implements OperacionesTipoArticulo {
     @Override
     public boolean consultarDatos(Object obj) {
         ti = (TipoArticulo) obj;
-        String sql = "SELECT * FROM TIPO_ARTICULO WHERE idtipo = ?;";
+        String sql = "SELECT * FROM tipo_articulo WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

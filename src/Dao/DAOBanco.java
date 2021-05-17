@@ -24,7 +24,7 @@ public class DAOBanco implements OperacionesBanco {
     @Override
     public boolean agregar(Object obj) {
         b = (Banco) obj;
-        String sql = "INSERT INTO BANCO VALUES(?, ?, ?);";
+        String sql = "INSERT INTO banco VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -52,7 +52,7 @@ public class DAOBanco implements OperacionesBanco {
     @Override
     public boolean modificar(Object obj) {
         b = (Banco) obj;
-        String sql = "UPDATE BANCO SET descripcion = ?, idpais = ? WHERE idbanco = ?;";
+        String sql = "UPDATE banco SET descripcion = ?, idpais = ? WHERE idbanco = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -80,7 +80,7 @@ public class DAOBanco implements OperacionesBanco {
     @Override
     public boolean eliminar(Object obj) {
         b = (Banco) obj;
-        String sql = "DELETE FROM BANCO WHERE idbanco = ?;";
+        String sql = "DELETE FROM banco WHERE idbanco = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -173,7 +173,7 @@ public class DAOBanco implements OperacionesBanco {
     @Override
     public boolean consultarDatos(Object obj) {
         b = (Banco) obj;
-        String sql = "SELECT * FROM BANCO WHERE idbanco = ?;";
+        String sql = "SELECT * FROM banco WHERE idbanco = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

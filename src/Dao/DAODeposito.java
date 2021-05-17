@@ -24,7 +24,7 @@ public class DAODeposito implements OperacionesDeposito {
     @Override
     public boolean agregar(Object obj) {
         d = (Deposito) obj;
-        String sql = "INSERT INTO DEPOSITO VALUES(?, ?, ?);";
+        String sql = "INSERT INTO deposito VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -52,7 +52,7 @@ public class DAODeposito implements OperacionesDeposito {
     @Override
     public boolean modificar(Object obj) {
         d = (Deposito) obj;
-        String sql = "UPDATE DEPOSITO SET descripcion = ?, idsucursal = ? WHERE iddeposito = ?;";
+        String sql = "UPDATE deposito SET descripcion = ?, idsucursal = ? WHERE iddeposito = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -80,7 +80,7 @@ public class DAODeposito implements OperacionesDeposito {
     @Override
     public boolean eliminar(Object obj) {
         d = (Deposito) obj;
-        String sql = "DELETE FROM DEPOSITO WHERE iddeposito = ?;";
+        String sql = "DELETE FROM deposito WHERE iddeposito = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -173,7 +173,7 @@ public class DAODeposito implements OperacionesDeposito {
     @Override
     public boolean consultarDatos(Object obj) {
         d = (Deposito) obj;
-        String sql = "SELECT * FROM DEPOSITO WHERE iddeposito = ?;";
+        String sql = "SELECT * FROM deposito WHERE iddeposito = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

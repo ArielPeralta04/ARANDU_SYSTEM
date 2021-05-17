@@ -24,7 +24,7 @@ public class DAOCaja implements OperacionesCaja {
     @Override
     public boolean agregar(Object obj) {
         c = (Caja) obj;
-        String sql = "INSERT INTO CAJA VALUES(?, ?);";
+        String sql = "INSERT INTO caja VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOCaja implements OperacionesCaja {
     @Override
     public boolean modificar(Object obj) {
         c = (Caja) obj;
-        String sql = "UPDATE CAJA SET descripcion = ? WHERE idcaja = ?;";
+        String sql = "UPDATE caja SET descripcion = ? WHERE idcaja = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOCaja implements OperacionesCaja {
     @Override
     public boolean eliminar(Object obj) {
         c = (Caja) obj;
-        String sql = "DELETE FROM CAJA WHERE idcaja = ?;";
+        String sql = "DELETE FROM caja WHERE idcaja = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOCaja implements OperacionesCaja {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM CAJA WHERE CONCAT(descripcion, idcaja) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM caja WHERE CONCAT(descripcion, idcaja) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

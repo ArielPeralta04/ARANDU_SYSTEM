@@ -27,7 +27,7 @@ public class DAOCotizacion implements OperacionesCotizacion {
     @Override
     public boolean agregar(Object obj) {
         c = (Cotizacion) obj;
-        String sql = "INSERT INTO COTIZACION VALUES(?, ?, ?);";
+        String sql = "INSERT INTO cotizacion VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -55,7 +55,7 @@ public class DAOCotizacion implements OperacionesCotizacion {
     @Override
     public boolean modificar(Object obj) {
         c = (Cotizacion) obj;
-        String sql = "UPDATE COTIZACION SET tasa = ? WHERE idmoneda = ? AND fecha = ?;";
+        String sql = "UPDATE cotizacion SET tasa = ? WHERE idmoneda = ? AND fecha = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -83,7 +83,7 @@ public class DAOCotizacion implements OperacionesCotizacion {
     @Override
     public boolean eliminar(Object obj) {
         c = (Cotizacion) obj;
-        String sql = "DELETE FROM COTIZACION WHERE idmoneda = ? AND fecha = ?;";
+        String sql = "DELETE FROM cotizacion WHERE idmoneda = ? AND fecha = ?;";
         Connection con;
         PreparedStatement ps;
         try {

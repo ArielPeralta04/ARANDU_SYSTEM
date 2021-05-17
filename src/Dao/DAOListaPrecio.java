@@ -24,7 +24,7 @@ public class DAOListaPrecio implements OperacionesListaPrecio {
     @Override
     public boolean agregar(Object obj) {
         lp = (ListaPrecio) obj;
-        String sql = "INSERT INTO LISTA_PRECIO VALUES(?, ?);";
+        String sql = "INSERT INTO lista_precio VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOListaPrecio implements OperacionesListaPrecio {
     @Override
     public boolean modificar(Object obj) {
         lp = (ListaPrecio) obj;
-        String sql = "UPDATE LISTA_PRECIO SET descripcion = ? WHERE idlista = ?;";
+        String sql = "UPDATE lista_precio SET descripcion = ? WHERE idlista = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOListaPrecio implements OperacionesListaPrecio {
     @Override
     public boolean eliminar(Object obj) {
         lp = (ListaPrecio) obj;
-        String sql = "DELETE FROM LISTA_PRECIO WHERE idlista = ?;";
+        String sql = "DELETE FROM lista_precio WHERE idlista = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOListaPrecio implements OperacionesListaPrecio {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM LISTA_PRECIO WHERE CONCAT(descripcion, idlista) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM lista_precio WHERE CONCAT(descripcion, idlista) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

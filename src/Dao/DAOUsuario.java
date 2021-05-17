@@ -24,7 +24,7 @@ public class DAOUsuario implements OperacionesUsuario {
     @Override
     public boolean agregar(Object obj) {
         u = (Usuario) obj;
-        String sql = "INSERT INTO USUARIO VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO usuario VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -105,7 +105,7 @@ public class DAOUsuario implements OperacionesUsuario {
     @Override
     public boolean eliminar(Object obj) {
         u = (Usuario) obj;
-        String sql = "DELETE FROM USUARIO WHERE idusuario = ?;";
+        String sql = "DELETE FROM usuario WHERE idusuario = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -213,7 +213,7 @@ public class DAOUsuario implements OperacionesUsuario {
     @Override
     public boolean consultarDatos(Object obj) {
         u = (Usuario) obj;
-        String sql = "SELECT * FROM USUARIO WHERE idusuario = ?;";
+        String sql = "SELECT * FROM usuario WHERE idusuario = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

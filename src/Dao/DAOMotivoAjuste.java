@@ -24,7 +24,7 @@ public class DAOMotivoAjuste implements OperacionesMotivoAjuste {
     @Override
     public boolean agregar(Object obj) {
         ma = (MotivoAjuste) obj;
-        String sql = "INSERT INTO MOTIVO_AJUSTE VALUES(?, ?);";
+        String sql = "INSERT INTO motivo_ajuste VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOMotivoAjuste implements OperacionesMotivoAjuste {
     @Override
     public boolean modificar(Object obj) {
         ma = (MotivoAjuste) obj;
-        String sql = "UPDATE MOTIVO_AJUSTE SET descripcion = ? WHERE idmotivo = ?;";
+        String sql = "UPDATE motivo_ajuste SET descripcion = ? WHERE idmotivo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOMotivoAjuste implements OperacionesMotivoAjuste {
     @Override
     public boolean eliminar(Object obj) {
         ma = (MotivoAjuste) obj;
-        String sql = "DELETE FROM MOTIVO_AJUSTE WHERE idmotivo = ?;";
+        String sql = "DELETE FROM motivo_ajuste WHERE idmotivo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOMotivoAjuste implements OperacionesMotivoAjuste {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM MOTIVO_AJUSTE WHERE CONCAT(descripcion, idmotivo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM motivo_ajuste WHERE CONCAT(descripcion, idmotivo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

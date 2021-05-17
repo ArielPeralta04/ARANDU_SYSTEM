@@ -24,7 +24,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
     @Override
     public boolean agregar(Object obj) {
         tp = (TipoProveedor) obj;
-        String sql = "INSERT INTO TIPO_PROVEEDOR VALUES(?, ?);";
+        String sql = "INSERT INTO tipo_proveedor VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
     @Override
     public boolean modificar(Object obj) {
         tp = (TipoProveedor) obj;
-        String sql = "UPDATE TIPO_PROVEEDOR SET descripcion = ? WHERE idtipo = ?;";
+        String sql = "UPDATE tipo_proveedor SET descripcion = ? WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
     @Override
     public boolean eliminar(Object obj) {
         tp = (TipoProveedor) obj;
-        String sql = "DELETE FROM TIPO_PROVEEDOR WHERE idtipo = ?;";
+        String sql = "DELETE FROM tipo_proveedor WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -107,7 +107,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
                 + "  from (select 0 as idtipo\n"
                 + "         union all\n"
                 + "        select idtipo\n"
-                + "          from TIPO_PROVEEDOR) t1\n"
+                + "          from tipo_proveedor) t1\n"
                 + " where not exists (select null\n"
                 + "                     from TIPO_PROVEEDOR t2\n"
                 + "                    where t2.idtipo = t1.idtipo + 1)\n"
@@ -134,7 +134,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_PROVEEDOR WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM tipo_proveedor WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOTipoProveedor implements OperacionesTipoProveedor {
     @Override
     public boolean consultarDatos(Object obj) {
         tp = (TipoProveedor) obj;
-        String sql = "SELECT * FROM TIPO_PROVEEDOR WHERE idtipo = ?;";
+        String sql = "SELECT * FROM tipo_proveedor WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

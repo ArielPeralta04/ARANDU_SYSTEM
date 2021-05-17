@@ -24,7 +24,7 @@ public class DAOSucursal implements OperacionesSucursal {
     @Override
     public boolean agregar(Object obj) {
         s = (Sucursal) obj;
-        String sql = "INSERT INTO SUCURSAL VALUES(?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO sucursal VALUES(?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -54,7 +54,7 @@ public class DAOSucursal implements OperacionesSucursal {
     @Override
     public boolean modificar(Object obj) {
         s = (Sucursal) obj;
-        String sql = "UPDATE SUCURSAL SET descripcion = ?, telefono = ?, direccion = ?, idempresa = ? WHERE idsucursal = ?;";
+        String sql = "UPDATE sucursal SET descripcion = ?, telefono = ?, direccion = ?, idempresa = ? WHERE idsucursal = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -84,7 +84,7 @@ public class DAOSucursal implements OperacionesSucursal {
     @Override
     public boolean eliminar(Object obj) {
         s = (Sucursal) obj;
-        String sql = "DELETE FROM SUCURSAL WHERE idsucursal = ?;";
+        String sql = "DELETE FROM sucursal WHERE idsucursal = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -181,7 +181,7 @@ public class DAOSucursal implements OperacionesSucursal {
     @Override
     public boolean consultarDatos(Object obj) {
         s = (Sucursal) obj;
-        String sql = "SELECT * FROM SUCURSAL WHERE idsucursal = ?;";
+        String sql = "SELECT * FROM sucursal WHERE idsucursal = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

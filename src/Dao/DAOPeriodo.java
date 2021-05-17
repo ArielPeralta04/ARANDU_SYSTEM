@@ -25,7 +25,7 @@ public class DAOPeriodo implements OperacionesPeriodo {
     @Override
     public boolean agregar(Object obj) {
         p = (Periodo) obj;
-        String sql = "INSERT INTO PERIODO VALUES(?, ?, ?);";
+        String sql = "INSERT INTO periodo VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -53,7 +53,7 @@ public class DAOPeriodo implements OperacionesPeriodo {
     @Override
     public boolean modificar(Object obj) {
         p = (Periodo) obj;
-        String sql = "UPDATE PERIODO SET fecha_desde = ?, fecha_hasta = ? WHERE idperiodo = ?;";
+        String sql = "UPDATE periodo SET fecha_desde = ?, fecha_hasta = ? WHERE idperiodo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -81,7 +81,7 @@ public class DAOPeriodo implements OperacionesPeriodo {
     @Override
     public boolean eliminar(Object obj) {
         p = (Periodo) obj;
-        String sql = "DELETE FROM PERIODO WHERE idperiodo = ?;";
+        String sql = "DELETE FROM periodo WHERE idperiodo = ?;";
         Connection con;
         PreparedStatement ps;
         try {

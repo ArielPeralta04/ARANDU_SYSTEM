@@ -24,7 +24,7 @@ public class DAOImpuesto implements OperacionesImpuesto {
     @Override
     public boolean agregar(Object obj) {
         i = (Impuesto) obj;
-        String sql = "INSERT INTO IMPUESTO VALUES(?, ?, ?);";
+        String sql = "INSERT INTO impuesto VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -52,7 +52,7 @@ public class DAOImpuesto implements OperacionesImpuesto {
     @Override
     public boolean modificar(Object obj) {
         i = (Impuesto) obj;
-        String sql = "UPDATE IMPUESTO SET descripcion = ?, porcentaje = ? WHERE idimpuesto = ?;";
+        String sql = "UPDATE impuesto SET descripcion = ?, porcentaje = ? WHERE idimpuesto = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -80,7 +80,7 @@ public class DAOImpuesto implements OperacionesImpuesto {
     @Override
     public boolean eliminar(Object obj) {
         i = (Impuesto) obj;
-        String sql = "DELETE FROM IMPUESTO WHERE idimpuesto = ?;";
+        String sql = "DELETE FROM impuesto WHERE idimpuesto = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -136,7 +136,7 @@ public class DAOImpuesto implements OperacionesImpuesto {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM IMPUESTO WHERE CONCAT(descripcion, porcentaje, idimpuesto) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM impuesto WHERE CONCAT(descripcion, porcentaje, idimpuesto) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -164,7 +164,7 @@ public class DAOImpuesto implements OperacionesImpuesto {
     @Override
     public boolean consultarDatos(Object obj) {
         i = (Impuesto) obj;
-        String sql = "SELECT * FROM IMPUESTO WHERE idimpuesto = ?;";
+        String sql = "SELECT * FROM impuesto WHERE idimpuesto = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

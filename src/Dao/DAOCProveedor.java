@@ -24,7 +24,7 @@ public class DAOCProveedor implements OperacionesProveedor {
     @Override
     public boolean agregar(Object obj) {
         p = (Proveedor) obj;
-        String sql = "INSERT INTO PROVEEDOR VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO proveedor VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -58,7 +58,7 @@ public class DAOCProveedor implements OperacionesProveedor {
     @Override
     public boolean modificar(Object obj) {
         p = (Proveedor) obj;
-        String sql = "UPDATE PROVEEDOR\n"
+        String sql = "UPDATE proveedor\n"
                 + "	SET\n"
                 + "		razonsocial=?,\n"
                 + "		propietario=?,\n"
@@ -101,7 +101,7 @@ public class DAOCProveedor implements OperacionesProveedor {
     @Override
     public boolean eliminar(Object obj) {
         p = (Proveedor) obj;
-        String sql = "DELETE FROM PROVEEDOR WHERE idproveedor = ?;";
+        String sql = "DELETE FROM proveedor WHERE idproveedor = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -195,7 +195,7 @@ public class DAOCProveedor implements OperacionesProveedor {
     @Override
     public boolean consultarDatos(Object obj) {
         p = (Proveedor) obj;
-        String sql = "SELECT * FROM PROVEEDOR WHERE idproveedor = ?;";
+        String sql = "SELECT * FROM proveedor WHERE idproveedor = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

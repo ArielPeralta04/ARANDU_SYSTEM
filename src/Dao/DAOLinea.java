@@ -24,7 +24,7 @@ public class DAOLinea implements OperacionesLinea {
     @Override
     public boolean agregar(Object obj) {
         l = (Linea) obj;
-        String sql = "INSERT INTO LINEA VALUES(?, ?);";
+        String sql = "INSERT INTO linea VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOLinea implements OperacionesLinea {
     @Override
     public boolean modificar(Object obj) {
         l = (Linea) obj;
-        String sql = "UPDATE LINEA SET descripcion = ? WHERE idlinea = ?;";
+        String sql = "UPDATE linea SET descripcion = ? WHERE idlinea = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOLinea implements OperacionesLinea {
     @Override
     public boolean eliminar(Object obj) {
         l = (Linea) obj;
-        String sql = "DELETE FROM LINEA WHERE idlinea = ?;";
+        String sql = "DELETE FROM linea WHERE idlinea = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOLinea implements OperacionesLinea {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM LINEA WHERE CONCAT(descripcion, idlinea) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM linea WHERE CONCAT(descripcion, idlinea) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOLinea implements OperacionesLinea {
     @Override
     public boolean consultarDatos(Object obj) {
         l = (Linea) obj;
-        String sql = "SELECT * FROM LINEA WHERE idlinea = ?;";
+        String sql = "SELECT * FROM linea WHERE idlinea = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

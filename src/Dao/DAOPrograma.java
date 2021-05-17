@@ -24,7 +24,7 @@ public class DAOPrograma implements OperacionesPrograma {
     @Override
     public boolean agregar(Object obj) {
         p = (Programa) obj;
-        String sql = "INSERT INTO PROGRAMA VALUES(?, ?);";
+        String sql = "INSERT INTO programa VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOPrograma implements OperacionesPrograma {
     @Override
     public boolean modificar(Object obj) {
         p = (Programa) obj;
-        String sql = "UPDATE PROGRAMA SET descripcion = ? WHERE idprograma = ?;";
+        String sql = "UPDATE programa SET descripcion = ? WHERE idprograma = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOPrograma implements OperacionesPrograma {
     @Override
     public boolean eliminar(Object obj) {
         p = (Programa) obj;
-        String sql = "DELETE FROM PROGRAMA WHERE idprograma = ?;";
+        String sql = "DELETE FROM programa WHERE idprograma = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOPrograma implements OperacionesPrograma {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM PROGRAMA WHERE CONCAT(descripcion, idprograma) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM programa WHERE CONCAT(descripcion, idprograma) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOPrograma implements OperacionesPrograma {
     @Override
     public boolean consultarDatos(Object obj) {
         p = (Programa) obj;
-        String sql = "SELECT * FROM PROGRAMA WHERE idprograma = ?;";
+        String sql = "SELECT * FROM programa WHERE idprograma = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -190,7 +190,7 @@ public class DAOPrograma implements OperacionesPrograma {
     @Override
     public boolean obtenerPorDescripcion(Object obj) {
         p = (Programa) obj;
-        String sql = "SELECT * FROM PROGRAMA WHERE descripcion LIKE ?;";
+        String sql = "SELECT * FROM programa WHERE descripcion LIKE ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

@@ -24,7 +24,7 @@ public class DAOSeccion implements OperacionesSeccion {
     @Override
     public boolean agregar(Object obj) {
         s = (Seccion) obj;
-        String sql = "INSERT INTO SECCION VALUES(?, ?);";
+        String sql = "INSERT INTO seccion VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOSeccion implements OperacionesSeccion {
     @Override
     public boolean modificar(Object obj) {
         s = (Seccion) obj;
-        String sql = "UPDATE SECCION SET descripcion = ? WHERE idseccion = ?;";
+        String sql = "UPDATE seccion SET descripcion = ? WHERE idseccion = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOSeccion implements OperacionesSeccion {
     @Override
     public boolean eliminar(Object obj) {
         s = (Seccion) obj;
-        String sql = "DELETE FROM SECCION WHERE idseccion = ?;";
+        String sql = "DELETE FROM seccion WHERE idseccion = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOSeccion implements OperacionesSeccion {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM SECCION WHERE CONCAT(descripcion, idseccion) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM seccion WHERE CONCAT(descripcion, idseccion) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOSeccion implements OperacionesSeccion {
     @Override
     public boolean consultarDatos(Object obj) {
         s = (Seccion) obj;
-        String sql = "SELECT * FROM SECCION WHERE idseccion = ?;";
+        String sql = "SELECT * FROM seccion WHERE idseccion = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

@@ -24,7 +24,7 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
     @Override
     public boolean agregar(Object obj) {
         tc = (TipoCliente) obj;
-        String sql = "INSERT INTO TIPO_CLIENTE VALUES(?, ?);";
+        String sql = "INSERT INTO tipo_cliente VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
     @Override
     public boolean modificar(Object obj) {
         tc = (TipoCliente) obj;
-        String sql = "UPDATE TIPO_CLIENTE SET descripcion = ? WHERE idtipo = ?;";
+        String sql = "UPDATE tipo_cliente SET descripcion = ? WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
     @Override
     public boolean eliminar(Object obj) {
         tc = (TipoCliente) obj;
-        String sql = "DELETE FROM TIPO_CLIENTE WHERE idtipo = ?;";
+        String sql = "DELETE FROM tipo_cliente WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -107,7 +107,7 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
                 + "  from (select 0 as idtipo\n"
                 + "         union all\n"
                 + "        select idtipo\n"
-                + "          from TIPO_CLIENTE) t1\n"
+                + "          from tipo_cliente) t1\n"
                 + " where not exists (select null\n"
                 + "                     from TIPO_CLIENTE t2\n"
                 + "                    where t2.idtipo = t1.idtipo + 1)\n"
@@ -134,7 +134,7 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_CLIENTE WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM tipo_cliente WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOTipoCliente implements OperacionesTipoCliente {
     @Override
     public boolean consultarDatos(Object obj) {
         tc = (TipoCliente) obj;
-        String sql = "SELECT * FROM TIPO_CLIENTE WHERE idtipo = ?;";
+        String sql = "SELECT * FROM tipo_cliente WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

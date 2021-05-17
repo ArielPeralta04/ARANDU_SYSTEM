@@ -24,7 +24,7 @@ public class DAOCliente implements OperacionesCliente {
     @Override
     public boolean agregar(Object obj) {
         c = (Cliente) obj;
-        String sql = "INSERT INTO CLIENTE VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO cliente VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -101,7 +101,7 @@ public class DAOCliente implements OperacionesCliente {
     @Override
     public boolean eliminar(Object obj) {
         c = (Cliente) obj;
-        String sql = "DELETE FROM CLIENTE WHERE idcliente = ?;";
+        String sql = "DELETE FROM cliente WHERE idcliente = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -195,7 +195,7 @@ public class DAOCliente implements OperacionesCliente {
     @Override
     public boolean consultarDatos(Object obj) {
         c = (Cliente) obj;
-        String sql = "SELECT * FROM CLIENTE WHERE idcliente = ?;";
+        String sql = "SELECT * FROM cliente WHERE idcliente = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

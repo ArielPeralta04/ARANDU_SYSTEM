@@ -24,7 +24,7 @@ public class DAOArticulo implements OperacionesArticulo {
     @Override
     public boolean agregar(Object obj) {
         a = (Articulo) obj;
-        String sql = "INSERT INTO ARTICULO VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO articulo VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -115,7 +115,7 @@ public class DAOArticulo implements OperacionesArticulo {
     @Override
     public boolean eliminar(Object obj) {
         a = (Articulo) obj;
-        String sql = "DELETE FROM ARTICULO WHERE idarticulo = ?;";
+        String sql = "DELETE FROM articulo WHERE idarticulo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -211,7 +211,7 @@ public class DAOArticulo implements OperacionesArticulo {
     @Override
     public boolean consultarDatos(Object obj) {
         a = (Articulo) obj;
-        String sql = "SELECT * FROM ARTICULO WHERE idarticulo = ?;";
+        String sql = "SELECT * FROM articulo WHERE idarticulo = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

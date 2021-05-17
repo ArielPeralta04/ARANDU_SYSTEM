@@ -24,7 +24,7 @@ public class DAOEmpresa implements OperacionesEmpresa {
     @Override
     public boolean agregar(Object obj) {
         e = (Empresa) obj;
-        String sql = "INSERT INTO EMPRESA VALUES(?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO empresa VALUES(?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -54,7 +54,7 @@ public class DAOEmpresa implements OperacionesEmpresa {
     @Override
     public boolean modificar(Object obj) {
         e = (Empresa) obj;
-        String sql = "UPDATE EMPRESA SET razonsocial = ?, ruc = ?, telefono = ?, direccion = ? WHERE idempresa = ?;";
+        String sql = "UPDATE empresa SET razonsocial = ?, ruc = ?, telefono = ?, direccion = ? WHERE idempresa = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -84,7 +84,7 @@ public class DAOEmpresa implements OperacionesEmpresa {
     @Override
     public boolean eliminar(Object obj) {
         e = (Empresa) obj;
-        String sql = "DELETE FROM EMPRESA WHERE idempresa = ?;";
+        String sql = "DELETE FROM empresa WHERE idempresa = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -140,7 +140,7 @@ public class DAOEmpresa implements OperacionesEmpresa {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM EMPRESA WHERE CONCAT(razonsocial, ruc, telefono, direccion, idempresa) LIKE ? ORDER BY razonsocial;";
+        String sql = "SELECT * FROM empresa WHERE CONCAT(razonsocial, ruc, telefono, direccion, idempresa) LIKE ? ORDER BY razonsocial;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -170,7 +170,7 @@ public class DAOEmpresa implements OperacionesEmpresa {
     @Override
     public boolean consultarDatos(Object obj) {
         e = (Empresa) obj;
-        String sql = "SELECT * FROM EMPRESA WHERE idempresa = ?;";
+        String sql = "SELECT * FROM empresa WHERE idempresa = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

@@ -24,7 +24,7 @@ public class DAOMoneda implements OperacionesMoneda {
     @Override
     public boolean agregar(Object obj) {
         m = (Moneda) obj;
-        String sql = "INSERT INTO MONEDA VALUES(?, ?, ?);";
+        String sql = "INSERT INTO moneda VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -52,7 +52,7 @@ public class DAOMoneda implements OperacionesMoneda {
     @Override
     public boolean modificar(Object obj) {
         m = (Moneda) obj;
-        String sql = "UPDATE MONEDA SET descripcion = ?, simbolo = ? WHERE idmoneda = ?;";
+        String sql = "UPDATE moneda SET descripcion = ?, simbolo = ? WHERE idmoneda = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -80,7 +80,7 @@ public class DAOMoneda implements OperacionesMoneda {
     @Override
     public boolean eliminar(Object obj) {
         m = (Moneda) obj;
-        String sql = "DELETE FROM MONEDA WHERE idmoneda = ?;";
+        String sql = "DELETE FROM moneda WHERE idmoneda = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -136,7 +136,7 @@ public class DAOMoneda implements OperacionesMoneda {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM MONEDA WHERE CONCAT(descripcion, simbolo, idmoneda) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM moneda WHERE CONCAT(descripcion, simbolo, idmoneda) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -164,7 +164,7 @@ public class DAOMoneda implements OperacionesMoneda {
     @Override
     public boolean consultarDatos(Object obj) {
         m = (Moneda) obj;
-        String sql = "SELECT * FROM MONEDA WHERE idmoneda = ?;";
+        String sql = "SELECT * FROM moneda WHERE idmoneda = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

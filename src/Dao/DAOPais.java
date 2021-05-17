@@ -24,7 +24,7 @@ public class DAOPais implements OperacionesPais {
     @Override
     public boolean agregar(Object obj) {
         p = (Pais) obj;
-        String sql = "INSERT INTO PAIS VALUES(?, ?, ?);";
+        String sql = "INSERT INTO pais VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -52,7 +52,7 @@ public class DAOPais implements OperacionesPais {
     @Override
     public boolean modificar(Object obj) {
         p = (Pais) obj;
-        String sql = "UPDATE PAIS SET descripcion = ?, nacionalidad = ? WHERE idpais = ?;";
+        String sql = "UPDATE pais SET descripcion = ?, nacionalidad = ? WHERE idpais = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -81,7 +81,7 @@ public class DAOPais implements OperacionesPais {
     @Override
     public boolean eliminar(Object obj) {
         p = (Pais) obj;
-        String sql = "DELETE FROM PAIS WHERE idpais = ?;";
+        String sql = "DELETE FROM pais WHERE idpais = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -137,7 +137,7 @@ public class DAOPais implements OperacionesPais {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM PAIS WHERE CONCAT(descripcion, nacionalidad, idpais) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM pais WHERE CONCAT(descripcion, nacionalidad, idpais) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -165,7 +165,7 @@ public class DAOPais implements OperacionesPais {
     @Override
     public boolean consultarDatos(Object obj) {
         p = (Pais) obj;
-        String sql = "SELECT * FROM PAIS WHERE idpais = ?;";
+        String sql = "SELECT * FROM pais WHERE idpais = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

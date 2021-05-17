@@ -24,7 +24,7 @@ public class DAOTipoTarjeta implements OperacionesTipoTarjeta {
     @Override
     public boolean agregar(Object obj) {
         tt = (TipoTarjeta) obj;
-        String sql = "INSERT INTO TIPO_TARJETA VALUES(?, ?);";
+        String sql = "INSERT INTO tipo_tarjeta VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOTipoTarjeta implements OperacionesTipoTarjeta {
     @Override
     public boolean modificar(Object obj) {
         tt = (TipoTarjeta) obj;
-        String sql = "UPDATE TIPO_TARJETA SET descripcion = ? WHERE idtipo = ?;";
+        String sql = "UPDATE tipo_tarjeta SET descripcion = ? WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOTipoTarjeta implements OperacionesTipoTarjeta {
     @Override
     public boolean eliminar(Object obj) {
         tt = (TipoTarjeta) obj;
-        String sql = "DELETE FROM TIPO_TARJETA WHERE idtipo = ?;";
+        String sql = "DELETE FROM tipo_tarjeta WHERE idtipo = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -107,7 +107,7 @@ public class DAOTipoTarjeta implements OperacionesTipoTarjeta {
                 + "  from (select 0 as idtipo\n"
                 + "         union all\n"
                 + "        select idtipo\n"
-                + "          from TIPO_TARJETA) t1\n"
+                + "          from tipo_tarjeta) t1\n"
                 + " where not exists (select null\n"
                 + "                     from TIPO_TARJETA t2\n"
                 + "                    where t2.idtipo = t1.idtipo + 1)\n"
@@ -134,7 +134,7 @@ public class DAOTipoTarjeta implements OperacionesTipoTarjeta {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM TIPO_TARJETA WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM tipo_tarjeta WHERE CONCAT(descripcion, idtipo) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

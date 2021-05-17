@@ -24,7 +24,7 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
     @Override
     public boolean agregar(Object obj) {
         um = (UnidadMedida) obj;
-        String sql = "INSERT INTO UNIDAD_MEDIDA VALUES(?, ?, ?);";
+        String sql = "INSERT INTO unidad_medida VALUES(?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -52,7 +52,7 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
     @Override
     public boolean modificar(Object obj) {
         um = (UnidadMedida) obj;
-        String sql = "UPDATE UNIDAD_MEDIDA SET descripcion = ?, simbolo = ? WHERE idunidad = ?;";
+        String sql = "UPDATE unidad_medida SET descripcion = ?, simbolo = ? WHERE idunidad = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -80,7 +80,7 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
     @Override
     public boolean eliminar(Object obj) {
         um = (UnidadMedida) obj;
-        String sql = "DELETE FROM UNIDAD_MEDIDA WHERE idunidad = ?;";
+        String sql = "DELETE FROM unidad_medida WHERE idunidad = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -136,7 +136,7 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM UNIDAD_MEDIDA WHERE CONCAT(descripcion, simbolo, idunidad) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM unidad_medida WHERE CONCAT(descripcion, simbolo, idunidad) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -164,7 +164,7 @@ public class DAOUnidadMedida implements OperacionesUnidadMedida{
     @Override
     public boolean consultarDatos(Object obj) {
         um = (UnidadMedida) obj;
-        String sql = "SELECT * FROM UNIDAD_MEDIDA WHERE idunidad = ?;";
+        String sql = "SELECT * FROM unidad_medida WHERE idunidad = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

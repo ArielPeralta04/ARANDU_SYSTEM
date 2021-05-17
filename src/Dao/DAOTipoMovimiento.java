@@ -24,7 +24,7 @@ public class DAOTipoMovimiento implements OperacionesTipoMovimiento {
     @Override
     public boolean agregar(Object obj) {
         tm = (TipoMovimiento) obj;
-        String sql = "INSERT INTO TIPO_MOVIMIENTO VALUES(?, ?, ?, ?);";
+        String sql = "INSERT INTO tipo_movimiento VALUES(?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -87,7 +87,7 @@ public class DAOTipoMovimiento implements OperacionesTipoMovimiento {
     @Override
     public boolean eliminar(Object obj) {
         tm = (TipoMovimiento) obj;
-        String sql = "DELETE FROM TIPO_MOVIMIENTO WHERE idtipomovimiento = ?;";
+        String sql = "DELETE FROM tipo_movimiento WHERE idtipomovimiento = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -116,7 +116,7 @@ public class DAOTipoMovimiento implements OperacionesTipoMovimiento {
                 + "  from (select 0 as idtipomovimiento\n"
                 + "         union all\n"
                 + "        select idtipomovimiento\n"
-                + "          from TIPO_MOVIMIENTO) t1\n"
+                + "          from tipo_movimiento) t1\n"
                 + " where not exists (select null\n"
                 + "                     from TIPO_MOVIMIENTO t2\n"
                 + "                    where t2.idtipomovimiento = t1.idtipomovimiento + 1)\n"
@@ -182,7 +182,7 @@ public class DAOTipoMovimiento implements OperacionesTipoMovimiento {
     @Override
     public boolean consultarDatos(Object obj) {
         tm = (TipoMovimiento) obj;
-        String sql = "SELECT * FROM TIPO_MOVIMIENTO WHERE idtipomovimiento = ?;";
+        String sql = "SELECT * FROM tipo_movimiento WHERE idtipomovimiento = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;

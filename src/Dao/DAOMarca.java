@@ -24,7 +24,7 @@ public class DAOMarca implements OperacionesMarca {
     @Override
     public boolean agregar(Object obj) {
         m = (Marca) obj;
-        String sql = "INSERT INTO MARCA VALUES(?, ?);";
+        String sql = "INSERT INTO marca VALUES(?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -51,7 +51,7 @@ public class DAOMarca implements OperacionesMarca {
     @Override
     public boolean modificar(Object obj) {
         m = (Marca) obj;
-        String sql = "UPDATE MARCA SET descripcion = ? WHERE idmarca = ?;";
+        String sql = "UPDATE marca SET descripcion = ? WHERE idmarca = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -78,7 +78,7 @@ public class DAOMarca implements OperacionesMarca {
     @Override
     public boolean eliminar(Object obj) {
         m = (Marca) obj;
-        String sql = "DELETE FROM MARCA WHERE idmarca = ?;";
+        String sql = "DELETE FROM marca WHERE idmarca = ?;";
         Connection con;
         PreparedStatement ps;
         try {
@@ -134,7 +134,7 @@ public class DAOMarca implements OperacionesMarca {
 
     @Override
     public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM MARCA WHERE CONCAT(descripcion, idmarca) LIKE ? ORDER BY descripcion;";
+        String sql = "SELECT * FROM marca WHERE CONCAT(descripcion, idmarca) LIKE ? ORDER BY descripcion;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -161,7 +161,7 @@ public class DAOMarca implements OperacionesMarca {
     @Override
     public boolean consultarDatos(Object obj) {
         m = (Marca) obj;
-        String sql = "SELECT * FROM MARCA WHERE idmarca = ?;";
+        String sql = "SELECT * FROM marca WHERE idmarca = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
