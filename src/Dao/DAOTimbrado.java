@@ -28,7 +28,7 @@ public class DAOTimbrado implements OperacionesTimbrado {
         String sql = "INSERT INTO timbrado\n"
                 + "(idtimbrado, establecimiento, puntoemision, \n"
                 + "timbrado, numeroinicial, numerofinal, fechainicial, \n"
-                + "fechafinal, idcaja, idtipomovimiento)\n"
+                + "fechafinal, idcaja, idtipocomprobante)\n"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
@@ -45,7 +45,7 @@ public class DAOTimbrado implements OperacionesTimbrado {
             ps.setDate(7, (Date) t.getFechainicial());
             ps.setDate(8, (Date) t.getFechafinal());
             ps.setInt(9, t.getIdcaja());
-            ps.setInt(10, t.getIdtipomovimiento());
+            ps.setInt(10, t.getIdtipocomprobante());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -74,7 +74,7 @@ public class DAOTimbrado implements OperacionesTimbrado {
                 + "		fechainicial=?,\n"
                 + "		fechafinal=?,\n"
                 + "		idcaja=?,\n"
-                + "		idtipomovimiento=?\n"
+                + "		idtipocomprobante=?\n"
                 + "	WHERE idtimbrado=?;";
         Connection con;
         PreparedStatement ps;
@@ -90,7 +90,7 @@ public class DAOTimbrado implements OperacionesTimbrado {
             ps.setDate(6, (Date) t.getFechainicial());
             ps.setDate(7, (Date) t.getFechafinal());
             ps.setInt(8, t.getIdcaja());
-            ps.setInt(9, t.getIdtipomovimiento());
+            ps.setInt(9, t.getIdtipocomprobante());
             ps.setInt(10, t.getIdtimbrado());
             int filas = ps.executeUpdate();
             if (filas > 0) {
@@ -168,21 +168,21 @@ public class DAOTimbrado implements OperacionesTimbrado {
     public ArrayList<Object[]> consultar(String criterio) {
         String sql = "SELECT \n"
                 + "T.idtimbrado, \n"
-                + "T.establecimiento, \n"
-                + "T.puntoemision, \n"
+                + "LPAD(T.establecimiento, 3, 0) AS establecimiento, \n"
+                + "LPAD(T.puntoemision, 3, 0) AS puntoemision, \n"
                 + "T.timbrado, \n"
-                + "T.numeroinicial, \n"
-                + "T.numerofinal, \n"
-                + "T.fechainicial, \n"
-                + "T.fechafinal, \n"
+                + "LPAD(T.numeroinicial, 7, 0) AS numeroinicial, \n"
+                + "LPAD(T.numerofinal, 7, 0) AS numerofinal, \n"
+                + "DATE_FORMAT(T.fechainicial,'%d/%m/%Y') AS fechainicial, \n"
+                + "DATE_FORMAT(T.fechafinal,'%d/%m/%Y') AS fechafinal, \n"
                 + "T.idcaja, \n"
                 + "C.descripcion,\n"
-                + "T.idtipomovimiento,\n"
+                + "T.idtipocomprobante,\n"
                 + "TM.descripcion\n"
                 + "FROM timbrado AS T\n"
                 + "INNER JOIN caja AS C ON C.idcaja = T.idcaja\n"
-                + "INNER JOIN tipo_movimiento AS TM ON TM.idtipomovimiento = T.idtimbrado\n"
-                + "WHERE CONCAT(T.timbrado, T.numeroinicial, T.numerofinal, T.idtimbrado) LIKE ?\n"
+                + "INNER JOIN tipo_comprobante AS TM ON TM.idtipo = T.idtipocomprobante\n"
+                + "WHERE CONCAT(T.timbrado, T.numeroinicial, T.numerofinal, T.idtimbrado, C.descripcion, TM.descripcion) LIKE ?\n"
                 + "ORDER BY T.timbrado;";
         Connection con;
         PreparedStatement ps;
@@ -197,13 +197,14 @@ public class DAOTimbrado implements OperacionesTimbrado {
             while (rs.next()) {
                 Object[] fila = new Object[12];
                 fila[0] = rs.getInt(1);
-                fila[1] = rs.getInt(3);
+                fila[1] = rs.getString(2);
+                fila[2] = rs.getString(3);
                 fila[3] = rs.getInt(4);
-                fila[4] = rs.getInt(5);
-                fila[5] = rs.getInt(6);
-                fila[6] = rs.getInt(7);
-                fila[7] = rs.getDate(8);
-                fila[8] = rs.getDate(9);
+                fila[4] = rs.getString(5);
+                fila[5] = rs.getString(6);
+                fila[6] = rs.getString(7);
+                fila[7] = rs.getString(8);
+                fila[8] = rs.getInt(9);
                 fila[9] = rs.getString(10);
                 fila[10] = rs.getInt(11);
                 fila[11] = rs.getString(12);
@@ -239,7 +240,7 @@ public class DAOTimbrado implements OperacionesTimbrado {
                 t.setFechainicial(rs.getDate(7));
                 t.setFechafinal(rs.getDate(8));
                 t.setIdcaja(rs.getInt(9));
-                t.setIdtipomovimiento(rs.getInt(10));
+                t.setIdtipocomprobante(rs.getInt(10));
                 con.close();
                 return true;
             } else {

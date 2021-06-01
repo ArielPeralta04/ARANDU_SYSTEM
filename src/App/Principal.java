@@ -28,6 +28,7 @@ import Vistas.JFrmPrograma;
 import Vistas.JFrmProveedor;
 import Vistas.JFrmSeccion;
 import Vistas.JFrmSucursal;
+import Vistas.JFrmTimbrado;
 import Vistas.JFrmTipoArticulo;
 import Vistas.JFrmTipoCliente;
 import Vistas.JFrmTipoComprobante;
@@ -133,6 +134,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoProveedor = new javax.swing.JMenuItem();
         itemTipoTarjeta = new javax.swing.JMenuItem();
         itemUsuarios = new javax.swing.JMenuItem();
+        itemTimbrado = new javax.swing.JMenuItem();
         menuConsultasSistemas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -512,6 +514,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoSistemas.add(itemUsuarios);
+
+        itemTimbrado.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemTimbrado.setText("Mantenimiento de Timbrados");
+        itemTimbrado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemTimbradoActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemTimbrado);
 
         jMenu7.add(menuMantenimientoSistemas);
 
@@ -1046,6 +1057,24 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemDepositoActionPerformed
 
+    private void itemTimbradoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTimbradoActionPerformed
+        JFrmTimbrado fm = new JFrmTimbrado();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemTimbradoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1102,6 +1131,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemProveedor;
     private javax.swing.JMenuItem itemSeccion;
     private javax.swing.JMenuItem itemSucursal;
+    private javax.swing.JMenuItem itemTimbrado;
     private javax.swing.JMenuItem itemTipoArticulo;
     private javax.swing.JMenuItem itemTipoCliente;
     private javax.swing.JMenuItem itemTipoComprobante;

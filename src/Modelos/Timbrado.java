@@ -16,7 +16,7 @@ public class Timbrado {
     private Date fechainicial;
     private Date fechafinal;
     private int idcaja;
-    private int idtipomovimiento;
+    private int idtipocomprobante;
 
     public Timbrado() {
     }
@@ -93,12 +93,12 @@ public class Timbrado {
         this.idcaja = idcaja;
     }
 
-    public int getIdtipomovimiento() {
-        return idtipomovimiento;
+    public int getIdtipocomprobante() {
+        return idtipocomprobante;
     }
 
-    public void setIdtipomovimiento(int idtipomovimiento) {
-        this.idtipomovimiento = idtipomovimiento;
+    public void setIdtipocomprobante(int idtipocomprobante) {
+        this.idtipocomprobante = idtipocomprobante;
     }
     
 }
