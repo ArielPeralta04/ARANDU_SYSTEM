@@ -63,7 +63,7 @@ public class JFrmArticulo extends javax.swing.JInternalFrame {
     public void cargar() {
         DefaultTableModel modelo = (DefaultTableModel) tablaDatos.getModel();
         modelo.setRowCount(0);
-        datos = dao.consultar(txtCriterio.getText());
+        datos = dao.consultar(txtCriterio.getText(), " CONCAT(descripcion, referencia, codigoalfanumerico, codigobarra, idarticulo)");
         for (Object[] obj : datos) {
             modelo.addRow(obj);
         }

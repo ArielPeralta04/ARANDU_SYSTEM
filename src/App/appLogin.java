@@ -9,7 +9,7 @@ import Controladores.Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.*;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -44,6 +44,7 @@ public class appLogin extends javax.swing.JFrame {
 
     public appLogin() {
         FlatLightLaf.install();
+        //FlatIntelliJLaf.install();
         initComponents();
         setLocationRelativeTo(this);
     }

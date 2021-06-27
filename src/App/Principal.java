@@ -13,6 +13,8 @@ import Vistas.JFrmArticulo;
 import Vistas.JFrmBanco;
 import Vistas.JFrmCaja;
 import Vistas.JFrmCliente;
+import Vistas.JFrmCompra;
+import Vistas.JFrmConfiguracion;
 import Vistas.JFrmCotizacion;
 import Vistas.JFrmDeposito;
 import Vistas.JFrmEmpresa;
@@ -38,7 +40,7 @@ import Vistas.JFrmTipoTarjeta;
 import Vistas.JFrmUnidadMedida;
 import Vistas.JFrmUsuario;
 import Vistas.JFrmUsuarioPrograma;
-import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.*;
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
 import javax.swing.JOptionPane;
@@ -60,6 +62,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public Principal() {
         FlatLightLaf.install();
+        //FlatIntelliJLaf.install();
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
     }
@@ -98,6 +101,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoArticulo = new javax.swing.JMenuItem();
         itemUnidadMedida = new javax.swing.JMenuItem();
         menuMovimientoCompras = new javax.swing.JMenu();
+        itemCompra = new javax.swing.JMenuItem();
         menuConsultaCompras = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         menuMantenimientoVentas = new javax.swing.JMenu();
@@ -135,6 +139,7 @@ public class Principal extends javax.swing.JFrame {
         itemTipoTarjeta = new javax.swing.JMenuItem();
         itemUsuarios = new javax.swing.JMenuItem();
         itemTimbrado = new javax.swing.JMenuItem();
+        itemConfiguracion = new javax.swing.JMenuItem();
         menuConsultasSistemas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -248,6 +253,16 @@ public class Principal extends javax.swing.JFrame {
         menuMovimientoCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_course_16px.png"))); // NOI18N
         menuMovimientoCompras.setText("Movimientos");
         menuMovimientoCompras.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+
+        itemCompra.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemCompra.setText("Movimiento de Compras");
+        itemCompra.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCompraActionPerformed(evt);
+            }
+        });
+        menuMovimientoCompras.add(itemCompra);
+
         jMenu2.add(menuMovimientoCompras);
 
         menuConsultaCompras.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_browse_folder_16px.png"))); // NOI18N
@@ -523,6 +538,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoSistemas.add(itemTimbrado);
+
+        itemConfiguracion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemConfiguracion.setText("Mantenimiento de Configuración");
+        itemConfiguracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemConfiguracionActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemConfiguracion);
 
         jMenu7.add(menuMantenimientoSistemas);
 
@@ -1075,6 +1099,42 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemTimbradoActionPerformed
 
+    private void itemConfiguracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConfiguracionActionPerformed
+        JFrmConfiguracion fm = new JFrmConfiguracion();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemConfiguracionActionPerformed
+
+    private void itemCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCompraActionPerformed
+        JFrmCompra fm = new JFrmCompra();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemCompraActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1115,6 +1175,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemBanco;
     private javax.swing.JMenuItem itemCaja;
     private javax.swing.JMenuItem itemCliente;
+    private javax.swing.JMenuItem itemCompra;
+    private javax.swing.JMenuItem itemConfiguracion;
     private javax.swing.JMenuItem itemCotizacion;
     private javax.swing.JMenuItem itemDeposito;
     private javax.swing.JMenuItem itemEmpresa;

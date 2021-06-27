@@ -155,6 +155,25 @@ CREATE TABLE IF NOT EXISTS `compra_detalle` (
 /*!40000 ALTER TABLE `compra_detalle` DISABLE KEYS */;
 /*!40000 ALTER TABLE `compra_detalle` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.configuracion
+CREATE TABLE IF NOT EXISTS `configuracion` (
+  `idconfiguracion` int(11) NOT NULL,
+  `idsucursal` int(11) NOT NULL,
+  `fac_con_rec` int(11) NOT NULL,
+  `fac_cre_rec` int(11) NOT NULL,
+  PRIMARY KEY (`idconfiguracion`),
+  KEY `FK_CONFIGURACION_SUCURSAL` (`idsucursal`),
+  KEY `FK_CONFIGURACION_TIPO_MOV_FCONR` (`fac_con_rec`),
+  KEY `FK_CONFIGURACION_TIPO_MOV_FCRER` (`fac_cre_rec`),
+  CONSTRAINT `FK_CONFIGURACION_SUCURSAL` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_CONFIGURACION_TIPO_MOV_FCONR` FOREIGN KEY (`fac_con_rec`) REFERENCES `tipo_movimiento` (`idtipomovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_CONFIGURACION_TIPO_MOV_FCRER` FOREIGN KEY (`fac_cre_rec`) REFERENCES `tipo_movimiento` (`idtipomovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.configuracion: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `configuracion` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.cotizacion
 CREATE TABLE IF NOT EXISTS `cotizacion` (
   `idmoneda` int(11) NOT NULL,
@@ -333,7 +352,7 @@ CREATE TABLE IF NOT EXISTS `programa` (
   PRIMARY KEY (`idprograma`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.programa: ~26 rows (aproximadamente)
+-- Volcando datos para la tabla as.programa: ~25 rows (aproximadamente)
 /*!40000 ALTER TABLE `programa` DISABLE KEYS */;
 REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(1, 'JFrmPrograma'),
@@ -440,7 +459,7 @@ CREATE TABLE IF NOT EXISTS `timbrado` (
   CONSTRAINT `FK_TIMBRADO_TIPO_COMPROBANTE` FOREIGN KEY (`idtipocomprobante`) REFERENCES `tipo_comprobante` (`idtipo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.timbrado: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.timbrado: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `timbrado` DISABLE KEYS */;
 REPLACE INTO `timbrado` (`idtimbrado`, `establecimiento`, `puntoemision`, `timbrado`, `numeroinicial`, `numerofinal`, `fechainicial`, `fechafinal`, `idcaja`, `idtipocomprobante`) VALUES
 	(1, 1, 1, 11112222, 1, 100, '2021-01-01', '2021-12-31', 1, 1);
