@@ -8,7 +8,7 @@ import java.util.Date;
  */
 public class Compra {
     private int idcompra;
-    private int numerodocumento;
+    private String numerodocumento;
     private int numerotimbrado;
     private Date fecha;
     private String observacion;
@@ -17,6 +17,8 @@ public class Compra {
     private int idtipomovimiento;
     private int idproveedor;
     private int idusuario;
+    private double totalneto;
+    private double totaliva;
 
     public Compra() {
     }
@@ -29,14 +31,14 @@ public class Compra {
         this.idcompra = idcompra;
     }
 
-    public int getNumerodocumento() {
+    public String getNumerodocumento() {
         return numerodocumento;
     }
 
-    public void setNumerodocumento(int numerodocumento) {
+    public void setNumerodocumento(String numerodocumento) {
         this.numerodocumento = numerodocumento;
     }
-
+    
     public int getNumerotimbrado() {
         return numerotimbrado;
     }
@@ -100,6 +102,21 @@ public class Compra {
     public void setIdusuario(int idusuario) {
         this.idusuario = idusuario;
     }
-    
+
+    public double getTotalneto() {
+        return totalneto;
+    }
+
+    public void setTotalneto(double totalneto) {
+        this.totalneto = totalneto;
+    }
+
+    public double getTotaliva() {
+        return totaliva;
+    }
+
+    public void setTotaliva(double totaliva) {
+        this.totaliva = totaliva;
+    }
     
 }

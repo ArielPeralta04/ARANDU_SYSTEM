@@ -22,8 +22,8 @@ public class DAOCompraDetalle implements OperacionesCompraDetalle {
     public boolean agregar(Object obj) {
         cd = (CompraDetalle) obj;
         String sql = "INSERT INTO compra_detalle\n"
-                + "(idcompra, idarticulo, costo, cantidad, porcentajeiva)\n"
-                + "VALUES (?, ?, ?, ?, ?);";
+                + "(idcompra, idarticulo, costo, cantidad, numeroitem, iva, porcentajeiva)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -34,7 +34,9 @@ public class DAOCompraDetalle implements OperacionesCompraDetalle {
             ps.setInt(2, cd.getIdarticulo());
             ps.setDouble(3, cd.getCosto());
             ps.setDouble(4, cd.getCantidad());
-            ps.setDouble(5, cd.getPorcentajeiva());
+            ps.setInt(5, cd.getNumero_item());
+            ps.setDouble(6, cd.getIva());
+            ps.setDouble(7, cd.getPorcentaje_iva());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();

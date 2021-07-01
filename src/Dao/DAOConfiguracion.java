@@ -190,7 +190,7 @@ public class DAOConfiguracion implements OperacionesConfiguracion {
     @Override
     public boolean consultarDatos(Object obj) {
         c = (Configuracion) obj;
-        String sql = "SELECT * FROM configuracion WHERE idconfiguracion = ?;";
+        String sql = "SELECT * FROM configuracion WHERE idsucursal = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -198,7 +198,7 @@ public class DAOConfiguracion implements OperacionesConfiguracion {
             Class.forName(db.getDriver());
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
-            ps.setInt(1, c.getIdconfiguracion());
+            ps.setInt(1, c.getIdsucursal());
             rs = ps.executeQuery();
             if (rs.next()) {
                 c.setIdconfiguracion(rs.getInt(1));

@@ -1,14 +1,21 @@
 package Vistas;
 
+import App.appLogin;
 import Dao.DAOArticulo;
 import Dao.DAOCProveedor;
-import Dao.DAOCaja;
+import Dao.DAOCompra;
+import Dao.DAOCompraDetalle;
+import Dao.DAOConfiguracion;
 import Dao.DAOCotizacion;
 import Dao.DAODeposito;
+import Dao.DAOImpuesto;
 import Dao.DAOMoneda;
 import Modelos.Articulo;
-import Modelos.Caja;
+import Modelos.Compra;
+import Modelos.CompraDetalle;
+import Modelos.Configuracion;
 import Modelos.Deposito;
+import Modelos.Impuesto;
 import Modelos.Moneda;
 import Modelos.Proveedor;
 import java.text.DecimalFormat;
@@ -24,27 +31,30 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JFrmCompra extends javax.swing.JInternalFrame {
 
-    Caja c = new Caja();
+    Compra c = new Compra();
+    CompraDetalle cd = new CompraDetalle();
     Moneda m = new Moneda();
     Deposito d = new Deposito();
     Proveedor p = new Proveedor();
     Articulo a = new Articulo();
+    Configuracion co = new Configuracion();
+    Impuesto i = new Impuesto();
 
-    DAOCaja dao = new DAOCaja();
+    DAOCompra dao = new DAOCompra();
+    DAOCompraDetalle daoCompraDetalle = new DAOCompraDetalle();
     DAOMoneda daoMoneda = new DAOMoneda();
     DAOCotizacion daoCotizacion = new DAOCotizacion();
     DAODeposito daoDeposito = new DAODeposito();
     DAOCProveedor daoProveedor = new DAOCProveedor();
     DAOArticulo daoArticulo = new DAOArticulo();
+    DAOConfiguracion daoConfiguracion = new DAOConfiguracion();
+    DAOImpuesto daoImpuesto = new DAOImpuesto();
 
     ArrayList<Object[]> datos = new ArrayList<>();
     ArrayList<Object[]> datosMoneda = new ArrayList<>();
     ArrayList<Object[]> datosDeposito = new ArrayList<>();
     ArrayList<Object[]> datosProveedor = new ArrayList<>();
     ArrayList<Object[]> datosArticulo = new ArrayList<>();
-
-    //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
-    String operacion = "";
 
     String tres_ceros = String.format("%%0%dd", 3);
     String siete_ceros = String.format("%%0%dd", 7);
@@ -54,6 +64,12 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
     int codigoarticulo;
     Double valorCosto = 0.0;
     Double valorCantidad = 0.0;
+    int idtipomovimientocontado;
+    int idtipomovimientocredito;
+    int Establecimiento;
+    Double valorTotalNeto = 0.0;
+    Double valorTotalIva = 0.0;
+    Double porcentajeIva = 0.0;
 
     /**
      * Creates new form JFrmCompra
@@ -65,6 +81,21 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         String fechaActual = formato.format(SYSDATE);
         txtFecha.setDate(daoCotizacion.parseFecha(fechaActual));
         rbContado.setSelected(true);
+    }
+
+    public void obtenerConfiguracion() {
+        boolean resultado;
+        int codigosucursal = appLogin.IDSUCURSAL;
+        co.setIdsucursal(codigosucursal);
+        resultado = daoConfiguracion.consultarDatos(co);
+        if (resultado == true) {
+            idtipomovimientocontado = co.getFac_con_rec();
+            idtipomovimientocredito = co.getFac_cre_rec();
+        } else {
+            JOptionPane.showMessageDialog(null, "NO SE HA ENCONTRADO LA CONFIGURACIÓN NECESARIA.\n"
+                    + " VERIFIQUE EN SISTEMA GENERAL SI LA CONFIGURACIÓN ESTA CARGADA DE FORMA CORRECTA. ", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+            dispose();
+        }
     }
 
     public void cargarMoneda() {
@@ -177,6 +208,12 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (fila >= 0) {
             txtCodigoArticulo.setText(tablaDatosArticulo.getValueAt(fila, 0).toString());
             txtDescripcionArticulo.setText(tablaDatosArticulo.getValueAt(fila, 1).toString());
+            codigoarticulo = Integer.parseInt(tablaDatosArticulo.getValueAt(fila, 0).toString());
+            a.setIdarticulo(codigoarticulo);
+            daoArticulo.consultarDatos(a);
+            i.setIdimpuesto(a.getIdimpuesto());
+            daoImpuesto.consultarDatos(i);
+            porcentajeIva = i.getPorcentaje();
             txtCosto.grabFocus();
         } else {
             txtCodigoArticulo.setText(null);
@@ -192,6 +229,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         codigoarticulo = 0;
         valorCosto = 0.0;
         valorCantidad = 0.0;
+        porcentajeIva = 0.0;
     }
 
     private void agregar() {
@@ -202,6 +240,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         String articulo = txtDescripcionArticulo.getText();
         Double costo = valorCosto;
         Double cantidad = valorCantidad;
+        Double porc_iva = porcentajeIva;
 
         if (msj.isEmpty()) {
             int i;
@@ -214,18 +253,20 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
                 }
             }
             if (existe == false) {
-                insertarArticulo(numero_item, referencia, idarticulo, articulo, costo, cantidad);
+                insertarArticulo(numero_item, referencia, idarticulo, articulo, costo, cantidad, porc_iva);
+                calcularTotales();
             } else {
                 actualizarArticulo(i, cantidad, costo);
+                calcularTotales();
             }
         }
     }
 
-    private void insertarArticulo(int numero_item, String referencia, int idarticulo, String descripcion, double costo, double cantidad) {
+    private void insertarArticulo(int numero_item, String referencia, int idarticulo, String descripcion, double costo, double cantidad, double porcentaje) {
         if (cantidad <= 0) {
             JOptionPane.showMessageDialog(null, "NO PUEDE AGREGAR UN PRODUCTO CON LA CANTIDAD 0");
         } else {
-            Object[] fila = new Object[7];
+            Object[] fila = new Object[8];
             fila[0] = numero_item;
             fila[1] = referencia;
             fila[2] = idarticulo;
@@ -233,6 +274,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             fila[4] = costo;
             fila[5] = cantidad;
             fila[6] = cantidad * costo;
+            fila[7] = porcentaje;
 
             DefaultTableModel modelo = (DefaultTableModel) tablaDatos.getModel();
             modelo.addRow(fila);
@@ -283,6 +325,180 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA PARA RETIRAR\n");
         }
+    }
+
+    private void guardar() {
+        int id = guardarCabecera();
+        if (id != 0) {
+            guardarDetalle(id);
+            JOptionPane.showMessageDialog(null, "COMPRA REGISTRADA EXITOSAMENTE...", "MENSAJE", JOptionPane.INFORMATION_MESSAGE);
+            cancelar();
+        } else {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL MOMENTO DE GUARDAR LOS DATOS...", "ERROR", JOptionPane.ERROR_MESSAGE);
+            cancelar();
+        }
+    }
+
+    private int guardarCabecera() {
+        //VARIABLE PARA ALMACENAR MENSAJES
+        String msj = "";
+        //CAMPOS PARA LA BASE DE DATOS
+        int id = dao.nuevoID();
+        String numerodocumento = txtComprobante.getText();
+        int numerotimbrado = Integer.parseInt(txtTimbrado.getText());
+        Date fecha = txtFecha.getDate();
+        java.sql.Date fechaSQL = new java.sql.Date(fecha.getTime());
+        String observacion = txtObservacion.getText();
+
+        int idMoneda = Integer.parseInt(txtCodigoMoneda.getText());
+        int idDeposito = Integer.parseInt(txtCodigoDeposito.getText());
+        int idtipomovimiento;
+        if (rbContado.isSelected()) {
+            idtipomovimiento = idtipomovimientocontado;
+        } else {
+            idtipomovimiento = idtipomovimientocredito;
+        }
+        int idProveedor = Integer.parseInt(txtCodigoProveedor.getText());
+        int idUsuario = appLogin.IDUSUARIO;
+        double totalneto = 0.0;
+        double totaliva = 0.0;
+        //VALIDACIONES
+        if (fecha == null) {
+            msj += "LA FECHA DE LA OPERACION NO PUEDE SER NULO.\n";
+        }
+        if (idProveedor == 0) {
+            msj += "NO HA SELECCIONADO NINGUN PROVEEDOR.\n";
+        }
+        if (idMoneda == 0) {
+            msj += "NO HA SELECCIONADO NINGUNA MONEDA.\n";
+        }
+        if (idDeposito == 0) {
+            msj += "NO HA SELECCIONADO NINGUN DEPÓSITO.\n";
+        }
+        if (idtipomovimiento == 0) {
+            msj += "NO HA SELECCIONADO NINGUN TIPO DE MOVIMIENTO.\n";
+        }
+        if (idUsuario == 0) {
+            msj += "NO SE HA RECUPERADO NINGUN USUARIO.\n";
+        }
+        if (msj.isEmpty()) {
+            c.setIdcompra(id);
+            c.setNumerodocumento(numerodocumento);
+            c.setNumerotimbrado(numerotimbrado);
+            c.setFecha(fechaSQL);
+            c.setObservacion(observacion);
+            c.setIdmoneda(idMoneda);
+            c.setIddeposito(idDeposito);
+            c.setIdtipomovimiento(idtipomovimiento);
+            c.setIdproveedor(idProveedor);
+            c.setIdusuario(idUsuario);
+            for (int i = 0; i < tablaDatos.getRowCount(); i++) {
+                double porcentaje = Double.parseDouble(tablaDatos.getValueAt(i, 7).toString());
+                double costo = Double.parseDouble(tablaDatos.getValueAt(i, 4).toString());
+                double costoFinal = 0.0;
+                double ivaFinal = 0.0;
+                if (porcentaje == 0.0) {
+                    ivaFinal = 0.0;
+                    costoFinal = (costo);
+                }
+                if (porcentaje == 5.0) {
+                    ivaFinal = costo / 21;
+                    costoFinal = (costo - (costo / 21));
+                }
+                if (porcentaje == 10.0) {
+                    ivaFinal = costo / 11;
+                    costoFinal = (costo - (costo / 11));
+                }
+                if (idMoneda == 1) {
+                    totaliva = totaliva + (Math.round(ivaFinal));
+                    totalneto = totalneto + (Math.round(costoFinal));
+                } else {
+                    totaliva = totaliva + (Math.round(ivaFinal * 1000.0) / 1000.0);
+                    totalneto = totalneto + (Math.round(costoFinal * 1000.0) / 1000.0);
+                }
+            }
+            c.setTotalneto(totalneto);
+            c.setTotaliva(totaliva);
+            dao.agregar(c);
+        }
+        return id;
+    }
+
+    private void guardarDetalle(int id) {
+        int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
+        for (int i = 0; i < tablaDatos.getRowCount(); i++) {
+            int numeroitem = Integer.parseInt(tablaDatos.getValueAt(i, 0).toString());
+            int idarticulo = Integer.parseInt(tablaDatos.getValueAt(i, 2).toString());
+            double cantidad = Double.parseDouble(tablaDatos.getValueAt(i, 5).toString());
+            double porcentaje = Double.parseDouble(tablaDatos.getValueAt(i, 7).toString());
+            double costo = Double.parseDouble(tablaDatos.getValueAt(i, 4).toString());
+            cd.setIdcompra(id);
+            cd.setNumero_item(numeroitem);
+            cd.setIdarticulo(idarticulo);
+            cd.setCantidad(cantidad);
+            double costoFinal = 0.0;
+            double ivaFinal = 0.0;
+            if (porcentaje == 0.0) {
+                ivaFinal = 0.0;
+                costoFinal = (costo);
+            }
+            if (porcentaje == 5.0) {
+                ivaFinal = costo / 21;
+                costoFinal = (costo - (costo / 21));
+            }
+            if (porcentaje == 10.0) {
+                ivaFinal = costo / 11;
+                costoFinal = (costo - (costo / 11));
+            }
+
+            if (idmoneda == 1) {
+                cd.setIva(Math.round(ivaFinal));
+                cd.setCosto(Math.round(costoFinal));
+            } else {
+                cd.setIva(Math.round(ivaFinal * 1000.0) / 1000.0);
+                cd.setCosto(Math.round(costoFinal * 1000.0) / 1000.0);
+            }
+            cd.setPorcentaje_iva(porcentaje);
+            daoCompraDetalle.agregar(cd);
+        }
+    }
+
+    private void cancelar() {
+        txtPuntoEmision.setText(null);
+        txtEstablecimiento.setText(null);
+        txtNumero.setText(null);
+        txtComprobante.setText(null);
+        txtTimbrado.setText(null);
+        txtObservacion.setText(null);
+        txtCodigoMoneda.setText(null);
+        txtDescripcionMoneda.setText(null);
+        txtCodigoDeposito.setText(null);
+        txtDescripcionDeposito.setText(null);
+        txtCodigoProveedor.setText(null);
+        txtDescripcionProveedor.setText(null);
+        txtRucProveedor.setText(null);
+        txtTotal.setText(null);
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatos.getModel();
+        modelo.setRowCount(0);
+
+        String fechaActual = formato.format(SYSDATE);
+        txtFecha.setDate(daoCotizacion.parseFecha(fechaActual));
+        rbContado.grabFocus();
+    }
+
+    private void calcularTotales() {
+        int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
+        DecimalFormat formatter;
+        if (idmoneda == 1) {
+            formatter = new DecimalFormat("#,###");
+        } else {
+            formatter = new DecimalFormat("#,###.000");
+        }
+        double TOTAL = 0.0;
+        for (int i = 0; i < tablaDatos.getRowCount(); i++) {
+            TOTAL = TOTAL + Double.parseDouble((tablaDatos.getValueAt(i, 6).toString()));
+        }
+        txtTotal.setText(formatter.format(TOTAL));
     }
 
     /**
@@ -366,6 +582,8 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         btnConfirmar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
+        txtTotal = new org.jdesktop.swingx.JXTextField();
+        jLabel15 = new javax.swing.JLabel();
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -827,6 +1045,28 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameOpened(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(50, 104, 151));
 
@@ -1281,14 +1521,14 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nº</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Referencia</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Artículo</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Costo</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cantidad</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Sub Total</span></span></span></p></html> "
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nº</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Referencia</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Artículo</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Costo</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cantidad</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Sub Total</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">%Iva</span></span></span></p></html> "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -1319,6 +1559,9 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             tablaDatos.getColumnModel().getColumn(6).setMinWidth(100);
             tablaDatos.getColumnModel().getColumn(6).setPreferredWidth(100);
             tablaDatos.getColumnModel().getColumn(6).setMaxWidth(100);
+            tablaDatos.getColumnModel().getColumn(7).setMinWidth(0);
+            tablaDatos.getColumnModel().getColumn(7).setPreferredWidth(0);
+            tablaDatos.getColumnModel().getColumn(7).setMaxWidth(0);
         }
 
         btnAgregar.setBackground(new java.awt.Color(235, 235, 235));
@@ -1386,28 +1629,46 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             }
         });
 
+        txtTotal.setEditable(false);
+        txtTotal.setBackground(new java.awt.Color(255, 255, 255));
+        txtTotal.setForeground(new java.awt.Color(0, 153, 0));
+        txtTotal.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        txtTotal.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        txtTotal.setPrompt("0");
+
+        jLabel15.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel15.setText("Total de la Compra:");
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRetirar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnConfirmar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSalir, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel15)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1109, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRetirar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnConfirmar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnCancelar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1417,7 +1678,13 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtTotal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -1475,6 +1742,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (txtEstablecimiento.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
         } else {
+            Establecimiento = Integer.parseInt(txtEstablecimiento.getText());
             txtEstablecimiento.setText(String.format(tres_ceros, Integer.parseInt(txtEstablecimiento.getText())));
             txtPuntoEmision.grabFocus();
         }
@@ -1831,6 +2099,9 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             if (resultado == true) {
                 txtDescripcionArticulo.setText(a.getDescripcion());
                 codigoarticulo = a.getIdarticulo();
+                i.setIdimpuesto(a.getIdimpuesto());
+                daoImpuesto.consultarDatos(i);
+                porcentajeIva = i.getPorcentaje();
                 a.setCodigobarra(null);
                 a.setCodigoalfanumerico(null);
                 a.setIdarticulo(0);
@@ -2011,6 +2282,9 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (evt.VK_F1 == evt.getKeyCode()) {
             buscarArticulo();
         }
+        if (evt.VK_F2 == evt.getKeyCode()) {
+            btnConfirmar.grabFocus();
+        }
     }//GEN-LAST:event_txtCodigoArticuloKeyPressed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -2029,16 +2303,42 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnRetirarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // TODO add your handling code here:
+        int respuesta;
+        respuesta = JOptionPane.showConfirmDialog(null, "¿CONFIRMAR COMPRA?",
+                "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
+        if (respuesta != 1) {
+            guardar();
+            rbContado.grabFocus();
+        }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        int respuesta;
+        respuesta = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE CANCELAR LOS CAMBIOS?",
+                "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
+        if (respuesta != 1) {
+            cancelar();
+        }
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
+        int respuesta;
+        respuesta = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE SALIR DEL PROGRAMA?",
+                "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
+        if (respuesta != 1) {
+            dispose();
+        }
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
+        obtenerConfiguracion();
+    }//GEN-LAST:event_formInternalFrameOpened
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        if (evt.VK_F9 == evt.getKeyCode()) {
+            JOptionPane.showMessageDialog(null, "MENSAJE DE PRUEBA");
+        }
+    }//GEN-LAST:event_formKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2059,6 +2359,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -2114,5 +2415,6 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
     private org.jdesktop.swingx.JXTextField txtPuntoEmision;
     private org.jdesktop.swingx.JXTextField txtRucProveedor;
     private org.jdesktop.swingx.JXTextField txtTimbrado;
+    private org.jdesktop.swingx.JXTextField txtTotal;
     // End of variables declaration//GEN-END:variables
 }

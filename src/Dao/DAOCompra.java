@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Controladores.OperacionesCompra;
 import Modelos.Compra;
@@ -27,8 +26,8 @@ public class DAOCompra implements OperacionesCompra {
         c = (Compra) obj;
         String sql = "INSERT INTO compra\n"
                 + "(idcompra, numerodocumento, numerotimbrado, fecha, \n"
-                + "observacion, idmoneda, iddeposito, idtipomovimiento, idproveedor, idusuario)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                + "observacion, idmoneda, iddeposito, idtipomovimiento, idproveedor, idusuario, totalneto, totaliva)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -36,7 +35,7 @@ public class DAOCompra implements OperacionesCompra {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, c.getIdcompra());
-            ps.setInt(2, c.getNumerodocumento());
+            ps.setString(2, c.getNumerodocumento());
             ps.setInt(3, c.getNumerotimbrado());
             ps.setDate(4, (Date) c.getFecha());
             ps.setString(5, c.getObservacion());
@@ -45,10 +44,12 @@ public class DAOCompra implements OperacionesCompra {
             ps.setInt(8, c.getIdtipomovimiento());
             ps.setInt(9, c.getIdproveedor());
             ps.setInt(10, c.getIdusuario());
+            ps.setDouble(11, c.getTotalneto());
+            ps.setDouble(12, c.getTotaliva());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
-                JOptionPane.showMessageDialog(null, "COMPRA REGISTRADA EXITOSAMENTE", "EXITO", JOptionPane.INFORMATION_MESSAGE);
+                //JOptionPane.showMessageDialog(null, "COMPRA REGISTRADA EXITOSAMENTE", "EXITO", JOptionPane.INFORMATION_MESSAGE);
                 return true;
             } else {
                 con.close();
@@ -74,6 +75,8 @@ public class DAOCompra implements OperacionesCompra {
                 + "		idtipomovimiento=?,\n"
                 + "		idproveedor=?,\n"
                 + "		idusuario=?\n"
+                + "		totalneto=?\n"
+                + "		totaliva=?\n"
                 + "	WHERE idcompra=?;";
         Connection con;
         PreparedStatement ps;
@@ -82,7 +85,7 @@ public class DAOCompra implements OperacionesCompra {
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, c.getIdcompra());
-            ps.setInt(2, c.getNumerodocumento());
+            ps.setString(2, c.getNumerodocumento());
             ps.setInt(3, c.getNumerotimbrado());
             ps.setDate(4, (Date) c.getFecha());
             ps.setString(5, c.getObservacion());
@@ -91,6 +94,8 @@ public class DAOCompra implements OperacionesCompra {
             ps.setInt(8, c.getIdtipomovimiento());
             ps.setInt(9, c.getIdproveedor());
             ps.setInt(10, c.getIdusuario());
+            ps.setDouble(11, c.getTotalneto());
+            ps.setDouble(12, c.getTotaliva());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -161,5 +166,10 @@ public class DAOCompra implements OperacionesCompra {
             JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER UN NUEVO CÓDIGO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         return id;
+    }
+
+    @Override
+    public boolean verificarExistenciaCompra(String numerodocumento, int numerotimbrado) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

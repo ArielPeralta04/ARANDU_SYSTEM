@@ -11,7 +11,9 @@ public class CompraDetalle {
     private int idarticulo;
     private double costo;
     private double cantidad;
-    private double porcentajeiva;
+    private int numero_item;
+    private double iva;
+    private double porcentaje_iva;
 
     public CompraDetalle() {
     }
@@ -48,12 +50,28 @@ public class CompraDetalle {
         this.cantidad = cantidad;
     }
 
-    public double getPorcentajeiva() {
-        return porcentajeiva;
+    public int getNumero_item() {
+        return numero_item;
     }
 
-    public void setPorcentajeiva(double porcentajeiva) {
-        this.porcentajeiva = porcentajeiva;
+    public void setNumero_item(int numero_item) {
+        this.numero_item = numero_item;
+    }
+
+    public double getIva() {
+        return iva;
+    }
+
+    public void setIva(double iva) {
+        this.iva = iva;
+    }
+
+    public double getPorcentaje_iva() {
+        return porcentaje_iva;
+    }
+
+    public void setPorcentaje_iva(double porcentaje_iva) {
+        this.porcentaje_iva = porcentaje_iva;
     }
     
 }
