@@ -170,6 +170,29 @@ public class DAOCompra implements OperacionesCompra {
 
     @Override
     public boolean verificarExistenciaCompra(String numerodocumento, int numerotimbrado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = "SELECT COUNT(*) CONTADOR FROM compra AS C WHERE C.numerodocumento LIKE ? AND C.numerotimbrado = ?;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        boolean resultado = false;
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setString(1, numerodocumento);
+            ps.setInt(2, numerotimbrado);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                if (rs.getInt(1) >= 1) {
+                    resultado = true;
+                } else {
+                    resultado = false;
+                }
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL VERIFICAR EL CÓDIGO DE BARRA \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return resultado;
     }
 }

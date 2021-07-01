@@ -381,6 +381,9 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (idUsuario == 0) {
             msj += "NO SE HA RECUPERADO NINGUN USUARIO.\n";
         }
+        if (dao.verificarExistenciaCompra(numerodocumento, numerotimbrado) == true) {
+            msj += "\"YA EXISTE UNA COMPRA CON EL NÙMERO DE DOCUMENTO Y EL TIMBRADO INGRESADO.\n";
+        }
         if (msj.isEmpty()) {
             c.setIdcompra(id);
             c.setNumerodocumento(numerodocumento);
@@ -417,8 +420,13 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
                     totalneto = totalneto + (Math.round(costoFinal * 1000.0) / 1000.0);
                 }
             }
-            c.setTotalneto(totalneto);
-            c.setTotaliva(totaliva);
+            if (idMoneda == 1) {
+                c.setTotalneto(Math.round(totalneto));
+                c.setTotaliva(Math.round(totaliva));
+            } else {
+                c.setTotalneto(Math.round(totalneto * 1000.0)/1000.0);
+                c.setTotaliva(Math.round(totaliva * 1000.0)/1000.0);
+            }
             dao.agregar(c);
         }
         return id;
@@ -1804,14 +1812,25 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (txtTimbrado.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TIMBRADO VACIO.", "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
         } else {
+            boolean resultado = false;
             if (txtTimbrado.getText().length() < 8) {
                 int respuesta = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DEL TIMBRADO INGRESADO?",
                         "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
                 if (respuesta != 1) {
-                    txtCodigoMoneda.grabFocus();
+                    resultado = dao.verificarExistenciaCompra(txtComprobante.getText(), Integer.parseInt(txtTimbrado.getText()));
+                    if (resultado == true) {
+                        JOptionPane.showMessageDialog(null, "YA EXISTE UNA COMPRA CON EL NÙMERO DE DOCUMENTO Y EL TIMBRADO INGRESADO.", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        txtCodigoMoneda.grabFocus();
+                    }
                 }
             } else {
-                txtCodigoMoneda.grabFocus();
+                resultado = dao.verificarExistenciaCompra(txtComprobante.getText(), Integer.parseInt(txtTimbrado.getText()));
+                if (resultado == true) {
+                    JOptionPane.showMessageDialog(null, "YA EXISTE UNA COMPRA CON EL NÙMERO DE DOCUMENTO Y EL TIMBRADO INGRESADO.", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    txtCodigoMoneda.grabFocus();
+                }
             }
         }
     }//GEN-LAST:event_txtTimbradoActionPerformed
@@ -1834,9 +1853,19 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
             m.setIdmoneda(idmoneda);
             boolean resultado = daoMoneda.consultarDatos(m);
+            Date fecha = txtFecha.getDate();
+            java.sql.Date fechaSQL = new java.sql.Date(fecha.getTime());
+            boolean cotizacion = daoCotizacion.verificarCotizacion("" + fechaSQL, idmoneda);
             if (resultado == true) {
-                txtDescripcionMoneda.setText(m.getDescripcion());
-                txtCodigoDeposito.grabFocus();
+                if (idmoneda != 1) {
+                    if (cotizacion == false) {
+                        JOptionPane.showMessageDialog(null, "NO EXISTE UNA COTIZACION PARA LA FECHA INGRESADA.", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
+                        dispose();
+                    } else {
+                        txtDescripcionMoneda.setText(m.getDescripcion());
+                        txtCodigoDeposito.grabFocus();
+                    }
+                }
             } else {
                 txtCodigoMoneda.setText(null);
                 txtDescripcionMoneda.setText(null);
