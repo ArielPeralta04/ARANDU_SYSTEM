@@ -44,5 +44,5 @@ public class Configuracion {
     public void setFac_cre_rec(int fac_cre_rec) {
         this.fac_cre_rec = fac_cre_rec;
     }
-    
+   
 }

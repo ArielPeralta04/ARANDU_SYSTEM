@@ -68,12 +68,33 @@ CREATE TABLE IF NOT EXISTS `articulo_deposito` (
   CONSTRAINT `FK_ARTICULO_DEPOSITO_DEPOSITO` FOREIGN KEY (`iddeposito`) REFERENCES `deposito` (`iddeposito`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_deposito: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_deposito: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_deposito` DISABLE KEYS */;
 REPLACE INTO `articulo_deposito` (`idarticulo`, `iddeposito`, `cantidad`) VALUES
-	(1, 1, 1),
-	(2, 1, 1);
+	(1, 1, 15);
 /*!40000 ALTER TABLE `articulo_deposito` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.articulo_periodo
+CREATE TABLE IF NOT EXISTS `articulo_periodo` (
+  `idarticulo` int(11) NOT NULL,
+  `idperiodo` int(11) NOT NULL,
+  `idmoneda` int(11) NOT NULL,
+  `costo` double NOT NULL,
+  PRIMARY KEY (`idarticulo`,`idperiodo`,`idmoneda`) USING BTREE,
+  KEY `FK_ARTICULO_PERIODO_PERIODO` (`idperiodo`),
+  KEY `FK_ARTICULO_PERIODO_ARTICULO` (`idarticulo`),
+  KEY `FK_ARTICULO_PERIODO_MONEDA` (`idmoneda`),
+  CONSTRAINT `FK_ARTICULO_PERIODO_ARTICULO` FOREIGN KEY (`idarticulo`) REFERENCES `articulo` (`idarticulo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_ARTICULO_PERIODO_MONEDA` FOREIGN KEY (`idmoneda`) REFERENCES `moneda` (`idmoneda`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_ARTICULO_PERIODO_PERIODO` FOREIGN KEY (`idperiodo`) REFERENCES `periodo` (`idperiodo`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.articulo_periodo: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `articulo_periodo` DISABLE KEYS */;
+REPLACE INTO `articulo_periodo` (`idarticulo`, `idperiodo`, `idmoneda`, `costo`) VALUES
+	(1, 1, 1, 5000),
+	(1, 1, 2, 2);
+/*!40000 ALTER TABLE `articulo_periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.banco
 CREATE TABLE IF NOT EXISTS `banco` (
@@ -156,10 +177,14 @@ CREATE TABLE IF NOT EXISTS `compra` (
   CONSTRAINT `FK_COMPRA_USUARIO` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra` DISABLE KEYS */;
 REPLACE INTO `compra` (`idcompra`, `numerodocumento`, `numerotimbrado`, `fecha`, `observacion`, `idmoneda`, `iddeposito`, `idtipomovimiento`, `idproveedor`, `idusuario`, `totalneto`, `totaliva`) VALUES
-	(1, '001-001-0000001', 11111111, '2021-07-01', 'ASDASDASDAS', 2, 1, 1, 1, 1, 1861.472, 138.528);
+	(1, '001-001-0000001', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
+	(2, '001-001-0000002', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
+	(3, '001-001-0000003', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
+	(4, '001-001-0000004', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
+	(5, '001-001-0000005', 11111111, '2021-07-04', '', 2, 1, 1, 1, 1, 1.905, 0.095);
 /*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_cuota
@@ -193,11 +218,11 @@ CREATE TABLE IF NOT EXISTS `compra_detalle` (
   CONSTRAINT `FK_COMPRA_DETALLE_COMPRA` FOREIGN KEY (`idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra_detalle: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra_detalle: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_detalle` DISABLE KEYS */;
 REPLACE INTO `compra_detalle` (`idcompra`, `idarticulo`, `costo`, `cantidad`, `numeroitem`, `iva`, `porcentajeiva`) VALUES
-	(1, 1, 952.381, 1, 1, 47.619, 5),
-	(1, 2, 909.091, 1, 2, 90.909, 10);
+	(4, 1, 4762, 5, 1, 238, 5),
+	(5, 1, 1.905, 10, 1, 0.095, 5);
 /*!40000 ALTER TABLE `compra_detalle` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.configuracion
@@ -218,8 +243,7 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
 -- Volcando datos para la tabla as.configuracion: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
 REPLACE INTO `configuracion` (`idconfiguracion`, `idsucursal`, `fac_con_rec`, `fac_cre_rec`) VALUES
-	(1, 1, 1, 2),
-	(2, 2, 1, 2);
+	(1, 1, 1, 2);
 /*!40000 ALTER TABLE `configuracion` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.cotizacion
@@ -235,7 +259,7 @@ CREATE TABLE IF NOT EXISTS `cotizacion` (
 -- Volcando datos para la tabla as.cotizacion: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
 REPLACE INTO `cotizacion` (`idmoneda`, `fecha`, `tasa`) VALUES
-	(2, '2021-07-01', 7000);
+	(2, '2021-07-04', 7000);
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.deposito
@@ -389,10 +413,10 @@ CREATE TABLE IF NOT EXISTS `periodo` (
   PRIMARY KEY (`idperiodo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.periodo: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.periodo: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `periodo` DISABLE KEYS */;
 REPLACE INTO `periodo` (`idperiodo`, `fecha_desde`, `fecha_hasta`) VALUES
-	(1, '2021-05-01', '2021-05-31');
+	(1, '2021-07-01', '2021-07-31');
 /*!40000 ALTER TABLE `periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.programa
@@ -707,6 +731,42 @@ REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 31);
 /*!40000 ALTER TABLE `usuario_programa` ENABLE KEYS */;
 
+-- Volcando estructura para procedimiento as.P_ACT_ITEM_COSTO
+DELIMITER //
+CREATE PROCEDURE `P_ACT_ITEM_COSTO`(
+	IN `xIDARTICULO` INT,
+	IN `xCOSTO` DOUBLE,
+	IN `xIDCOMPRA` INT
+)
+BEGIN
+	DECLARE V_CONTADOR INT;
+	DECLARE V_PERIODO INT;
+	DECLARE V_FECHA DATE;
+	DECLARE V_MONEDA INT;
+	
+	SELECT C.fecha, C.idmoneda INTO V_FECHA, V_MONEDA FROM compra AS C WHERE C.idcompra = xIDCOMPRA;
+	
+	SET V_PERIODO = FP_ACT_PERIODO_INS_UPD(V_FECHA);
+	
+	SELECT COUNT(*) INTO V_CONTADOR FROM articulo_periodo AS P
+	WHERE P.idarticulo = xIDARTICULO
+	AND P.idperiodo = V_PERIODO
+	AND P.idmoneda = V_MONEDA;
+	
+	IF V_CONTADOR = 0 THEN
+		INSERT INTO articulo_periodo
+		(idarticulo, idperiodo, idmoneda, costo)
+		VALUES (xIDARTICULO, V_PERIODO, V_MONEDA, xCOSTO);
+	ELSE
+		UPDATE articulo_periodo
+		SET
+			costo=xCOSTO
+		WHERE idarticulo=xIDARTICULO AND idperiodo=V_PERIODO AND idmoneda = V_MONEDA;
+	END IF;
+	
+END//
+DELIMITER ;
+
 -- Volcando estructura para procedimiento as.P_ACT_ITEM_DEP
 DELIMITER //
 CREATE PROCEDURE `P_ACT_ITEM_DEP`(
@@ -764,6 +824,72 @@ BEGIN
 	END IF;	
 END//
 DELIMITER ;
+
+-- Volcando estructura para función as.FP_ACT_PERIODO_INS_UPD
+DELIMITER //
+CREATE FUNCTION `FP_ACT_PERIODO_INS_UPD`(`xFECHA` DATE
+) RETURNS int(11)
+BEGIN
+DECLARE V_CONTADOR INT;
+DECLARE V_PERIODO INT;
+DECLARE V_FECHA_DESDE DATE;
+DECLARE V_FECHA_HASTA DATE;
+DECLARE V_FECHA_INICIAL DATE;
+DECLARE V_FECHA_FINAL DATE;
+DECLARE V_CODIGO_NUEVO INT;
+DECLARE V_CODIGO_PERIODO INT;
+
+	SELECT COUNT(*), P.idperiodo, P.fecha_desde, P.fecha_hasta 
+	INTO V_CONTADOR, V_PERIODO, V_FECHA_DESDE, V_FECHA_HASTA
+	FROM periodo AS P WHERE xFECHA BETWEEN P.fecha_desde AND P.fecha_hasta;
+	
+	IF V_CONTADOR = 0 THEN
+	
+		/*OBTENER EL PRIMER Y ULTIMO DIA DEL MES EN BASE A LA FECHA DEL DOCUMENTO*/
+		
+		SELECT 
+		CAST(DATE_FORMAT(xFECHA,'%Y-%m-01') AS DATE) PRIMER_DIA,
+		LAST_DAY(xFECHA) ULTIMO_DIA
+		INTO 
+		V_FECHA_INICIAL,
+		V_FECHA_FINAL;
+		
+		/*OBTENER EL NUEVO CODIGO PARA EL PERIODO*/
+		select idperiodo + 1 as proximo_cod_libre
+		INTO V_CODIGO_NUEVO
+		from (select 0 as idperiodo
+		       union all
+		      select idperiodo
+		        from periodo) t1
+		                where not exists (select null
+		                   from periodo t2
+		                  where t2.idperiodo = t1.idperiodo + 1)
+		                order by idperiodo
+		                LIMIT 1;
+		
+		/*INSERTAR UN NUEVO PERIODO*/
+		INSERT INTO periodo
+		(idperiodo, fecha_desde, fecha_hasta)
+		VALUES (V_CODIGO_NUEVO, V_FECHA_INICIAL, V_FECHA_FINAL);
+		
+		SET V_CODIGO_PERIODO = V_CODIGO_NUEVO;
+		
+	ELSE
+		SET V_CODIGO_PERIODO = V_PERIODO;
+	END IF;
+	
+	RETURN V_CODIGO_PERIODO;
+END//
+DELIMITER ;
+
+-- Volcando estructura para disparador as.TR_COMPRA_DETALLE_PERIODO_COSTO
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `TR_COMPRA_DETALLE_PERIODO_COSTO` BEFORE INSERT ON `compra_detalle` FOR EACH ROW BEGIN
+	CALL P_ACT_ITEM_COSTO(NEW.idarticulo, (NEW.costo + NEW.iva), NEW.idcompra);
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 -- Volcando estructura para disparador as.TR_COMPRA_DETALLE_STOCK_DEL
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
