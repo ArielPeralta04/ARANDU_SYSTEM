@@ -47,13 +47,530 @@ CREATE TABLE IF NOT EXISTS `articulo` (
   CONSTRAINT `FK_ARTICULO_UNIDAD_MEDIDA` FOREIGN KEY (`idunidad`) REFERENCES `unidad_medida` (`idunidad`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.articulo: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo: ~521 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo` DISABLE KEYS */;
 REPLACE INTO `articulo` (`idarticulo`, `descripcion`, `referencia`, `codigoalfanumerico`, `codigobarra`, `estado`, `observacion`, `idmarca`, `idlinea`, `idseccion`, `idtipo`, `idunidad`, `idimpuesto`) VALUES
-	(1, 'CARAMELO CRISTAL', 'MENTA ARCOR', '', '', 'A', '', 1, 1, 1, 1, 1, 2),
-	(2, 'REMEDIO PARA MATE MANZANILLA 15GR', 'MATRICARIA - CHAMOMILLA - FLOR', '', '7840595001616', 'A', '', 1, 1, 1, 1, 1, 3),
-	(3, 'ARTICULO DE PRUEBA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
-	(4, 'ARTICULO DE PRUEBA DOS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3);
+	(1, 'CABLE USB SAMSUNG V8 30 cm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(2, 'CABLE USB SAMSUNG V8 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(3, 'CABLE USB SAMSUNG V8 1,30m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(4, 'CABLE USB SAMSUNG V8 2m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(5, 'CABLE USB 3.0 P.MEMORIA EXTERNA 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(6, 'CABLE MICRO USB SAMSUNG 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(7, 'CABLE USB SAMSUNG TC 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(8, 'CABLE USB SAMSUNG REPLICA TC 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(9, 'CABLE USB ECOPOWER V8 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(10, 'CABLE USB ECOPOWER TC 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(11, 'CABLE USB ECOPOWER TRIPLE ENTRADA 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(12, 'CABLE USB RECRSI IPHONE 1m ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(13, 'CABLE USB IPHONE ORIGINAL 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(14, 'CABLE USB IPHONE ORIGINAL 2m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(15, 'CABLE USB IPHONE ORIGINAL TC 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(16, 'CABLE USB IPHONE ORIGINAL DOBLE C 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(17, 'CABLE USB INOVA V8 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(18, 'CABLE USB INOVA IPHONE 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(19, 'CABLE USB INOVA IPHONE 2m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(20, 'CABLE USB LUO IPHONE TC', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(21, 'CABLE USB LUO DOBLE C', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(22, 'CABLE USB COMUN V8 10cm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(23, 'CABLE USB V3 2m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(24, 'CABLR USB 2.0 3m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(25, 'CABLE USB COMUN V8 3m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(26, 'CABLE USB 2.0 COMUN 1.2m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(27, 'CABLE DE PS2 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(28, 'CABLE VGA 3m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(29, 'CABLE AUXILIAR 2m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(30, 'CABLE AUXILIAR LUO 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(31, 'CABLE DE IMPRESORA 1m ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(32, 'CABLE HDMI 1.5m ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(33, 'CABLE HDMI 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(34, 'CABLE HDMI CUANTA 15m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(35, 'CABLE HDMI CUANTA 10m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(36, 'CABLE HDMI CUANTA 3', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(37, 'CABLE AUDIO-VIDEO 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(38, 'CABLE AUDIO-VIDEO CON PLUS 1.5m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(39, 'CABLE AUDIO-VIDEO CON PLUS 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(40, 'CABLE USB UNIVER. PARA IMPRESORA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(41, 'CABLE USB IMEXX PARA IMPRESORA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(42, 'CABLE PARA MICRIFONO NAPOLI 5m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(43, 'CABLE PARA MICRIFINO 12m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(44, 'CABLE PARA MICROFONO 5m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(45, 'CABLE PARA MICROFONO HIGH QUALITY 5m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(46, 'CABLE PARA GUITARRA HIGH QUALITY 12m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(47, 'CABLE VCOMUN PARA GUITARRA 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(48, 'CABLE DE RED 5m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(49, 'CABLE DE RED 6m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(50, 'CABLE DE RED 10m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(51, 'CABLE DE RED 20m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(52, 'CABLE DE CORRIENTE UNIVERSAL 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(53, 'CABLE DE CORRIENTE UNIVERSAL 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(54, 'CABLE DE CORRIENTE UNIVERSAL 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(55, 'CARGADOR ECOPOWER V8 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(56, 'CARGADOR ECOPOWER TC', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(57, 'CARGADOR ECOPOWER IPHONE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(58, 'CARGADOR COMUN V3', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(59, 'CARGADOR CHARGER V8 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(60, 'CARGADOR BLU V8', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(61, 'FUENTE BLU CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(62, 'FUENTE SAMSUNG CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(63, 'FUENTE SAMSUNG CARGA RAPIDA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(64, 'FUENTE SAMSUNG CARGA SUPER RAPIDA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(65, 'FUENTE PARA AUTO SAMSUNG', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(66, 'FUENTE PARA AUTO ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(67, 'FUENTE PARA AUTO LUO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(68, 'FUENTE IPHONE CARGA RAPIDA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(69, 'FUENTE IPHONE CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(70, 'FUENTE IPHONE CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(71, 'FUENTE IPHONE CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(72, 'FUENTE XIAOMI CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(73, 'CARGADOR SAMSUNG CARGA NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(74, 'CARGADOR SAMSUNG CARGA RAPIDA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(75, 'CARGADOR LUO PARA AUTO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(76, 'CARGADOR LUO PARA AUTO USB X2', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(77, 'CARGADOR LUO CARGA NORMAL USB X3', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(78, 'CARGADOR ONLY CARGA RAPIDA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(79, 'CARGADOR UNIVERSAL LUO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(80, 'CARGADOR PORTATIL ECOPOWER DE 12000', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(81, 'CARGADOR PORTATIL ECOPOWER DE 20000', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(82, 'CARGADOR PORTATIL ECOPOWER DE 22000', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(83, 'CARGADOR MOBILE CARGA NORMAL V8', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(84, 'CARGADOR USB DESKTOP 4 PORTS 1.5m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(85, 'CARGADOR UNIVERSAL ECOPOWER P NOTE.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(86, 'CARGADOR UNIVERSAL BAK P. NOTEB.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(87, 'CARGADOR FINEBLUE 6 USB 7A,.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(88, 'CARGADOR ACER P.NOTEBOOK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(89, 'CARGADOR HP. P. NOTEBOOK ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(90, 'CARGADOR ASUS P. NOTEBOOK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(91, 'FUENTE DE IMPRESORA HP.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(92, 'FUENTE SATE PARA PC', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(93, 'ESTUCHE P. MEMORIA EXTERNA SATE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(94, 'MEMORIA EXTERNA SEAGATE 1TB.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(95, 'MEMORIA EXTERNA KINTON KVR13N9S8-4', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(96, 'MEMORIA EXTERNA KINTON KVR24N17S6-4', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(97, 'DVD-R VIRGEN', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(98, 'CD-R VIRGEN', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(99, 'ESTUCHE PARA DVD', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(100, 'MEMORY SANDISK ULTRA 8 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(101, 'MEMORY SANDISK ULTRA 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(102, 'MEMORY SANDISK ULTRA 32 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(103, 'MEMORY SANDISK ULTRA 64 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(104, 'MEMORY SANDISK ULTRA 128 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(105, 'MEMORY KINTON 8 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(106, 'MEMORY KINTON 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(107, 'MEMORY KINTON 32 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(108, 'ADAPTADOR DE MEMORY ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(109, 'PENDRIVE SANDISK 8 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(110, 'PENDRIVE SANDISK 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(111, 'NANO PENDRIVE SANDISK 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(112, 'PENDRIVE SANDISK 32 GB ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(113, 'PENDRIVE SANDISK 64 GB ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(114, 'CELULAR NOKIA 106 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(115, 'CELULAR BLU Z5', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(116, 'CELULAR SAMSUNG J2 CORE 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(117, 'CELULAR SAMSUNG A01 CORE 16 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(118, 'CELULAR SAMSUNG A01 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(119, 'CELULAR SAMSUNG A10S 32 GB ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(120, 'CARGADOR ECOPOWER 9V.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(121, 'CARGADOR COMUN 12V', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(122, 'CARGADOR TP-LINK 9V', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(123, 'CARGADOR COMUN 5V', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(124, 'CARGADOR COMUN 5V PUNTA FINA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(125, 'FUENTE MOTOROLA CARGA NORNAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(126, 'AURICULAR COMUN ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(127, 'AURICULAR SAMSUNG ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(128, 'AURICULAR SAMSUNG CON GOMA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(129, 'AURICULAR SAMSUNG REPLICA AKG', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(130, 'AURICULAR ECOPOWER EP-H126', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(131, 'AURICULAR ECOPOWER TC EP-H120', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(132, 'AURICULAR JBL TUNE 110 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(133, 'AURICULAR IPHONE NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(134, 'AURICULAR IPHONE NORMAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(135, 'AURICULAR INALAM. JBL ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(136, 'AURICULAR INALAM. XIAOMI EARBUDS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(137, 'AURICULAR INALAM. LUO LU-Y33', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(138, 'AURICULAR INALAM. LUO LU-YD79', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(139, 'AURICULAR INALAM. LUO LU-YD82', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(140, 'AURICULAR INALAM. ECOPOWER EP-117', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(141, 'AURICULAR INALAM. ECOPOWER EP-118', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(142, 'AURICULAR KOLKE GHOST', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(143, 'AUDIFONO SONY CON CABLE MDR-ZX110', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(144, 'AUDIFONO SATE CON CABLE USB. 361', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(145, 'AUDIFONO SATE CAMUFLADO PLUS 367', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(146, 'AUDIFONO SATE CON CABLE USB. PLUS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(147, 'AUDIFONO SATE GAMING PLUS 261', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(148, 'AUDIFONO KOLKE CRONO CON LUZ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(149, 'AUDIFONO SATE CON MICROFONO AE-337', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(150, 'AUDIFONO CON CABLE LUO LU-460', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(151, 'AUDIFONO INALAM. LUO NEW QC35', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(152, 'AUDIFONO INALAM. LUO LU-951', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(153, 'AUDIFONO INALAM. LUO NEW QC39', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(154, 'AUDIFONO INALAM. LUO LU-958', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(155, 'AUDIFONO INALAM. INOVA BLG-FON0002', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(156, 'AUDICONO INALAM. JBL 40 HRS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(157, 'AUDIFONO INALAM. ECOPOWER ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(158, 'AUDIFONO INALAM. JBL ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(159, 'AUDIFONO CON CABLE AKG GAMER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(160, 'RELOJ AMAZFIT ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(161, 'RELOJ XIAOMI MI BAND 4 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(162, 'RELOJ XIAOMI MI BAND 5', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(163, 'RELOJ HAYLOU ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(164, 'RELOJ SMART WATCH LUO S2', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(165, 'RELOJ SMART WATCH LUO X11', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(166, 'RELOJ SMART WATCH LUO X5', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(167, 'RELOJ SMART WATCH LUO INFANTIL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(168, 'RELOJ SMART WATCH ECOPOWER EP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(169, 'RELOJ SMART WATCH LUO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(170, 'RELOJ MIBAND 5 REPLICA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(171, 'MALLA PARA MI BAND 5 DE GOMA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(172, 'MALLA PARA MI BAND 4 DE GOMA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(173, 'MALLA PARA MI BAND 4 DE METAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(174, 'MALLA SMART WATCH 44-42 mm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(175, 'MALLA SMART WATCH 38-40 mm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(176, 'MALLA SMART WATCH 38 mm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(177, 'MALLA SMART WATCH 44 mm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(178, 'CARGADOR MIBAND 4', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(179, 'CARGADOR MIBAND 3', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(180, 'RELOJ Q&Q Q412J202Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(181, 'RELOJ Q&Q VR52J009Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(182, 'RELOJ Q&Q QC31J105Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(183, 'RELOJ Q&Q QZ51J121Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(184, 'RELOJ Q&Q QA20J307Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(185, 'RELOJ Q&Q QA20J508Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(186, 'RELOJ Q&Q QB40J304Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(187, 'RELOJ Q&Q QZ00J335Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(188, 'RELOJ Q&Q C192J305Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(189, 'RELOJ Q&Q QA09J111Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(190, 'RELOJ Q&Q Q893J512Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(191, 'RELOJ Q&Q QA98J302Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(192, 'RELOJ Q&Q Q892J300Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(193, 'RELOJ Q&Q C215J800Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(194, 'RELOJ Q&Q Q892J312Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(195, 'RELOJ Q&Q Q892J111Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(196, 'RELOJ Q&Q Q892J522Y', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(197, 'ESTUCHE P. RELOJ DE PLASTICO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(198, 'ESTUCHE P. RELOJ TIPO CAJITA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(199, 'RELOJ INFANTIL ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(200, 'TABLET GENESIS 4G 16 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(201, 'AUDIFONO ECOPOWER CAT EARS H133', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(202, 'CALCULADORA TRULY 821B-12', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(203, 'CALCULADORA TRULY 2008A-12', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(204, 'CALCULADORA CASIO MS-20UC-GN', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(205, 'CALCULADORA CIENTIFICA CASIO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(206, 'TECLADO CON CABLE SATE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(207, 'TECLADO SATE GAMER CON LUZ ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(208, 'TECLADO INALAM. SATE CON MOUSE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(209, 'TECLADO INALAM. LOGITEC ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(210, 'MOUSE CON CABLE LOGITEC ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(211, 'MOUSE CON CABLE SATE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(212, 'MOUSE CON CABLE SATE GAMER ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(213, 'MOUSE INALAM. SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(214, 'MOUSE Y MOUSEPAT XTRIKE ME ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(215, 'MOUSE PAD SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(216, 'MINI KEYBOARD LUO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(217, 'AIR MOUSE SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(218, 'APUNTADOR LASER SATE  ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(219, 'GRABADORA IC ESTEREO SONY ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(220, 'CONTROL PS2 PG', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(221, 'CONTROL PS3 PG', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(222, 'CONTROL PS4 SONY ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(223, 'CONTROL INALAM.LUO PARA CELULAR ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(224, 'CONTROL INALAM. ZM-X6', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(225, 'GATILLO PARA TELEFONO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(226, 'GAMEPAD MOVIL CON MANGO K21', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(227, 'TECLADO NUMERICO SATE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(228, 'TECLADO NUMERICO MOX', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(229, 'CONTROL UNIVER. PARA AIRE ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(230, 'CONTROL UNIVER. PARA AIRE PROSPER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(231, 'CONTROL UNIVER. PARA TELE ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(232, 'CONTROL UNIVER. PARA TV SMART ECOP. ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(233, 'CONTROL P. DVD PIONEER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(234, 'CONTROL UNIVER. PARA TV R ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(235, 'CARGADOR P. PSP 5V', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(236, 'CARGADOR P. PS VENUS 5V', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(237, 'FUENTE ADAPTADOR 3 EN 1 USB HI-SPEED', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(238, 'INTERRUPTOR INTELIGENTE ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(239, 'TIMBRE ECOPOWER ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(240, 'MINI MASAJEADOR ELECTRICO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(241, 'MASAJEADOR ELECTRICO ONIDA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(242, 'SMART TV KIT GOOGLE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(243, 'CHROMECAST GOOGLE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(244, 'CHROMECAST TVEXPRESS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(245, 'FIRE TV STICK AMAZON', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(246, 'MI TV STICK XIAOMI ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(247, 'CONVERSOR DIGITAL SATBOX', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(248, 'WEB CAM KOLKE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(249, 'FOCO CAMARA ECOPOWER C005', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(250, 'SMART WIFI CAMARA ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(251, 'CAMARA DIGINAL INFANTIL LUO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(252, 'CAMARA PARA AUTO SATE A-DVR 042', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(253, 'CAMARA PARA UTO SATE A-DVR 021', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(254, 'CONTROL PARA TV BOX', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(255, 'CONTROL LARGA DISTANCIA K600 JFA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(256, 'JUEGO PS4 FIFA 21 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(257, 'JUEGO PS4 FIFA 20', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(258, 'JUEGO PS4 FIFA 19', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(259, 'PSP TUCANO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(260, 'SUPER MARIO LUO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(261, 'DVD SONY', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(262, 'DVD ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(263, 'DVD SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(264, 'AUTORADIO ECOPOWER EP-620', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(265, 'AUTORADIO ECOPOWER CON PANTALLA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(266, 'AUTORADIO PIONEER CON PANTALLA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(267, 'PARLANTE OVALADO PIONEER 69765', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(268, 'PARLANTE OVALADO B.BUSTER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(269, 'PARLANTE REDONDO PIONEER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(270, 'SPEAKER PARA PC SATE AS-677U', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(271, 'SPEAKER PARA PC SATE AS-683U', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(272, 'SPEAKER PARA PC KISONLI', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(273, 'MINI SPEAKER XIAOMI ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(274, 'SPEAKER JBL JR POP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(275, 'SPEAKER JBL GO2 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(276, 'SPEAKER JBL GO3', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(277, 'SPEAKER JBL FLIP4', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(278, 'SPEAKER QUANTA QTSPB51', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(279, 'SPEAKER QUANTA QTSPB55', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(280, 'SPEAKER QUANTA QTSPB54', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(281, 'SPEAKER AIWA AW S21', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(282, 'SPEAKER AIWA AW X2BTR', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(283, 'SPEAKER AIWA AW AX5BT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(284, 'SPEAKER INOVA BLG-RADOO12', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(285, 'SPEAKER INOVA BLG-RADOO13', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(286, 'SPEAKER INOVA BLG-RADOO14', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(287, 'SPEAKER ECOPOWER EP-2336', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(288, 'SPEAKER ECOPOWER EP-2377', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(289, 'SPEAKER ECOPOWER EP-2358', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(290, 'SPEAKER ECOPOWER EP-2320', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(291, 'SPEAKER ECOPOWER EP-2310', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(292, 'SPEAKER ECOPOWER EP-3831', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(293, 'SPEAKER ECOPOWER EP-2115', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(294, 'SPEAKER ECOPOWER EP-2318', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(295, 'SPEAKER ECOPOWER EP-2328', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(296, 'SPEAKER ECOPOWER EP-3854', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(297, 'SPEAKER ECOPOWER EP-2268', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(298, 'SPEAKER ECOPOWER EP-2229', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(299, 'SPEAKER ECOPOWER EP-3856', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(300, 'SPEAKER ECOPOWER EP-2261', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(301, 'RADIO ECOPOWER EP-F82', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(302, 'RADIO ECOPOWER EP-F83', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(303, 'RADIO ECOPOWER EP-F117B', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(304, 'RADIO ECOPOWER EP-F206', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(305, 'SPEAKER ECOPOWER EP-S203', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(306, 'SPEAKER LIGE-AR15QKS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(307, 'SPEAKER LIGE-AJ12DKS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(308, 'STEREO ECOPOWER EP-6802', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(309, 'SOPORTE PARA SPEAKER EP-0003', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(310, 'SOPORTE PARA TV C312 10"-55"', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(311, 'SOPORTE PARA TV LUO LU-502 10"-65"', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(312, 'SOPORTE PARA TV FIJO SATE 30"-50"', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(313, 'SOPORTE PARA TV FIJO KYD698S 23"-60"', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(314, 'SOPORTE PARA LETE SATE 14"37"', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(315, 'SOPORTE PARA PARTITURA TORNADO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(316, 'PALO DE SELFIE LUO K07', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(317, 'SOPORTE DE CELULAR P. BICI LUO LU-425', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(318, 'SOPORTE DE CELULAR P. MOTO LUO LU-413', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(319, 'SOPORTE DE CELULAR P. BICI LUO LU-414', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(320, 'SOPORTE DE CELULAR P. AUTO LUO LU-308', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(321, 'SOPORTE,CARGADOR P. AUTO LUO LU-S5', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(322, 'SOPORTE DE CELULAR P. AUTO HOLDER ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(323, 'SOPORTE PARA CELULAR LUO LU-405', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(324, 'STUCHE DEPORTIVO P. CELULAR LUO LU-YO1', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(325, 'TRIPODE LUO LU-3110 1020mm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(326, 'TRIPODE 330A 1345mm', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(327, 'AMPLIADOR DE PANTALLA INOVA SP-405', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(328, 'CINTA LED ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(329, 'ARO LED AH9976', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(330, 'ARO LED LUO LU-260 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(331, 'ARO LED LUO LIVE BEAUTY LIGNHT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(332, 'ARO LED PARA CELULAR LUO RK-14', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(333, 'ARO LED CON DOBLE SOPORTE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(334, 'LUZ DE EMERGENCIA ECOPOWER EP-779', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(335, 'LUZ DE EMERGENCIA ECOPOWER EP-777', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(336, 'LUZ DE EMERGENCIA ECOPOWER EP-726', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(337, 'LUZ DE EMERGENCIA ECOPOWER EP-725', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(338, 'CONTROL BOOKLET PG', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(339, 'LUZ PICAPICA LED', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(340, 'VENTILADOR MEGA STAR', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(341, 'VENTILADOR DE CUELLO LUO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(342, 'ADAPTADOR PARA IPHONE LUO LU-05', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(343, 'ADAPTADOR PARA MICROFONO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(344, 'ADAPTADOR HDMI VIDEO CAPTURE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(345, 'ADAPTADOR OTG V3', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(346, 'ADAPTADOR OTG SAMSUNG V8', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(347, 'ADAPTADOR OTG SAMSUNG TC', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(348, 'ADAPTADOR MACPRO HDMI', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(349, 'ADAPTADOR HDMI A VGA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(350, 'PUERTO USB ECOPOWER EP-R004', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(351, 'PUERTO USB SATE A-HUB07', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(352, 'ADAPTADOR USB LUO TC LU-X03', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(353, 'ADAPTADOR AUXILIAR UNIPHA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(354, 'AURICULAR INALAM. ECOPOWER P. LLAMAD.', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(355, 'ADAPTADOR BLUETOOTH INOVA BTH 33', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(356, 'ADAPTADOR BLUETOOTH WIRELESS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(357, 'ADAPTADOR BLUETOOTH LUO LU-201A', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(358, 'PUERTO USB SATE A-HUB08', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(359, 'TRANSMISOR FM QUANTA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(360, 'TRANSMISOR FM LUO A31', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(361, 'TRANSMISOR FM LUO A25', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(362, 'TRANSMISOR FM LUO G18', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(363, 'CUERDA PARA GUITARRA ALYMPIA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(364, 'LINTERNA ECOPOWER EP-8277', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(365, 'LINTERNA ECOPOWER EP-8209', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(366, 'RAQUETA ELECTRICA ECOPOWER EP-8202', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(367, 'PUA PARA GUITARRA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(368, 'MICROFONO CON CABLE PHILIPS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(369, 'MICROFONO CON CABLE QUANTA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(370, 'FUENTE PARA PC SATE PRO-460', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(371, 'MICRIFONO ECOPOWER ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(372, 'MICROFONO PARA CELULAR ECOPOWER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(373, 'MICROFONO PARA CELULAR LUO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(374, 'MICROFONO PARA ESTUDIO KOLKE  ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(375, 'MICROFONO PARA ESTUDIO SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(376, 'EQUIPO DE TRANSMISION EN VIVO SATE  MK05', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(377, 'MEDIDOR DE PRESION ECOPOWER EP-2720', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(378, 'MEDIDOR DE PRESION MORE FITNESS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(379, 'NEBULIZADOT ECOPOWER EP-2707', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(380, 'NEBULIZADOT ECOPOWER EP-2706', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(381, 'OXIMETRO ECOPOWER EP.2714', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(382, 'HUMIDIFICADOR ECOPOWER EP-2098', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(383, 'HUMIDIFICADOR ECOPOWER EP-2099', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(384, 'HUMIDIFICADOR SATE 2,6L ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(385, 'HUMIDIFICADOR SATE 2,2L', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(386, 'HUMIDIFICADOR INOVA HM-140', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(387, 'HUMIDIFICADOR INOVA HM-141', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(388, 'BALANZA PARA COCINA ELECTRONIC', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(389, 'BALANZA PARA COCINA BAMBOO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(390, 'BALANZA DIGITAL MAXON', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(391, 'BALANZA DIGITAL LUXEP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(392, 'ESTUFA MAXON ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(393, 'ESTUFA MEGA STAR', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(394, 'ESTUFA BRISA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(395, 'JARRA ELECTRICA NOBEL HOME 1,8 L', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(396, 'JARRA ELECTRICA NOBEL HOME 1,8 L INOX', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(397, 'JARRA ELECTRICA SPEED 1,5L ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(398, 'JARRA ELECTRICA SPEED 1,7L', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(399, 'TOSTADORA ELECTROLUX', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(400, 'PLANCHA ELECTROLUX', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(401, 'TERMO FRIO CALIENTE NOBEL HOME ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(402, 'COCINA INFRA ROJO NOBEL HOME', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(403, 'LED MAGIC ECOPOWER EP-1015 SPEAKER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(404, 'MINI LICUADORA PORTATIL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(405, 'DISPENSADOR DE AGUA AUTOMATICO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(406, 'IMPRESORA HP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(407, 'TELEFONO INALAMBRICO PHILIPS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(408, 'TELEFONO INALAMBRICO MOTOROLA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(409, 'ETIQUETADORA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(410, 'MULTIMETRO DIGITAL(TESTE)', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(411, 'ANTENA HD DIMI', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(412, 'ANTENA INTERNA DE TV SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(413, 'TERMOMETRO INFRA ROJO HYUNDAI', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(414, 'PUERTO EXPANSOR HDMI SATE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(415, 'PUERTO EXPANSOR DE RED TP-LINK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(416, 'ADAPTADOR INALM. NANO USB TP-LINK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(417, 'REPETIDOR DE SEÑAL WIFI TP-LINK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(418, 'REPETIDOR DE SEÑAL WIFI C.ANTENA TP-LINK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(419, 'RUTEADOR TP-LINK 2 ANTENAS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(420, 'RUTEADOR TP-LINK 3 ANTENAS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(421, 'RUTEADOR TP-LINK 4 ANTENAS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(422, 'SECADOR D. PELO GAMA airTECHion', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(423, 'SECADOR D. PELO GAMA DIAMOND CERAMIC', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(424, 'SECADOR D. PELO DIFFUSION GAMA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(425, 'SECADOR D. PELO ONIDA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(426, 'SECADOR D. PELO PROSPER ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(427, 'SECADOR D. PELO PHILIPS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(428, 'CORTADOR DE PELO GAMA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(429, 'CORTADOR DE PELO ECOPOWER 2810', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(430, 'CORTADOR DE PELO PHILIPS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(431, 'AFEITADORA INALAM. PHILIPS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(432, 'PLANCHITA GAMA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(433, 'PLANCHITA PROSPER', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(434, 'ENRULADOR PHILIPS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(435, 'ENRULADOR GAMA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(436, 'LENTES DE SOL ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(437, 'LENTES DE SOL HIGHLIGHT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(438, 'ESTUCHE SATE NOTEBOOK', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(439, 'ESTUCHE NOTEB HAVIT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(440, 'CARTUCHO HP NEGRO 122', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(441, 'CARTUCHO HP COLOR  122', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(442, 'CARTUCHO HP COLOR  662', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(443, 'CARTUCHO HP NEGRO 662', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(444, 'CARTUCHO HP NEGRO 664  ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(445, 'CARTUCHO HP COLOR 664', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(446, 'CARTUCHO HP NEGRO 667', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(447, 'KIT RECARGA HP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(448, 'TINTA ECO EPSON NEGRO 664', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(449, 'TINTA ECO EPSON AZUL 664', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(450, 'TINTA ECO EPSON AMARILLO 664', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(451, 'TINTA ECO EPSON AZUL 664', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(452, 'TINTA ECO HP N/R/A', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(453, 'TINTA ECO EPSON C/R/A', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(454, 'BATERIA J7/6 ORIGINAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(455, 'BATERIA J7/6 PARALELO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(456, 'BATERIA J700 PARALELO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(457, 'BATERIA J2 PRIME PARALELO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(458, 'BATERIA J2 PRIME ORIGINAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(459, 'BATERIA J1 ACE PARALELO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(460, 'BATERIA J200 PARALELO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(461, 'BATERIA J100 PARALELO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(462, 'BATERIA S5 MINI PARALELO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(463, 'BATERIA NOTE 2 ORIGINAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(464, 'BATERIA NOKIA ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(465, 'PILA PANASONIC AA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(466, 'PILA PANASONIC AAA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(467, 'PILA PANASONIC 12VOLT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(468, 'PILA PANASONIC D', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(469, 'BATERIA PANASONIC 12 VOLT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(470, 'BATERIA PHILIPS 12 VOLT', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(471, 'PILA MAXEL AA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(472, 'PILA RECARGABLE MOX AAA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(473, 'PILA MOX X2 AA C/ CARGADOR', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(474, 'PILA MOX X4 AA C/ CARGADOR', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(475, 'PILA PANAS  CR1632', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(476, 'PILA MAXEL  CR2016', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(477, 'PILA PANAS  CR2025', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(478, 'PILA TIANQIU CR1620', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(479, 'PILA TMMQ CR2016', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(480, 'PILA MAXEL CR2032', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(481, 'PILA CR1220 TIANQIU', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(482, 'PILA VARIOS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(483, 'BATERIA VAPE/LINTERNA 18650', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(484, 'BATERIA 27A 12 VOLT GPIN', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(485, 'BATERIA 23A 12 VOLT GP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(486, 'CAPAS IPHONE ORIGINAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(487, 'CAPAS SAMSUNG ORIGINAL', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(488, 'CAPAS CARTELA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(489, 'CAPAS VARIOS', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(490, 'BATERIA J5,6 ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(491, 'TABLERO LED ABIERTO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(492, 'POP', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(493, 'CELULAR SAMSUNG A21S 64 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(494, 'CELULAR SAMSUNG A21S 128 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(495, 'INSTAX MINI', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(496, 'CABLE USB ECOPOWER IPHONE 1m', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(497, 'CABLE USB IPHONE ROJO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(498, 'CELULAR SAMSUNG A02S 32 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(499, 'CELULAR SAMSUNG A02S 64 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(500, 'CELULAR REDMI 9A 32 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(501, 'MEDIDOR DE PRESION ECOPOWER 2701', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(502, 'MEDIDOR DE PRESION ECOPOWER 2700', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(503, 'LECTOR DE CODIGO ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(504, 'EXIBIDOR DE LENTE ', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(505, 'EXIBIDOR DE LENTE CHICO', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(506, 'LAMPARA ECOPOVER EP-6632', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(507, 'LAMPARA ECOPOVER EP-6330', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(508, 'ROLLO PARA ETIQUETADORA', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(509, 'OXIMETRO PULSE LK87', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(510, 'OXIMETRO DR. HOUSE XY01', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(511, 'CARGADOR RECRSI TC CH-14', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(512, 'CARGADOR RECRSI V8 CH-14', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(513, 'CARGADOR RECRSI V8 TURBO  CH-24', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(514, 'CARGADOR RECRSI V8 TURBO  CH-29', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(515, 'MICROFONO ECOPOWER EP-M205', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(516, 'CARGADOR ECOPOWER DOBLE PUNTA 7068', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(517, 'CARGADOR PARA AUTO RECRSI CAR-02', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(518, 'CARGADOR PARA AUTO ECOPOWER 7036', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(519, 'MEMORY PARA PC KEEPDATA KD667N5/2G', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(520, 'ALARGUE SATE', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3),
+	(521, 'PENDRIVE S3+ 32 GB', '', '', '', 'A', '', 1, 1, 1, 1, 1, 3);
 /*!40000 ALTER TABLE `articulo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.articulo_deposito
@@ -68,10 +585,8 @@ CREATE TABLE IF NOT EXISTS `articulo_deposito` (
   CONSTRAINT `FK_ARTICULO_DEPOSITO_DEPOSITO` FOREIGN KEY (`iddeposito`) REFERENCES `deposito` (`iddeposito`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_deposito: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_deposito: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_deposito` DISABLE KEYS */;
-REPLACE INTO `articulo_deposito` (`idarticulo`, `iddeposito`, `cantidad`) VALUES
-	(1, 1, 15);
 /*!40000 ALTER TABLE `articulo_deposito` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.articulo_periodo
@@ -89,11 +604,8 @@ CREATE TABLE IF NOT EXISTS `articulo_periodo` (
   CONSTRAINT `FK_ARTICULO_PERIODO_PERIODO` FOREIGN KEY (`idperiodo`) REFERENCES `periodo` (`idperiodo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_periodo: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_periodo: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_periodo` DISABLE KEYS */;
-REPLACE INTO `articulo_periodo` (`idarticulo`, `idperiodo`, `idmoneda`, `costo`) VALUES
-	(1, 1, 1, 5000),
-	(1, 1, 2, 2);
 /*!40000 ALTER TABLE `articulo_periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.banco
@@ -143,11 +655,10 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   CONSTRAINT `FK_CLIENTE_TIPO_CLIENTE` FOREIGN KEY (`idtipo`) REFERENCES `tipo_cliente` (`idtipo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.cliente: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla as.cliente: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
 REPLACE INTO `cliente` (`idcliente`, `nombre`, `apellido`, `ruc`, `telefono`, `direccion`, `estado`, `idtipo`) VALUES
-	(1, 'CLIENTE', 'OCASIONAL', 'XXX', 'XXX', 'XXX', 'A', 1),
-	(2, 'ARIEL', 'PERALTA', '5955455-0', '', '', 'A', 1);
+	(1, 'CLIENTE', 'OCASIONAL', 'XXX', 'XXX', 'XXX', 'A', 1);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra
@@ -177,14 +688,8 @@ CREATE TABLE IF NOT EXISTS `compra` (
   CONSTRAINT `FK_COMPRA_USUARIO` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra` DISABLE KEYS */;
-REPLACE INTO `compra` (`idcompra`, `numerodocumento`, `numerotimbrado`, `fecha`, `observacion`, `idmoneda`, `iddeposito`, `idtipomovimiento`, `idproveedor`, `idusuario`, `totalneto`, `totaliva`) VALUES
-	(1, '001-001-0000001', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
-	(2, '001-001-0000002', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
-	(3, '001-001-0000003', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
-	(4, '001-001-0000004', 11111111, '2021-07-04', '', 1, 1, 1, 1, 1, 4762, 238),
-	(5, '001-001-0000005', 11111111, '2021-07-04', '', 2, 1, 1, 1, 1, 1.905, 0.095);
 /*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_cuota
@@ -218,11 +723,8 @@ CREATE TABLE IF NOT EXISTS `compra_detalle` (
   CONSTRAINT `FK_COMPRA_DETALLE_COMPRA` FOREIGN KEY (`idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra_detalle: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra_detalle: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_detalle` DISABLE KEYS */;
-REPLACE INTO `compra_detalle` (`idcompra`, `idarticulo`, `costo`, `cantidad`, `numeroitem`, `iva`, `porcentajeiva`) VALUES
-	(4, 1, 4762, 5, 1, 238, 5),
-	(5, 1, 1.905, 10, 1, 0.095, 5);
 /*!40000 ALTER TABLE `compra_detalle` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.configuracion
@@ -240,7 +742,7 @@ CREATE TABLE IF NOT EXISTS `configuracion` (
   CONSTRAINT `FK_CONFIGURACION_TIPO_MOV_FCRER` FOREIGN KEY (`fac_cre_rec`) REFERENCES `tipo_movimiento` (`idtipomovimiento`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.configuracion: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.configuracion: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `configuracion` DISABLE KEYS */;
 REPLACE INTO `configuracion` (`idconfiguracion`, `idsucursal`, `fac_con_rec`, `fac_cre_rec`) VALUES
 	(1, 1, 1, 2);
@@ -250,17 +752,33 @@ REPLACE INTO `configuracion` (`idconfiguracion`, `idsucursal`, `fac_con_rec`, `f
 CREATE TABLE IF NOT EXISTS `cotizacion` (
   `idmoneda` int(11) NOT NULL,
   `fecha` date NOT NULL,
-  `tasa` double NOT NULL,
+  `tasacompra` double NOT NULL,
+  `tasaventa` double NOT NULL,
   PRIMARY KEY (`fecha`,`idmoneda`) USING BTREE,
   KEY `FK_COTIZACION_MONEDA` (`idmoneda`) USING BTREE,
   CONSTRAINT `FK_COTIZACION_MONEDA` FOREIGN KEY (`idmoneda`) REFERENCES `moneda` (`idmoneda`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.cotizacion: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.cotizacion: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
-REPLACE INTO `cotizacion` (`idmoneda`, `fecha`, `tasa`) VALUES
-	(2, '2021-07-04', 7000);
+REPLACE INTO `cotizacion` (`idmoneda`, `fecha`, `tasacompra`, `tasaventa`) VALUES
+	(2, '2021-07-05', 6900, 7000),
+	(2, '2021-07-06', 6900, 7000);
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.cuenta
+CREATE TABLE IF NOT EXISTS `cuenta` (
+  `idcuenta` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  `idbanco` int(11) NOT NULL,
+  PRIMARY KEY (`idcuenta`),
+  KEY `FK_CUENTA_BANCO` (`idbanco`),
+  CONSTRAINT `FK_CUENTA_BANCO` FOREIGN KEY (`idbanco`) REFERENCES `banco` (`idbanco`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.cuenta: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `cuenta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cuenta` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.deposito
 CREATE TABLE IF NOT EXISTS `deposito` (
@@ -272,11 +790,10 @@ CREATE TABLE IF NOT EXISTS `deposito` (
   CONSTRAINT `FK_DEPOSITO_SUCURSAL` FOREIGN KEY (`idsucursal`) REFERENCES `sucursal` (`idsucursal`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.deposito: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.deposito: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `deposito` DISABLE KEYS */;
 REPLACE INTO `deposito` (`iddeposito`, `descripcion`, `idsucursal`) VALUES
-	(1, 'SALON', 1),
-	(2, 'AUXILIAR', 1);
+	(1, 'SALON', 1);
 /*!40000 ALTER TABLE `deposito` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.empresa
@@ -413,10 +930,8 @@ CREATE TABLE IF NOT EXISTS `periodo` (
   PRIMARY KEY (`idperiodo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.periodo: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.periodo: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `periodo` DISABLE KEYS */;
-REPLACE INTO `periodo` (`idperiodo`, `fecha_desde`, `fecha_hasta`) VALUES
-	(1, '2021-07-01', '2021-07-31');
 /*!40000 ALTER TABLE `periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.programa
@@ -477,11 +992,10 @@ CREATE TABLE IF NOT EXISTS `proveedor` (
   CONSTRAINT `FK_PROVEEDOR_TIPO_PROVEEDOR` FOREIGN KEY (`idtipo`) REFERENCES `tipo_proveedor` (`idtipo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Volcando datos para la tabla as.proveedor: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla as.proveedor: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
 REPLACE INTO `proveedor` (`idproveedor`, `razonsocial`, `propietario`, `ruc`, `telefono`, `direccion`, `estado`, `idtipo`) VALUES
-	(1, 'PROVEEDOR', 'OCASIONAL', 'XXX', 'XXX', 'XXX', 'A', 3),
-	(2, 'CENTURY SYSTEMS S.R.L.', 'KURT FALK', '', '', '', 'A', 1);
+	(1, 'PROVEEDOR', 'OCASIONAL', 'XXX', 'XXX', 'XXX', 'A', 3);
 /*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.seccion
@@ -509,11 +1023,10 @@ CREATE TABLE IF NOT EXISTS `sucursal` (
   CONSTRAINT `FK_SUCURSAL_EMPRESA` FOREIGN KEY (`idempresa`) REFERENCES `empresa` (`idempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.sucursal: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.sucursal: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `sucursal` DISABLE KEYS */;
 REPLACE INTO `sucursal` (`idsucursal`, `descripcion`, `telefono`, `direccion`, `idempresa`) VALUES
-	(1, 'CASA CENTRAL', '(+595) 975 489 075', 'BARRIO SAN BLAS - EX CAMPO 9', 1),
-	(2, 'CASILLA 2', '', '', 1);
+	(1, 'CASA CENTRAL', '(+595) 975 489 075', 'BARRIO SAN BLAS - EX CAMPO 9', 1);
 /*!40000 ALTER TABLE `sucursal` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.timbrado
@@ -537,8 +1050,6 @@ CREATE TABLE IF NOT EXISTS `timbrado` (
 
 -- Volcando datos para la tabla as.timbrado: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `timbrado` DISABLE KEYS */;
-REPLACE INTO `timbrado` (`idtimbrado`, `establecimiento`, `puntoemision`, `timbrado`, `numeroinicial`, `numerofinal`, `fechainicial`, `fechafinal`, `idcaja`, `idtipocomprobante`) VALUES
-	(1, 1, 1, 11112222, 1, 100, '2021-01-01', '2021-12-31', 1, 1);
 /*!40000 ALTER TABLE `timbrado` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.tipo_articulo
@@ -681,11 +1192,10 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   KEY `FK_USUARIO_SUCURSAL` (`idsucursal`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.usuario: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.usuario: ~1 rows (aproximadamente)
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 REPLACE INTO `usuario` (`idusuario`, `nombre`, `apellido`, `cedula`, `telefono`, `direccion`, `alias`, `clave`, `idempresa`, `idsucursal`) VALUES
-	(1, 'ARMANDO ARIEL', 'PERALTA MARTINEZ', '5955455', '0975489075', 'BARRIO SAN JORGE - EX CAMPO 9', 'APERALTA', 'e3e7c47572ad938642bbc9cdcdce7e3f', 1, 1),
-	(2, 'LIZ', 'RAMIREZ', '5556325', '0991222555', 'BARRIO SAN BLAS - EX CAMPO 9', 'LRAMIREZ', '86b63c18e635ec42e603d4790f2bf90b', 1, 2);
+	(1, 'ARMANDO ARIEL', 'PERALTA MARTINEZ', '5955455', '0975489075', 'BARRIO SAN JORGE - EX CAMPO 9', 'APERALTA', 'e3e7c47572ad938642bbc9cdcdce7e3f', 1, 1);
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.usuario_programa
@@ -743,6 +1253,7 @@ BEGIN
 	DECLARE V_PERIODO INT;
 	DECLARE V_FECHA DATE;
 	DECLARE V_MONEDA INT;
+	DECLARE V_COSTO DOUBLE;
 	
 	SELECT C.fecha, C.idmoneda INTO V_FECHA, V_MONEDA FROM compra AS C WHERE C.idcompra = xIDCOMPRA;
 	
@@ -753,14 +1264,20 @@ BEGIN
 	AND P.idperiodo = V_PERIODO
 	AND P.idmoneda = V_MONEDA;
 	
+	IF V_MONEDA = 1 THEN
+		SET V_COSTO = xCOSTO;
+	ELSE
+		SET V_COSTO = ROUND(xCOSTO, 3);
+	END IF;
+	
 	IF V_CONTADOR = 0 THEN
 		INSERT INTO articulo_periodo
 		(idarticulo, idperiodo, idmoneda, costo)
-		VALUES (xIDARTICULO, V_PERIODO, V_MONEDA, xCOSTO);
+		VALUES (xIDARTICULO, V_PERIODO, V_MONEDA, V_COSTO);
 	ELSE
 		UPDATE articulo_periodo
 		SET
-			costo=xCOSTO
+			costo=V_COSTO
 		WHERE idarticulo=xIDARTICULO AND idperiodo=V_PERIODO AND idmoneda = V_MONEDA;
 	END IF;
 	

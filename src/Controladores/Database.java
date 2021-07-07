@@ -1,5 +1,14 @@
 package Controladores;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 /**
  *
  * @author armando
@@ -12,14 +21,12 @@ public class Database {
     private String pass;
 
     public Database() {
+        
         this.url = "jdbc:mysql://localhost:3306/AS?useUnicode=true&characterEncoding=UTF-8";
-        //this.url = "jdbc:mysql://35.198.20.179:3306/as?useUnicode=true&characterEncoding=UTF-8";
-        //jdbc:google:mysql://IP:Instance_name?user=user_name
         this.driver = "com.mysql.jdbc.Driver";
         this.user = "root";
-        //this.user = "administrador";
         this.pass = "";
-        //this.pass = "aapm2021";
+
     }
 
     public String getUrl() {

@@ -430,11 +430,13 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             c.setIdtipomovimiento(idtipomovimiento);
             c.setIdproveedor(idProveedor);
             c.setIdusuario(idUsuario);
+            double montoTotalNeto = 0.0;
+            double montoTotalIva = 0.0;
+            double costoFinal = 0.0;
+            double ivaFinal = 0.0;
             for (int i = 0; i < tablaDatos.getRowCount(); i++) {
                 double porcentaje = Double.parseDouble(tablaDatos.getValueAt(i, 7).toString());
-                double costo = Double.parseDouble(tablaDatos.getValueAt(i, 4).toString());
-                double costoFinal = 0.0;
-                double ivaFinal = 0.0;
+                double costo = Double.parseDouble(tablaDatos.getValueAt(i, 6).toString());
                 if (porcentaje == 0.0) {
                     ivaFinal = 0.0;
                     costoFinal = (costo);
@@ -454,13 +456,17 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
                     totaliva = totaliva + (Math.round(ivaFinal * 1000.0) / 1000.0);
                     totalneto = totalneto + (Math.round(costoFinal * 1000.0) / 1000.0);
                 }
+                montoTotalIva += totaliva;
+                montoTotalNeto += totalneto;
             }
+            //System.out.println(montoTotalIva);
+            //System.out.println(montoTotalNeto);
             if (idMoneda == 1) {
-                c.setTotalneto(Math.round(totalneto));
-                c.setTotaliva(Math.round(totaliva));
+                c.setTotalneto(Math.round(montoTotalNeto));
+                c.setTotaliva(Math.round(montoTotalIva));
             } else {
-                c.setTotalneto(Math.round(totalneto * 1000.0) / 1000.0);
-                c.setTotaliva(Math.round(totaliva * 1000.0) / 1000.0);
+                c.setTotalneto(Math.round(montoTotalNeto * 1000.0) / 1000.0);
+                c.setTotaliva(Math.round(montoTotalIva * 1000.0) / 1000.0);
             }
             dao.agregar(c);
         }
@@ -595,9 +601,14 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (montoCuota <= 0) {
             JOptionPane.showMessageDialog(null, "NO PUEDE AGREGAR UN PRODUCTO CON LA CANTIDAD 0");
         } else {
+            /*System.out.println(valorTotalDocumentoCuota);
+            System.out.println(valorTotalDocumento);
+            System.out.println("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");*/
             if (valorTotalDocumentoCuota > valorTotalDocumento) {
                 JOptionPane.showMessageDialog(null, "EL VALOR TOTAL DE LAS CUOTAS SUPERA AL MONTO TOTAL DEL COMPROBANTE");
             } else {
+                /*System.out.println(montoCuota);
+                System.out.println(valorTotalDocumento);*/
                 if (montoCuota > valorTotalDocumento) {
                     JOptionPane.showMessageDialog(null, "EL VALOR DE LA CUOTA SUPERA EL MONTO TOTAL DEL COMPROBANTE");
                 } else {
@@ -1316,6 +1327,11 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         txtMontoCuota.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMontoCuotaActionPerformed(evt);
+            }
+        });
+        txtMontoCuota.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMontoCuotaKeyTyped(evt);
             }
         });
 
@@ -2518,7 +2534,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
                 ap.setIdperiodo(idperiodo);
                 ap.setIdmoneda(Integer.parseInt(txtCodigoMoneda.getText()));
                 daoArticuloPeriodo.consultarDatos(ap);
-                txtCosto.setText(""+ap.getCosto());
+                txtCosto.setText("" + ap.getCosto());
                 txtCosto.grabFocus();
             } else {
                 JOptionPane.showMessageDialog(null, "NO EXISTE EL CÓDIGO DEL ARTÍCULO INGRESADO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
@@ -2764,9 +2780,9 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             int numeroCuota = Integer.parseInt(txtNumeroCuota.getText());
             int i;
             boolean existe = false;
-            Calendar calendar = Calendar.getInstance();
+            /* Calendar calendar = Calendar.getInstance();
             calendar.setTime(txtFecha.getDate());
-            calendar.add(Calendar.MONTH, 1);
+            calendar.add(Calendar.MONTH, 1);*/
             if (numeroCuota > 0) {
                 for (i = 0; i < tablaCuotas.getRowCount(); i++) {
                     int numeroCuotaTabla = Integer.parseInt(tablaCuotas.getValueAt(i, 0).toString());
@@ -2778,7 +2794,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
                 if (existe == true) {
                     JOptionPane.showMessageDialog(null, "YA EXISTE UNA CUOTA CON EL NUMERO INGRESADO EN LA TABLA DE CUOTAS.", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    txtVencimientoCuota.setDate(calendar.getTime());
+                    /*txtVencimientoCuota.setDate(calendar.getTime());*/
                     txtVencimientoCuota.grabFocus();
                 }
             } else {
@@ -2854,6 +2870,21 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_txtMontoCuotaActionPerformed
+
+    private void txtMontoCuotaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoCuotaKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (c == ',') {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtMontoCuota.getText().length() == 24) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtMontoCuotaKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

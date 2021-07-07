@@ -23,7 +23,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     DAOMoneda daoMoneda = new DAOMoneda();
     ArrayList<Object[]> datos = new ArrayList<>();
     ArrayList<Object[]> datosMoneda = new ArrayList<>();
-    Double valorMonto = 0.0;
+    Double valorMontoCompra = 0.0;
+    Double valorMontoVenta = 0.0;
     SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
     Date SYSDATE = new Date();
 
@@ -67,7 +68,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 txtCodigoMoneda.setEnabled(true);
                 txtDescripcionMoneda.setEnabled(false);
                 txtFecha.setEnabled(true);
-                txtTasa.setEnabled(true);
+                txtTasaCompra.setEnabled(true);
+                txtTasaVenta.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -80,21 +82,23 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 txtCodigoMoneda.setEnabled(false);
                 txtDescripcionMoneda.setEnabled(false);
                 txtFecha.setEnabled(false);
-                txtTasa.setEnabled(true);
+                txtTasaCompra.setEnabled(true);
+                txtTasaVenta.setEnabled(true);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
                 btnCancelar.setEnabled(true);
                 //REDIRECIONAMOS
                 pestanha.setSelectedIndex(1);
-                txtTasa.grabFocus();
+                txtTasaCompra.grabFocus();
                 break;
             case "ELIMINAR":
                 //CAMPOS
                 txtCodigoMoneda.setEnabled(false);
                 txtDescripcionMoneda.setEnabled(false);
                 txtFecha.setEnabled(false);
-                txtTasa.setEnabled(false);
+                txtTasaCompra.setEnabled(false);
+                txtTasaVenta.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(false);
                 btnConfirmar.setEnabled(true);
@@ -108,7 +112,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 txtCodigoMoneda.setEnabled(false);
                 txtDescripcionMoneda.setEnabled(false);
                 txtFecha.setEnabled(false);
-                txtTasa.setEnabled(false);
+                txtTasaCompra.setEnabled(false);
+                txtTasaVenta.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -122,7 +127,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 txtCodigoMoneda.setEnabled(false);
                 txtDescripcionMoneda.setEnabled(false);
                 txtFecha.setEnabled(false);
-                txtTasa.setEnabled(false);
+                txtTasaCompra.setEnabled(false);
+                txtTasaVenta.setEnabled(false);
                 //BOTONES
                 btnNuevo.setEnabled(true);
                 btnConfirmar.setEnabled(false);
@@ -141,7 +147,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         txtCodigoMoneda.setText(null);
         txtDescripcionMoneda.setText(null);
         txtFecha.setDate(null);
-        txtTasa.setText(null);
+        txtTasaCompra.setText(null);
+        txtTasaVenta.setText(null);
         operacion = "";
     }
 
@@ -151,7 +158,8 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
         Date fecha = txtFecha.getDate();
         java.sql.Date fechaSQL = new java.sql.Date(fecha.getTime());
-        Double tasa = valorMonto;
+        Double tasaCompra = valorMontoCompra;
+        Double tasaVenta = valorMontoVenta;
 
         switch (accion) {
             case "NUEVO":
@@ -166,18 +174,26 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                     if (fecha == null) {
                         error += "NO HA SELECCIONADO UNA FECHA.\n";
                     }
-                    if (tasa == null) {
-                        error += "NO HA CARGADO LA TASA.\n";
+                    if (tasaCompra == null) {
+                        error += "NO HA CARGADO LA TASA DE COMPRA.\n";
                     } else {
-                        if (tasa <= 0) {
-                            error += "LA TASA NO PUEDE SER MENOR O IGUAL A 0.\n";
+                        if (tasaCompra <= 0) {
+                            error += "LA TASA DE COMPRA NO PUEDE SER MENOR O IGUAL A 0.\n";
+                        }
+                    }
+                    if (tasaVenta == null) {
+                        error += "NO HA CARGADO LA TASA DE VENTA.\n";
+                    } else {
+                        if (tasaVenta <= 0) {
+                            error += "LA TASA DE VENTA NO PUEDE SER MENOR O IGUAL A 0.\n";
                         }
                     }
                 }
                 if (error.isEmpty()) {
                     c.setIdmoneda(idmoneda);
                     c.setFecha(fechaSQL);
-                    c.setTasa(tasa);
+                    c.setTasacompra(tasaCompra);
+                    c.setTasaventa(tasaVenta);
                     dao.agregar(c);
                     cargar();
                 } else {
@@ -186,15 +202,23 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 break;
 
             case "MODIFICAR":
-                if (tasa == null) {
-                    error += "NO HA CARGADO LA TASA.\n";
+                if (tasaCompra == null) {
+                    error += "NO HA CARGADO LA TASA DE COMPRA.\n";
                 } else {
-                    if (tasa <= 0) {
-                        error += "LA TASA NO PUEDE SER MENOR O IGUAL A 0.\n";
+                    if (tasaCompra <= 0) {
+                        error += "LA TASA DE COMPRA NO PUEDE SER MENOR O IGUAL A 0.\n";
+                    }
+                }
+                if (tasaVenta == null) {
+                    error += "NO HA CARGADO LA TASA DE VENTA.\n";
+                } else {
+                    if (tasaVenta <= 0) {
+                        error += "LA TASA DE VENTA NO PUEDE SER MENOR O IGUAL A 0.\n";
                     }
                 }
                 if (error.isEmpty()) {
-                    c.setTasa(tasa);
+                    c.setTasacompra(tasaCompra);
+                    c.setTasaventa(tasaVenta);
                     c.setIdmoneda(idmoneda);
                     c.setFecha(fechaSQL);
                     dao.modificar(c);
@@ -223,18 +247,21 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
             String fecha = tablaDatos.getValueAt(fila, 0).toString();
             String idmoneda = tablaDatos.getValueAt(fila, 1).toString();
             String descripcionmoneda = tablaDatos.getValueAt(fila, 2).toString();
-            Double tasa = Double.parseDouble(tablaDatos.getValueAt(fila, 3).toString());
+            Double tasaCompra = Double.parseDouble(tablaDatos.getValueAt(fila, 3).toString());
+            Double tasaVenta = Double.parseDouble(tablaDatos.getValueAt(fila, 4).toString());
             txtFecha.setDate(dao.parseFecha(fecha));
             txtCodigoMoneda.setText(idmoneda);
             txtDescripcionMoneda.setText(descripcionmoneda);
-            valorMonto = tasa;
+            valorMontoCompra = tasaCompra;
+            valorMontoVenta = tasaVenta;
             DecimalFormat formatter;
             if (idmoneda.equals("1")) {
                 formatter = new DecimalFormat("#,###");
             } else {
                 formatter = new DecimalFormat("#,###.000");
             }
-            txtTasa.setText(formatter.format(valorMonto).replace(".", "").replace(",", "."));
+            txtTasaCompra.setText(formatter.format(valorMontoCompra).replace(".", "").replace(",", "."));
+            txtTasaVenta.setText(formatter.format(valorMontoVenta).replace(".", "").replace(",", "."));
             habilitarCampos(operacion);
         } else {
             JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA", "ADVERTENCIA", JOptionPane.ERROR_MESSAGE);
@@ -293,7 +320,9 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         txtCodigoMoneda = new org.jdesktop.swingx.JXTextField();
         txtDescripcionMoneda = new org.jdesktop.swingx.JXTextField();
         txtFecha = new org.jdesktop.swingx.JXDatePicker();
-        txtTasa = new org.jdesktop.swingx.JXTextField();
+        txtTasaCompra = new org.jdesktop.swingx.JXTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txtTasaVenta = new org.jdesktop.swingx.JXTextField();
 
         Modificar.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         Modificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8_edit_file_16px.png"))); // NOI18N
@@ -463,14 +492,14 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Fecha</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cod.Moneda</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Moneda</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Tasa</span></span></span></p></html> "
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Fecha</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Cod.Moneda</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Moneda</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Tasa Compra</span></span></span></p></html> ", "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Tasa Venta</span></span></span></p></html> "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -493,6 +522,9 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
             tablaDatos.getColumnModel().getColumn(3).setMinWidth(150);
             tablaDatos.getColumnModel().getColumn(3).setPreferredWidth(150);
             tablaDatos.getColumnModel().getColumn(3).setMaxWidth(150);
+            tablaDatos.getColumnModel().getColumn(4).setMinWidth(150);
+            tablaDatos.getColumnModel().getColumn(4).setPreferredWidth(150);
+            tablaDatos.getColumnModel().getColumn(4).setMaxWidth(150);
         }
 
         javax.swing.GroupLayout pestanhaListaLayout = new javax.swing.GroupLayout(pestanhaLista);
@@ -562,7 +594,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         jLabel5.setText("Fecha:");
 
         jLabel6.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        jLabel6.setText("Tasa:");
+        jLabel6.setText("Tasa C.:");
 
         txtCodigoMoneda.setEnabled(false);
         txtCodigoMoneda.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -602,20 +634,37 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
             }
         });
 
-        txtTasa.setEnabled(false);
-        txtTasa.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtTasa.setPrompt("Tasa...");
-        txtTasa.addActionListener(new java.awt.event.ActionListener() {
+        txtTasaCompra.setEnabled(false);
+        txtTasaCompra.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtTasaCompra.setPrompt("Tasa de Compra...");
+        txtTasaCompra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTasaActionPerformed(evt);
+                txtTasaCompraActionPerformed(evt);
             }
         });
-        txtTasa.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtTasaCompra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtTasaCompraKeyTyped(evt);
+            }
+        });
+
+        jLabel8.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel8.setText("Tasa V.:");
+
+        txtTasaVenta.setEnabled(false);
+        txtTasaVenta.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtTasaVenta.setPrompt("Tasa de Venta...");
+        txtTasaVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTasaVentaActionPerformed(evt);
+            }
+        });
+        txtTasaVenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtTasaKeyPressed(evt);
+                txtTasaVentaKeyPressed(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtTasaKeyTyped(evt);
+                txtTasaVentaKeyTyped(evt);
             }
         });
 
@@ -635,6 +684,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                         .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pestanhaABMLayout.createSequentialGroup()
                         .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -645,9 +695,10 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(txtDescripcionMoneda, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(pestanhaABMLayout.createSequentialGroup()
-                                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtTasa, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-                                    .addComponent(txtFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtTasaVenta, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtTasaCompra, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                    .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -666,8 +717,12 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(txtTasa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                    .addComponent(txtTasaCompra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtTasaVenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                 .addGroup(pestanhaABMLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnConfirmar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -806,39 +861,34 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
             String fechaActual = formato.format(SYSDATE);
             txtFecha.setDate(dao.parseFecha(fechaActual));
         } else {
-            txtTasa.grabFocus();
+            txtTasaCompra.grabFocus();
         }
     }//GEN-LAST:event_txtFechaActionPerformed
 
-    private void txtTasaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTasaActionPerformed
-        if (txtTasa.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TASA VACIO", "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
+    private void txtTasaCompraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTasaCompraActionPerformed
+        if (txtTasaCompra.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TASA DE COMPRA VACIO", "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
         } else {
-            String number = txtTasa.getText();
+            String number = txtTasaCompra.getText();
             double monto = Double.parseDouble(number);
             int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
             if (monto <= 0) {
-                JOptionPane.showMessageDialog(null, "LA TASA NO PUEDE SER MENOR O IGUAL 0", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "LA TASA DE COMPRA NO PUEDE SER MENOR O IGUAL 0", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
             } else {
-                valorMonto = monto;
+                valorMontoCompra = monto;
                 DecimalFormat formatter;
                 if (idmoneda == 1) {
                     formatter = new DecimalFormat("#,###");
                 } else {
                     formatter = new DecimalFormat("#,###.000");
                 }
-                txtTasa.setText(formatter.format(monto));
-                btnConfirmar.setSelected(true);
-                btnConfirmar.grabFocus();
+                txtTasaCompra.setText(formatter.format(monto));
+                txtTasaVenta.grabFocus();
             }
         }
-    }//GEN-LAST:event_txtTasaActionPerformed
+    }//GEN-LAST:event_txtTasaCompraActionPerformed
 
-    private void txtTasaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTasaKeyPressed
-
-    private void txtTasaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaKeyTyped
+    private void txtTasaCompraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaCompraKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             getToolkit().beep();
@@ -848,10 +898,10 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
             getToolkit().beep();
             evt.consume();
         }
-        if (txtTasa.getText().length() == 20) {
+        if (txtTasaCompra.getText().length() == 20) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtTasaKeyTyped
+    }//GEN-LAST:event_txtTasaCompraKeyTyped
 
     private void txtCriterioMonedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioMonedaActionPerformed
         cargarMoneda();
@@ -887,6 +937,49 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tablaDatosMonedasMouseClicked
 
+    private void txtTasaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTasaVentaActionPerformed
+        if (txtTasaVenta.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE TASA DE VENTA VACIO", "ATENCIÓN", JOptionPane.WARNING_MESSAGE);
+        } else {
+            String number = txtTasaVenta.getText();
+            double monto = Double.parseDouble(number);
+            int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
+            if (monto <= 0) {
+                JOptionPane.showMessageDialog(null, "LA TASA DE VENTA NO PUEDE SER MENOR O IGUAL 0", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+            } else {
+                valorMontoVenta = monto;
+                DecimalFormat formatter;
+                if (idmoneda == 1) {
+                    formatter = new DecimalFormat("#,###");
+                } else {
+                    formatter = new DecimalFormat("#,###.000");
+                }
+                txtTasaVenta.setText(formatter.format(monto));
+                btnConfirmar.setSelected(true);
+                btnConfirmar.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_txtTasaVentaActionPerformed
+
+    private void txtTasaVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaVentaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTasaVentaKeyPressed
+
+    private void txtTasaVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTasaVentaKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (c == ',') {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtTasaVenta.getText().length() == 20) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtTasaVentaKeyTyped
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog BuscadorMoneda;
@@ -900,6 +993,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -916,6 +1010,7 @@ public class JFrmCotizacion extends javax.swing.JInternalFrame {
     private org.jdesktop.swingx.JXTextField txtCriterioMoneda;
     private org.jdesktop.swingx.JXTextField txtDescripcionMoneda;
     private org.jdesktop.swingx.JXDatePicker txtFecha;
-    private org.jdesktop.swingx.JXTextField txtTasa;
+    private org.jdesktop.swingx.JXTextField txtTasaCompra;
+    private org.jdesktop.swingx.JXTextField txtTasaVenta;
     // End of variables declaration//GEN-END:variables
 }

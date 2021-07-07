@@ -10,7 +10,8 @@ public class Cotizacion {
 
     private int idmoneda;
     private Date fecha;
-    private double tasa;
+    private double tasacompra;
+    private double tasaventa;
 
     public Cotizacion() {
     }
@@ -29,14 +30,22 @@ public class Cotizacion {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }    
+
+    public double getTasacompra() {
+        return tasacompra;
     }
 
-    public double getTasa() {
-        return tasa;
+    public void setTasacompra(double tasacompra) {
+        this.tasacompra = tasacompra;
     }
 
-    public void setTasa(double tasa) {
-        this.tasa = tasa;
+    public double getTasaventa() {
+        return tasaventa;
+    }
+
+    public void setTasaventa(double tasaventa) {
+        this.tasaventa = tasaventa;
     }
     
 }
