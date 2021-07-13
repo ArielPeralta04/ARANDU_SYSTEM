@@ -585,7 +585,7 @@ CREATE TABLE IF NOT EXISTS `articulo_deposito` (
   CONSTRAINT `FK_ARTICULO_DEPOSITO_DEPOSITO` FOREIGN KEY (`iddeposito`) REFERENCES `deposito` (`iddeposito`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_deposito: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_deposito: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_deposito` DISABLE KEYS */;
 REPLACE INTO `articulo_deposito` (`idarticulo`, `iddeposito`, `cantidad`) VALUES
 	(1, 1, 0),
@@ -609,7 +609,7 @@ CREATE TABLE IF NOT EXISTS `articulo_periodo` (
   CONSTRAINT `FK_ARTICULO_PERIODO_PERIODO` FOREIGN KEY (`idperiodo`) REFERENCES `periodo` (`idperiodo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_periodo: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_periodo: ~9 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_periodo` DISABLE KEYS */;
 REPLACE INTO `articulo_periodo` (`idarticulo`, `idperiodo`, `idmoneda`, `costo`) VALUES
 	(1, 1, 1, 5000),
@@ -743,6 +743,37 @@ CREATE TABLE IF NOT EXISTS `compra_detalle` (
 /*!40000 ALTER TABLE `compra_detalle` DISABLE KEYS */;
 /*!40000 ALTER TABLE `compra_detalle` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.compra_historico
+CREATE TABLE IF NOT EXISTS `compra_historico` (
+  `idcomprahistorico` int(11) NOT NULL,
+  `idusuarioanulacion` int(11) NOT NULL,
+  `idmotivoanulacion` int(11) NOT NULL,
+  `observacionanulacion` varchar(255) DEFAULT NULL,
+  `fechaanulacion` date NOT NULL,
+  `idcompra` int(11) NOT NULL,
+  `numerodocumento` varchar(25) NOT NULL,
+  `numerotimbrado` int(11) NOT NULL,
+  `fecha` date NOT NULL,
+  `observacion` varchar(255) DEFAULT NULL,
+  `idmoneda` int(11) NOT NULL,
+  `iddeposito` int(11) NOT NULL,
+  `idtipomovimiento` int(11) NOT NULL,
+  `idproveedor` int(11) NOT NULL,
+  `idusuario` int(11) NOT NULL,
+  `totalneto` double NOT NULL,
+  `totaliva` double NOT NULL,
+  `idcuenta` int(11) NOT NULL,
+  PRIMARY KEY (`idcomprahistorico`),
+  KEY `FK_COMPRA_HISTORICO_USUARIO` (`idusuarioanulacion`),
+  KEY `FK_COMPRA_HISTORICO_MOTIVO_ANULACION` (`idmotivoanulacion`),
+  CONSTRAINT `FK_COMPRA_HISTORICO_MOTIVO_ANULACION` FOREIGN KEY (`idmotivoanulacion`) REFERENCES `motivo_anulacion` (`idmotivo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_COMPRA_HISTORICO_USUARIO` FOREIGN KEY (`idusuarioanulacion`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.compra_historico: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `compra_historico` DISABLE KEYS */;
+/*!40000 ALTER TABLE `compra_historico` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.configuracion
 CREATE TABLE IF NOT EXISTS `configuracion` (
   `idconfiguracion` int(11) NOT NULL,
@@ -775,7 +806,7 @@ CREATE TABLE IF NOT EXISTS `cotizacion` (
   CONSTRAINT `FK_COTIZACION_MONEDA` FOREIGN KEY (`idmoneda`) REFERENCES `moneda` (`idmoneda`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.cotizacion: ~7 rows (aproximadamente)
+-- Volcando datos para la tabla as.cotizacion: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 
@@ -949,6 +980,20 @@ REPLACE INTO `motivo_ajuste` (`idmotivo`, `descripcion`) VALUES
 	(4, 'OTROS MOTIVOS');
 /*!40000 ALTER TABLE `motivo_ajuste` ENABLE KEYS */;
 
+-- Volcando estructura para tabla as.motivo_anulacion
+CREATE TABLE IF NOT EXISTS `motivo_anulacion` (
+  `idmotivo` int(11) NOT NULL,
+  `descripcion` varchar(100) NOT NULL,
+  PRIMARY KEY (`idmotivo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.motivo_anulacion: ~2 rows (aproximadamente)
+/*!40000 ALTER TABLE `motivo_anulacion` DISABLE KEYS */;
+REPLACE INTO `motivo_anulacion` (`idmotivo`, `descripcion`) VALUES
+	(1, 'PRUEBAS DE USUARIO'),
+	(2, 'ERROR DEL SISTEMA');
+/*!40000 ALTER TABLE `motivo_anulacion` ENABLE KEYS */;
+
 -- Volcando estructura para tabla as.pais
 CREATE TABLE IF NOT EXISTS `pais` (
   `idpais` int(11) NOT NULL,
@@ -988,7 +1033,7 @@ CREATE TABLE IF NOT EXISTS `programa` (
   PRIMARY KEY (`idprograma`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.programa: ~25 rows (aproximadamente)
+-- Volcando datos para la tabla as.programa: ~26 rows (aproximadamente)
 /*!40000 ALTER TABLE `programa` DISABLE KEYS */;
 REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(1, 'JFrmPrograma'),
@@ -1022,7 +1067,8 @@ REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(29, 'JFrmTimbrado'),
 	(30, 'JFrmConfiguracion'),
 	(31, 'JFrmCompra'),
-	(32, 'JFrmCuenta');
+	(32, 'JFrmCuenta'),
+	(33, 'JFrmMotivoAnulacion');
 /*!40000 ALTER TABLE `programa` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.proveedor
@@ -1253,7 +1299,7 @@ CREATE TABLE IF NOT EXISTS `usuario_programa` (
   PRIMARY KEY (`idusuario`,`idprograma`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.usuario_programa: 32 rows
+-- Volcando datos para la tabla as.usuario_programa: 33 rows
 /*!40000 ALTER TABLE `usuario_programa` DISABLE KEYS */;
 REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 1),
@@ -1287,290 +1333,9 @@ REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 29),
 	(1, 30),
 	(1, 31),
-	(1, 32);
+	(1, 32),
+	(1, 33);
 /*!40000 ALTER TABLE `usuario_programa` ENABLE KEYS */;
-
--- Volcando estructura para procedimiento as.P_ACT_CUENTA_SALDO
-DELIMITER //
-CREATE PROCEDURE `P_ACT_CUENTA_SALDO`(
-	IN `xOPERACION` VARCHAR(50),
-	IN `xMONTO` DOUBLE,
-	IN `xIDCOMPRA_VENTA` INT,
-	IN `xTABLA` VARCHAR(50)
-)
-BEGIN
-	DECLARE V_MONTO_ENTRADA DOUBLE;
-	DECLARE V_MONTO_SALIDA DOUBLE;
-		
-		IF xOPERACION = 'E' THEN
-			SET V_MONTO_ENTRADA 	= xMONTO;
-			SET V_MONTO_SALIDA	= 0;
-		END IF;
-		IF xOPERACION = 'S' THEN
-			SET V_MONTO_ENTRADA 	= 0;
-			SET V_MONTO_SALIDA	= xMONTO;
-		END IF;
-		CALL P_ACT_CUENTA_SALDO_INS_UPD(V_MONTO_ENTRADA, V_MONTO_SALIDA, xIDCOMPRA_VENTA, xTABLA);
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento as.P_ACT_CUENTA_SALDO_INS_UPD
-DELIMITER //
-CREATE PROCEDURE `P_ACT_CUENTA_SALDO_INS_UPD`(
-	IN `xMONTO_ENTRADA` DOUBLE,
-	IN `xMONTO_SALIDA` DOUBLE,
-	IN `xIDCOMPRA_VENTA` INT,
-	IN `xTABLA` VARCHAR(50)
-)
-BEGIN
-		DECLARE V_REGISTROS INT;
-		DECLARE V_MONEDA INT;
-		DECLARE V_CUENTA INT;
-		DECLARE V_FECHA DATE;
-		DECLARE V_MONTO_ENTRADA DOUBLE;
-		DECLARE V_MONTO_SALIDA DOUBLE;
-		
-		IF xTABLA = 'compra' THEN
-			SELECT CO.idmoneda, CO.idcuenta AS idcuenta, CO.fecha INTO V_MONEDA, V_CUENTA, V_FECHA FROM compra AS CO WHERE CO.idcompra = xIDCOMPRA_VENTA;
-		END IF;
-		
-		-- INSERT INTO excepciones (datos) VALUES (CONCAT(V_MONEDA,'-',V_CUENTA,'-',V_FECHA)); 
-		IF V_MONEDA != 1 THEN
-			SET V_MONTO_ENTRADA = ROUND(xMONTO_ENTRADA, 3);
-			SET V_MONTO_SALIDA = ROUND(xMONTO_SALIDA, 3);
-		ELSE
-			SET V_MONTO_ENTRADA = xMONTO_ENTRADA;
-			SET V_MONTO_SALIDA = xMONTO_SALIDA;
-		END IF;
-
-		-- INSERT INTO excepciones (datos) VALUES (CONCAT("V_CUENTA: ",V_CUENTA)); 
-		IF V_CUENTA > 0 THEN
-			
-			-- SE REALIZA LA CONSULTA PARA VER SI YA EXISTE UN REGISTRO CON LA PK DE LA TABLA CUENTA_SALDO
-			SELECT COUNT(*) CONTADOR INTO V_REGISTROS
-			FROM cuenta_saldo AS CS
-			WHERE CS.idcuenta = V_CUENTA
-			AND 	CS.fecha = V_FECHA;
-			
-			IF V_REGISTROS = 0 THEN
-				-- INSERT INTO excepciones (datos) VALUES (CONCAT("PASO 1: ")); 
-				INSERT INTO cuenta_saldo
-				(idcuenta, fecha, entrada, salida)
-				VALUES (V_CUENTA, V_FECHA, V_MONTO_ENTRADA, V_MONTO_SALIDA);
-			ELSE
-				-- INSERT INTO excepciones (datos) VALUES (CONCAT("PASO 2: ")); 
-				UPDATE cuenta_saldo
-				SET
-					entrada= entrada + V_MONTO_ENTRADA,
-					salida= salida + V_MONTO_SALIDA
-				WHERE idcuenta=V_CUENTA AND fecha=V_FECHA;
-			END IF;
-		END IF;
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento as.P_ACT_ITEM_COSTO
-DELIMITER //
-CREATE PROCEDURE `P_ACT_ITEM_COSTO`(
-	IN `xIDARTICULO` INT,
-	IN `xCOSTO` DOUBLE,
-	IN `xIDCOMPRA` INT
-)
-BEGIN
-	DECLARE V_CONTADOR INT;
-	DECLARE V_PERIODO INT;
-	DECLARE V_FECHA DATE;
-	DECLARE V_MONEDA INT;
-	DECLARE V_COSTO DOUBLE;
-	
-	SELECT C.fecha, C.idmoneda INTO V_FECHA, V_MONEDA FROM compra AS C WHERE C.idcompra = xIDCOMPRA;
-	
-	SET V_PERIODO = FP_ACT_PERIODO_INS_UPD(V_FECHA);
-	
-	SELECT COUNT(*) INTO V_CONTADOR FROM articulo_periodo AS P
-	WHERE P.idarticulo = xIDARTICULO
-	AND P.idperiodo = V_PERIODO
-	AND P.idmoneda = V_MONEDA;
-	
-	IF V_MONEDA = 1 THEN
-		SET V_COSTO = xCOSTO;
-	ELSE
-		SET V_COSTO = ROUND(xCOSTO, 3);
-	END IF;
-	
-	IF V_CONTADOR = 0 THEN
-		INSERT INTO articulo_periodo
-		(idarticulo, idperiodo, idmoneda, costo)
-		VALUES (xIDARTICULO, V_PERIODO, V_MONEDA, V_COSTO);
-	ELSE
-		UPDATE articulo_periodo
-		SET
-			costo=V_COSTO
-		WHERE idarticulo=xIDARTICULO AND idperiodo=V_PERIODO AND idmoneda = V_MONEDA;
-	END IF;
-	
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento as.P_ACT_ITEM_DEP
-DELIMITER //
-CREATE PROCEDURE `P_ACT_ITEM_DEP`(
-	IN `xIDARTICULO` INT,
-	IN `xIDVENTA_COMPRA` INT,
-	IN `xCANTIDAD` DOUBLE,
-	IN `xOPERACION` VARCHAR(1),
-	IN `xTABLA` VARCHAR(100)
-)
-BEGIN
-	DECLARE V_DEPOSITO INT;
-	DECLARE V_CANTIDAD_ENTRADA DOUBLE;
-	DECLARE V_CANTIDAD_SALIDA DOUBLE;
-	
-		/*IF xTABLA = 'venta' THEN
-			SELECT iddeposito INTO V_DEPOSITO FROM venta WHERE idventa = xIDVENTA_COMPRA;
-		END IF;*/
-		IF xTABLA = 'compra' THEN
-			SELECT iddeposito INTO V_DEPOSITO FROM compra WHERE idcompra = xIDVENTA_COMPRA;
-		END IF;
-		
-		IF xOPERACION = 'E' THEN
-			SET V_CANTIDAD_ENTRADA 	= xCANTIDAD;
-			SET V_CANTIDAD_SALIDA	= 0;
-		END IF;
-		IF xOPERACION = 'S' THEN
-			SET V_CANTIDAD_ENTRADA 	= 0;
-			SET V_CANTIDAD_SALIDA	= xCANTIDAD;
-		END IF;
-		CALL P_ACT_ITEM_DEP_INS_UPD(V_DEPOSITO, xIDARTICULO, V_CANTIDAD_ENTRADA, V_CANTIDAD_SALIDA);	
-END//
-DELIMITER ;
-
--- Volcando estructura para procedimiento as.P_ACT_ITEM_DEP_INS_UPD
-DELIMITER //
-CREATE PROCEDURE `P_ACT_ITEM_DEP_INS_UPD`(
-	IN `xIDDEPOSITO` INT,
-	IN `xIDARTICULO` INT,
-	IN `xCANTIDAD_ENTRADA` DOUBLE,
-	IN `xCANTIDAD_SALIDA` DOUBLE
-)
-BEGIN
-	DECLARE V_REGISTROS INT;	
-	SELECT COUNT(*) INTO V_REGISTROS FROM articulo_deposito
-	WHERE idarticulo	= xIDARTICULO
-	AND 	iddeposito	= xIDDEPOSITO;	
-	IF V_REGISTROS = 0 THEN
-		INSERT INTO articulo_deposito (idarticulo, iddeposito, cantidad)
-		VALUES(xIDARTICULO, xIDDEPOSITO, xCANTIDAD_ENTRADA - xCANTIDAD_SALIDA);
-	ELSE
-		UPDATE articulo_deposito 
-		SET cantidad = cantidad + xCANTIDAD_ENTRADA - xCANTIDAD_SALIDA
-		WHERE idarticulo	= xIDARTICULO
-		AND	iddeposito	= xIDDEPOSITO;
-	END IF;	
-END//
-DELIMITER ;
-
--- Volcando estructura para función as.FP_ACT_PERIODO_INS_UPD
-DELIMITER //
-CREATE FUNCTION `FP_ACT_PERIODO_INS_UPD`(`xFECHA` DATE
-) RETURNS int(11)
-BEGIN
-DECLARE V_CONTADOR INT;
-DECLARE V_PERIODO INT;
-DECLARE V_FECHA_DESDE DATE;
-DECLARE V_FECHA_HASTA DATE;
-DECLARE V_FECHA_INICIAL DATE;
-DECLARE V_FECHA_FINAL DATE;
-DECLARE V_CODIGO_NUEVO INT;
-DECLARE V_CODIGO_PERIODO INT;
-
-	SELECT COUNT(*), P.idperiodo, P.fecha_desde, P.fecha_hasta 
-	INTO V_CONTADOR, V_PERIODO, V_FECHA_DESDE, V_FECHA_HASTA
-	FROM periodo AS P WHERE xFECHA BETWEEN P.fecha_desde AND P.fecha_hasta;
-	
-	IF V_CONTADOR = 0 THEN
-	
-		/*OBTENER EL PRIMER Y ULTIMO DIA DEL MES EN BASE A LA FECHA DEL DOCUMENTO*/
-		
-		SELECT 
-		CAST(DATE_FORMAT(xFECHA,'%Y-%m-01') AS DATE) PRIMER_DIA,
-		LAST_DAY(xFECHA) ULTIMO_DIA
-		INTO 
-		V_FECHA_INICIAL,
-		V_FECHA_FINAL;
-		
-		/*OBTENER EL NUEVO CODIGO PARA EL PERIODO*/
-		select idperiodo + 1 as proximo_cod_libre
-		INTO V_CODIGO_NUEVO
-		from (select 0 as idperiodo
-		       union all
-		      select idperiodo
-		        from periodo) t1
-		                where not exists (select null
-		                   from periodo t2
-		                  where t2.idperiodo = t1.idperiodo + 1)
-		                order by idperiodo
-		                LIMIT 1;
-		
-		/*INSERTAR UN NUEVO PERIODO*/
-		INSERT INTO periodo
-		(idperiodo, fecha_desde, fecha_hasta)
-		VALUES (V_CODIGO_NUEVO, V_FECHA_INICIAL, V_FECHA_FINAL);
-		
-		SET V_CODIGO_PERIODO = V_CODIGO_NUEVO;
-		
-	ELSE
-		SET V_CODIGO_PERIODO = V_PERIODO;
-	END IF;
-	
-	RETURN V_CODIGO_PERIODO;
-END//
-DELIMITER ;
-
--- Volcando estructura para disparador as.TR_COMPRA_DETALLE_PERIODO_COSTO
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `TR_COMPRA_DETALLE_PERIODO_COSTO` AFTER INSERT ON `compra_detalle` FOR EACH ROW BEGIN
-	CALL P_ACT_ITEM_COSTO(NEW.idarticulo, (NEW.costo + NEW.iva), NEW.idcompra);
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Volcando estructura para disparador as.TR_COMPRA_DETALLE_STOCK_DEL
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `TR_COMPRA_DETALLE_STOCK_DEL` BEFORE DELETE ON `compra_detalle` FOR EACH ROW BEGIN
-	CALL P_ACT_ITEM_DEP(OLD.idarticulo, OLD.idcompra, OLD.cantidad, 'S', 'compra');
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Volcando estructura para disparador as.TR_COMPRA_DETALLE_STOCK_INS
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `TR_COMPRA_DETALLE_STOCK_INS` AFTER INSERT ON `compra_detalle` FOR EACH ROW BEGIN
-	CALL P_ACT_ITEM_DEP(NEW.idarticulo, NEW.idcompra, NEW.cantidad, 'E', 'compra');
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Volcando estructura para disparador as.TR_CUENTA_SALDO_COMPRA_DEL
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `TR_CUENTA_SALDO_COMPRA_DEL` BEFORE DELETE ON `compra` FOR EACH ROW BEGIN
-		CALL P_ACT_CUENTA_SALDO('E', (OLD.totalneto + OLD.totaliva), OLD.idcompra, 'compra');
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
-
--- Volcando estructura para disparador as.TR_CUENTA_SALDO_COMPRA_INS
-SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
-DELIMITER //
-CREATE TRIGGER `TR_CUENTA_SALDO_COMPRA_INS` AFTER INSERT ON `compra` FOR EACH ROW BEGIN
-		CALL P_ACT_CUENTA_SALDO('S', (NEW.totalneto + NEW.totaliva), NEW.idcompra, 'compra');
-END//
-DELIMITER ;
-SET SQL_MODE=@OLDTMP_SQL_MODE;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

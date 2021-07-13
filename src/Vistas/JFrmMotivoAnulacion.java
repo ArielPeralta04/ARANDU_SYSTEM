@@ -1,7 +1,7 @@
 package Vistas;
 
-import Dao.DAOMotivoAjuste;
-import Modelos.MotivoAjuste;
+import Dao.DAOMotivoAnulacion;
+import Modelos.MotivoAnulacion;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -10,20 +10,20 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author armando
  */
-public class JFrmMotivoAjuste extends javax.swing.JInternalFrame {
+public class JFrmMotivoAnulacion extends javax.swing.JInternalFrame {
 
-    MotivoAjuste ma = new MotivoAjuste();
-    DAOMotivoAjuste dao = new DAOMotivoAjuste();
+    MotivoAnulacion ma = new MotivoAnulacion();
+    DAOMotivoAnulacion dao = new DAOMotivoAnulacion();
     ArrayList<Object[]> datos = new ArrayList<>();
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
 
     /**
-     * Creates new form JFrmMotivoAjuste
+     * Creates new form JFrmMotivoAnulacion
      */
-    public JFrmMotivoAjuste() {
-        setTitle("JFrmMotivoAjuste");
+    public JFrmMotivoAnulacion() {
+        setTitle("JFrmMotivoAnulacion");
         initComponents();
         cargar();
     }
@@ -233,7 +233,7 @@ public class JFrmMotivoAjuste extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mantenimiento de Motivos de Ajustes");
+        jLabel1.setText("Mantenimiento de Motivos de Anulaciónes");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

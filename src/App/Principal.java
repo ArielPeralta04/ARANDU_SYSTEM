@@ -25,6 +25,7 @@ import Vistas.JFrmListaPrecio;
 import Vistas.JFrmMarca;
 import Vistas.JFrmMoneda;
 import Vistas.JFrmMotivoAjuste;
+import Vistas.JFrmMotivoAnulacion;
 import Vistas.JFrmPais;
 import Vistas.JFrmPeriodo;
 import Vistas.JFrmPrograma;
@@ -131,6 +132,7 @@ public class Principal extends javax.swing.JFrame {
         itemEmpresa = new javax.swing.JMenuItem();
         itemMoneda = new javax.swing.JMenuItem();
         itemMotivoAjuste = new javax.swing.JMenuItem();
+        itemMotivoAnulacion = new javax.swing.JMenuItem();
         itemTipoMovimiento = new javax.swing.JMenuItem();
         itemPeriodo = new javax.swing.JMenuItem();
         itemPrograma = new javax.swing.JMenuItem();
@@ -459,6 +461,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoSistemas.add(itemMotivoAjuste);
+
+        itemMotivoAnulacion.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemMotivoAnulacion.setText("Mantenimiento de Motivos de Anulación");
+        itemMotivoAnulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMotivoAnulacionActionPerformed(evt);
+            }
+        });
+        menuMantenimientoSistemas.add(itemMotivoAnulacion);
 
         itemTipoMovimiento.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemTipoMovimiento.setText("Mantenimiento de Movimientos");
@@ -1164,6 +1175,24 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemCuentaActionPerformed
 
+    private void itemMotivoAnulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMotivoAnulacionActionPerformed
+        JFrmMotivoAnulacion fm = new JFrmMotivoAnulacion();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemMotivoAnulacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1216,6 +1245,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemMarca;
     private javax.swing.JMenuItem itemMoneda;
     private javax.swing.JMenuItem itemMotivoAjuste;
+    private javax.swing.JMenuItem itemMotivoAnulacion;
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemPeriodo;
     private javax.swing.JMenuItem itemPrograma;
