@@ -16,6 +16,7 @@ import Vistas.JFrmCliente;
 import Vistas.JFrmCompra;
 import Vistas.JFrmConfiguracion;
 import Vistas.JFrmCotizacion;
+import Vistas.JFrmCuenta;
 import Vistas.JFrmDeposito;
 import Vistas.JFrmEmpresa;
 import Vistas.JFrmImpuesto;
@@ -118,6 +119,7 @@ public class Principal extends javax.swing.JFrame {
         itemCaja = new javax.swing.JMenuItem();
         itemCliente = new javax.swing.JMenuItem();
         itemCotizacion = new javax.swing.JMenuItem();
+        itemCuenta = new javax.swing.JMenuItem();
         itemProveedor = new javax.swing.JMenuItem();
         menuMovimientoFinanzas = new javax.swing.JMenu();
         menuConsultaFinanzas = new javax.swing.JMenu();
@@ -367,6 +369,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMantenimientoFinanzas.add(itemCotizacion);
+
+        itemCuenta.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemCuenta.setText("Mantenimiento de Cuentas");
+        itemCuenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemCuentaActionPerformed(evt);
+            }
+        });
+        menuMantenimientoFinanzas.add(itemCuenta);
 
         itemProveedor.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         itemProveedor.setText("Mantenimiento de Proveedores");
@@ -1135,6 +1146,24 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemCompraActionPerformed
 
+    private void itemCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemCuentaActionPerformed
+        JFrmCuenta fm = new JFrmCuenta();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemCuentaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1178,6 +1207,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemCompra;
     private javax.swing.JMenuItem itemConfiguracion;
     private javax.swing.JMenuItem itemCotizacion;
+    private javax.swing.JMenuItem itemCuenta;
     private javax.swing.JMenuItem itemDeposito;
     private javax.swing.JMenuItem itemEmpresa;
     private javax.swing.JMenuItem itemImpuesto;

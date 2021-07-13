@@ -8,6 +8,7 @@ public class Cuenta {
     private int idcuenta;
     private String descripcion;
     private int idbanco;
+    private int idmoneda;
 
     public Cuenta() {
     }
@@ -34,6 +35,14 @@ public class Cuenta {
 
     public void setIdbanco(int idbanco) {
         this.idbanco = idbanco;
+    }
+
+    public int getIdmoneda() {
+        return idmoneda;
+    }
+
+    public void setIdmoneda(int idmoneda) {
+        this.idmoneda = idmoneda;
     }
     
     

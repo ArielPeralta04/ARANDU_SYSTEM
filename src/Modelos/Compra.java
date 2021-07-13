@@ -19,6 +19,7 @@ public class Compra {
     private int idusuario;
     private double totalneto;
     private double totaliva;
+    private int idcuenta;
 
     public Compra() {
     }
@@ -117,6 +118,14 @@ public class Compra {
 
     public void setTotaliva(double totaliva) {
         this.totaliva = totaliva;
+    }
+
+    public int getIdcuenta() {
+        return idcuenta;
+    }
+
+    public void setIdcuenta(int idcuenta) {
+        this.idcuenta = idcuenta;
     }
     
 }

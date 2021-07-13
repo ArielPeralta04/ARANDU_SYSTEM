@@ -26,8 +26,8 @@ public class DAOCompra implements OperacionesCompra {
         c = (Compra) obj;
         String sql = "INSERT INTO compra\n"
                 + "(idcompra, numerodocumento, numerotimbrado, fecha, \n"
-                + "observacion, idmoneda, iddeposito, idtipomovimiento, idproveedor, idusuario, totalneto, totaliva)\n"
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                + "observacion, idmoneda, iddeposito, idtipomovimiento, idproveedor, idusuario, totalneto, totaliva, idcuenta)\n"
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
         try {
@@ -46,6 +46,7 @@ public class DAOCompra implements OperacionesCompra {
             ps.setInt(10, c.getIdusuario());
             ps.setDouble(11, c.getTotalneto());
             ps.setDouble(12, c.getTotaliva());
+            ps.setInt(13, c.getIdcuenta());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -77,6 +78,7 @@ public class DAOCompra implements OperacionesCompra {
                 + "		idusuario=?\n"
                 + "		totalneto=?\n"
                 + "		totaliva=?\n"
+                + "		idcuenta=?\n"
                 + "	WHERE idcompra=?;";
         Connection con;
         PreparedStatement ps;
@@ -96,6 +98,7 @@ public class DAOCompra implements OperacionesCompra {
             ps.setInt(10, c.getIdusuario());
             ps.setDouble(11, c.getTotalneto());
             ps.setDouble(12, c.getTotaliva());
+            ps.setInt(13, c.getIdcuenta());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
