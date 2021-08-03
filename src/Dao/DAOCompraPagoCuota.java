@@ -26,7 +26,7 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
     public boolean agregar(Object obj) {
         cpc = (CompraPagoCuota) obj;
         String sql = "INSERT INTO compra_pago_cuota\n"
-                + "(idpago, idcompra, numero, fechavencimiento, fechapago, monto, idcuenta, idusuario)\n"
+                + "(idpago, idcompra, numero, fechapago, monto, idcuenta, idusuario, numerocomprobante)\n"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
@@ -37,11 +37,11 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
             ps.setInt(1, cpc.getIdpago());
             ps.setInt(2, cpc.getIdcompra());
             ps.setInt(3, cpc.getNumero());
-            ps.setDate(4, (Date) cpc.getFechavencimiento());
-            ps.setDate(5, (Date) cpc.getFechapago());
-            ps.setDouble(6, cpc.getMonto());
-            ps.setInt(7, cpc.getIdcuenta());
-            ps.setInt(8, cpc.getIdusuario());
+            ps.setDate(4, (Date) cpc.getFechapago());
+            ps.setDouble(5, cpc.getMonto());
+            ps.setInt(6, cpc.getIdcuenta());
+            ps.setInt(7, cpc.getIdusuario());
+            ps.setString(8, cpc.getNumerocomprobante());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -116,36 +116,11 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
         return id;
     }
 
-    @Override
-    public ArrayList<Object[]> consultar(String criterio) {
-        String sql = "SELECT * FROM compra_pago_cuota WHERE CONCAT(descripcion, idcaja) LIKE ? ORDER BY descripcion;";
-        Connection con;
-        PreparedStatement ps;
-        ResultSet rs;
-        ArrayList<Object[]> datos = new ArrayList<>();
-        try {
-            Class.forName(db.getDriver());
-            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
-            ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + criterio + "%");
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Object[] fila = new Object[2];
-                fila[0] = rs.getInt(1);
-                fila[1] = rs.getString(2);
-                datos.add(fila);
-            }
-            con.close();
-        } catch (SQLException | ClassNotFoundException e) {
-            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER LA LISTA DE LOS DATOS \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-        return datos;
-    }
 
     @Override
     public boolean consultarDatos(Object obj) {
         cpc = (CompraPagoCuota) obj;
-        String sql = "SELECT * FROM caja WHERE idcaja = ?;";
+        String sql = "SELECT * FROM compra_pago_cuota WHERE idpago = ?;";
         Connection con;
         PreparedStatement ps;
         ResultSet rs;
@@ -160,7 +135,7 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
                 con.close();
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "NO EXISTE CAJA CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "NO EXISTE PAGO CON EL CÓDIGO INGRESADO...", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
                 con.close();
                 return false;
             }
@@ -168,6 +143,59 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
             JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER EL REGISTRO SELECCIONADO \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+    }
+
+    @Override
+    public ArrayList<Object[]> consultarCuotasCompra(int idproveedor, int idmoneda, String criterio) {
+        String sql = "SELECT\n"
+                + "C.idproveedor, \n"
+                + "C.idmoneda,\n"
+                + "C.numerodocumento, C.numerotimbrado, (C.totalneto + C.totaliva) AS total_documento,\n"
+                + "CC.numero, CC.monto AS monto_cuota, DATE_FORMAT(CC.fechavencimiento,'%d/%m/%Y') AS vencimiento,\n"
+                + "CC.monto - IFNULL((SELECT sum(p.monto) FROM compra_pago_cuota AS p WHERE p.idcompra = CC.idcompra AND p.numero = CC.numero), 0) AS saldo,\n"
+                + "C.idcompra\n"
+                + "FROM compra_cuota AS CC\n"
+                + "INNER JOIN compra AS C ON C.idcompra = CC.idcompra\n"
+                + "LEFT JOIN compra_pago_cuota AS CPC ON CPC.idcompra = CC.idcompra AND CPC.numero = CC.numero\n"
+                + "INNER JOIN proveedor AS P ON P.idproveedor = C.idproveedor\n"
+                + "INNER JOIN moneda AS M ON M.idmoneda = C.idmoneda\n"
+                + "WHERE CC.monto - IFNULL((SELECT sum(p.monto) FROM compra_pago_cuota AS p \n"
+                + "WHERE p.idcompra = CC.idcompra AND p.numero = CC.numero), 0) > 0 \n"
+                + "AND P.idproveedor = ?\n"
+                + "AND M.idmoneda = ?\n"
+                + "AND CONCAT(C.numerodocumento, DATE_FORMAT(CC.fechavencimiento,'%d/%m/%Y')) LIKE ?\n"
+                + "GROUP BY C.numerodocumento, CC.numero, CC.fechavencimiento;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        ArrayList<Object[]> datos = new ArrayList<>();
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setInt(1, idproveedor);
+            ps.setInt(2, idmoneda);
+            ps.setString(3, "%" + criterio + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Object[] fila = new Object[10];
+                fila[0] = rs.getInt(1);
+                fila[1] = rs.getInt(2);
+                fila[2] = rs.getString(3);
+                fila[3] = rs.getInt(4);
+                fila[4] = rs.getDouble(5);
+                fila[5] = rs.getInt(6);
+                fila[6] = rs.getDouble(7);
+                fila[7] = rs.getString(8);
+                fila[8] = rs.getDouble(9);
+                fila[9] = rs.getInt(10);
+                datos.add(fila);
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER LA LISTA DE LOS DATOS \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return datos;
     }
 
 }

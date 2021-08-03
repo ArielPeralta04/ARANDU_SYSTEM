@@ -10,11 +10,11 @@ public class CompraPagoCuota {
     private int idpago;
     private int idcompra;
     private int numero;
-    private Date fechavencimiento;
     private Date fechapago;
     private double monto;
     private int idcuenta;
     private int  idusuario;
+    private String  numerocomprobante;
 
     public CompraPagoCuota() {
     }
@@ -41,14 +41,6 @@ public class CompraPagoCuota {
 
     public void setNumero(int numero) {
         this.numero = numero;
-    }
-
-    public Date getFechavencimiento() {
-        return fechavencimiento;
-    }
-
-    public void setFechavencimiento(Date fechavencimiento) {
-        this.fechavencimiento = fechavencimiento;
     }
 
     public Date getFechapago() {
@@ -81,6 +73,14 @@ public class CompraPagoCuota {
 
     public void setIdusuario(int idusuario) {
         this.idusuario = idusuario;
+    }
+
+    public String getNumerocomprobante() {
+        return numerocomprobante;
+    }
+
+    public void setNumerocomprobante(String numerocomprobante) {
+        this.numerocomprobante = numerocomprobante;
     }
     
     

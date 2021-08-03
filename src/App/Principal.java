@@ -26,6 +26,7 @@ import Vistas.JFrmMarca;
 import Vistas.JFrmMoneda;
 import Vistas.JFrmMotivoAjuste;
 import Vistas.JFrmMotivoAnulacion;
+import Vistas.JFrmPagoCuota;
 import Vistas.JFrmPais;
 import Vistas.JFrmPeriodo;
 import Vistas.JFrmPrograma;
@@ -104,6 +105,7 @@ public class Principal extends javax.swing.JFrame {
         itemUnidadMedida = new javax.swing.JMenuItem();
         menuMovimientoCompras = new javax.swing.JMenu();
         itemCompra = new javax.swing.JMenuItem();
+        itemPagoCuota = new javax.swing.JMenuItem();
         menuConsultaCompras = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         menuMantenimientoVentas = new javax.swing.JMenu();
@@ -266,6 +268,15 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuMovimientoCompras.add(itemCompra);
+
+        itemPagoCuota.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
+        itemPagoCuota.setText("Movimiento de Pagos de Cuotas");
+        itemPagoCuota.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemPagoCuotaActionPerformed(evt);
+            }
+        });
+        menuMovimientoCompras.add(itemPagoCuota);
 
         jMenu2.add(menuMovimientoCompras);
 
@@ -1193,6 +1204,24 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_itemMotivoAnulacionActionPerformed
 
+    private void itemPagoCuotaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemPagoCuotaActionPerformed
+        JFrmPagoCuota fm = new JFrmPagoCuota();
+        panelInterno.add(fm);
+        Dimension desktopSize = panelInterno.getSize();
+        Dimension frameSize = fm.getSize();
+        fm.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
+        try {
+            fm.setSelected(true);
+        } catch (PropertyVetoException e) {
+            JOptionPane.showMessageDialog(null, "ERROR AL ABRIR EL FORMULARIO: " + fm.getTitle(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        if (verificarPermisos(App.appLogin.IDUSUARIO, fm.getTitle()) == true) {
+            fm.show();
+        } else {
+            JOptionPane.showMessageDialog(null, "EL PROGRAMA NO ESTA HABILITADO PARA EL USUARIO\nPROGRAMA: " + fm.getTitle() + " USUARIO: " + App.appLogin.LOGIN, "ACCESO RESTRINGIDO", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_itemPagoCuotaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1246,6 +1275,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemMoneda;
     private javax.swing.JMenuItem itemMotivoAjuste;
     private javax.swing.JMenuItem itemMotivoAnulacion;
+    private javax.swing.JMenuItem itemPagoCuota;
     private javax.swing.JMenuItem itemPais;
     private javax.swing.JMenuItem itemPeriodo;
     private javax.swing.JMenuItem itemPrograma;

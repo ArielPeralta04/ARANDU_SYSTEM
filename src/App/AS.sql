@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.20-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         10.4.14-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             11.2.0.6213
+-- HeidiSQL Versión:             11.1.0.6116
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -585,29 +585,29 @@ CREATE TABLE IF NOT EXISTS `articulo_deposito` (
   CONSTRAINT `FK_ARTICULO_DEPOSITO_DEPOSITO` FOREIGN KEY (`iddeposito`) REFERENCES `deposito` (`iddeposito`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_deposito: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_deposito: ~20 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_deposito` DISABLE KEYS */;
 REPLACE INTO `articulo_deposito` (`idarticulo`, `iddeposito`, `cantidad`) VALUES
-	(1, 1, 10),
-	(2, 1, 10),
-	(3, 1, 10),
-	(4, 1, 10),
-	(5, 1, 10),
-	(6, 1, 10),
-	(7, 1, 10),
-	(8, 1, 10),
-	(9, 1, 10),
-	(10, 1, 10),
-	(11, 1, 10),
-	(12, 1, 10),
-	(13, 1, 10),
-	(14, 1, 10),
-	(15, 1, 10),
-	(16, 1, 10),
-	(17, 1, 10),
-	(18, 1, 10),
-	(19, 1, 10),
-	(20, 1, 10);
+	(1, 1, 5),
+	(2, 1, 5),
+	(3, 1, 0),
+	(4, 1, 0),
+	(5, 1, 0),
+	(6, 1, 0),
+	(7, 1, 0),
+	(8, 1, 0),
+	(9, 1, 0),
+	(10, 1, 0),
+	(11, 1, 0),
+	(12, 1, 0),
+	(13, 1, 0),
+	(14, 1, 0),
+	(15, 1, 0),
+	(16, 1, 0),
+	(17, 1, 0),
+	(18, 1, 0),
+	(19, 1, 0),
+	(20, 1, 0);
 /*!40000 ALTER TABLE `articulo_deposito` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.articulo_periodo
@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS `articulo_periodo` (
   CONSTRAINT `FK_ARTICULO_PERIODO_PERIODO` FOREIGN KEY (`idperiodo`) REFERENCES `periodo` (`idperiodo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.articulo_periodo: ~9 rows (aproximadamente)
+-- Volcando datos para la tabla as.articulo_periodo: ~24 rows (aproximadamente)
 /*!40000 ALTER TABLE `articulo_periodo` DISABLE KEYS */;
 REPLACE INTO `articulo_periodo` (`idarticulo`, `idperiodo`, `idmoneda`, `costo`) VALUES
 	(1, 1, 1, 5000),
@@ -738,8 +738,7 @@ CREATE TABLE IF NOT EXISTS `compra` (
 -- Volcando datos para la tabla as.compra: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra` DISABLE KEYS */;
 REPLACE INTO `compra` (`idcompra`, `numerodocumento`, `numerotimbrado`, `fecha`, `observacion`, `idmoneda`, `iddeposito`, `idtipomovimiento`, `idproveedor`, `idusuario`, `totalneto`, `totaliva`, `idcuenta`) VALUES
-	(1, '001-001-0000001', 11111111, '2021-07-13', '', 1, 1, 2, 1, 1, 909100, 90900, 0),
-	(2, '001-001-0000002', 11111111, '2021-07-13', '', 1, 1, 2, 1, 1, 909100, 90900, 0);
+	(1, '001-001-0000001', 11111111, '2021-07-15', '', 1, 1, 2, 1, 1, 45454, 4546, 0);
 /*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_cuota
@@ -753,12 +752,14 @@ CREATE TABLE IF NOT EXISTS `compra_cuota` (
   CONSTRAINT `FK_COMPRA_CUOTA_COMPRA` FOREIGN KEY (`idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra_cuota: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra_cuota: ~4 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_cuota` DISABLE KEYS */;
 REPLACE INTO `compra_cuota` (`idcompra`, `numero`, `monto`, `fechavencimiento`) VALUES
-	(1, 1, 500000, '2021-08-13'),
-	(1, 2, 500000, '2021-09-13'),
-	(2, 1, 500000, '2021-09-13');
+	(1, 1, 10000, '2021-07-15'),
+	(1, 2, 10000, '2021-08-15'),
+	(1, 3, 10000, '2021-09-15'),
+	(1, 4, 10000, '2021-10-15'),
+	(1, 5, 10000, '2021-11-15');
 /*!40000 ALTER TABLE `compra_cuota` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_detalle
@@ -777,29 +778,11 @@ CREATE TABLE IF NOT EXISTS `compra_detalle` (
   CONSTRAINT `FK_COMPRA_DETALLE_COMPRA` FOREIGN KEY (`idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra_detalle: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra_detalle: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_detalle` DISABLE KEYS */;
 REPLACE INTO `compra_detalle` (`idcompra`, `idarticulo`, `costo`, `cantidad`, `numeroitem`, `iva`, `porcentajeiva`) VALUES
-	(1, 1, 4545, 10, 1, 455, 10),
-	(1, 2, 4545, 10, 2, 455, 10),
-	(1, 3, 4545, 10, 3, 455, 10),
-	(1, 4, 4545, 10, 4, 455, 10),
-	(1, 5, 4545, 10, 5, 455, 10),
-	(1, 6, 4545, 10, 6, 455, 10),
-	(1, 7, 4545, 10, 7, 455, 10),
-	(1, 8, 4545, 10, 8, 455, 10),
-	(1, 9, 4545, 10, 9, 455, 10),
-	(1, 10, 4545, 10, 10, 455, 10),
-	(1, 11, 4545, 10, 11, 455, 10),
-	(1, 12, 4545, 10, 12, 455, 10),
-	(1, 13, 4545, 10, 13, 455, 10),
-	(1, 14, 4545, 10, 14, 455, 10),
-	(1, 15, 4545, 10, 15, 455, 10),
-	(1, 16, 4545, 10, 16, 455, 10),
-	(1, 17, 4545, 10, 17, 455, 10),
-	(1, 18, 4545, 10, 18, 455, 10),
-	(1, 19, 4545, 10, 19, 455, 10),
-	(1, 20, 4545, 10, 20, 455, 10);
+	(1, 1, 4545, 5, 1, 455, 10),
+	(1, 2, 4545, 5, 2, 455, 10);
 /*!40000 ALTER TABLE `compra_detalle` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_pago_cuota
@@ -807,11 +790,11 @@ CREATE TABLE IF NOT EXISTS `compra_pago_cuota` (
   `idpago` int(11) NOT NULL,
   `idcompra` int(11) NOT NULL,
   `numero` int(11) NOT NULL,
-  `fechavencimiento` date NOT NULL,
   `fechapago` date NOT NULL,
   `monto` double NOT NULL,
   `idcuenta` int(11) NOT NULL,
   `idusuario` int(11) NOT NULL,
+  `numerocomprobante` varchar(25) NOT NULL,
   PRIMARY KEY (`idpago`,`idcompra`,`numero`),
   KEY `FK_COMPRA_PAGO_CUOTA_COMPRA_CUOTA` (`idcompra`,`numero`),
   KEY `FK_COMPRA_PAGO_CUOTA_USUARIO` (`idusuario`),
@@ -823,10 +806,30 @@ CREATE TABLE IF NOT EXISTS `compra_pago_cuota` (
 
 -- Volcando datos para la tabla as.compra_pago_cuota: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_pago_cuota` DISABLE KEYS */;
-REPLACE INTO `compra_pago_cuota` (`idpago`, `idcompra`, `numero`, `fechavencimiento`, `fechapago`, `monto`, `idcuenta`, `idusuario`) VALUES
-	(1, 1, 1, '2021-08-13', '2021-08-13', 250000, 1, 1),
-	(2, 1, 1, '2021-08-13', '2021-08-14', 250000, 1, 1);
 /*!40000 ALTER TABLE `compra_pago_cuota` ENABLE KEYS */;
+
+-- Volcando estructura para tabla as.compra_pago_cuota_anulado
+CREATE TABLE IF NOT EXISTS `compra_pago_cuota_anulado` (
+  `idpagoanulado` int(11) NOT NULL,
+  `fechahoraanulado` datetime NOT NULL,
+  `observacion` varchar(255) DEFAULT NULL,
+  `idmotivo` int(11) NOT NULL,
+  `idusuario` int(11) NOT NULL,
+  `idpago` int(11) NOT NULL,
+  `idcompra` int(11) NOT NULL,
+  `numero` int(11) NOT NULL,
+  `fechapago` date NOT NULL,
+  `monto` double NOT NULL,
+  PRIMARY KEY (`idpagoanulado`),
+  KEY `FK_COMPRA_PAGO_CUOTA_ANULADO_MOTIVO_ANULACION` (`idmotivo`),
+  KEY `FK_COMPRA_PAGO_CUOTA_ANULADO_USUARIO` (`idusuario`),
+  CONSTRAINT `FK_COMPRA_PAGO_CUOTA_ANULADO_MOTIVO_ANULACION` FOREIGN KEY (`idmotivo`) REFERENCES `motivo_anulacion` (`idmotivo`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `FK_COMPRA_PAGO_CUOTA_ANULADO_USUARIO` FOREIGN KEY (`idusuario`) REFERENCES `usuario` (`idusuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Volcando datos para la tabla as.compra_pago_cuota_anulado: ~0 rows (aproximadamente)
+/*!40000 ALTER TABLE `compra_pago_cuota_anulado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `compra_pago_cuota_anulado` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.configuracion
 CREATE TABLE IF NOT EXISTS `configuracion` (
@@ -862,6 +865,8 @@ CREATE TABLE IF NOT EXISTS `cotizacion` (
 
 -- Volcando datos para la tabla as.cotizacion: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `cotizacion` DISABLE KEYS */;
+REPLACE INTO `cotizacion` (`idmoneda`, `fecha`, `tasacompra`, `tasaventa`) VALUES
+	(2, '2021-07-15', 6990, 7000);
 /*!40000 ALTER TABLE `cotizacion` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.cuenta
@@ -1122,7 +1127,8 @@ REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(30, 'JFrmConfiguracion'),
 	(31, 'JFrmCompra'),
 	(32, 'JFrmCuenta'),
-	(33, 'JFrmMotivoAnulacion');
+	(33, 'JFrmMotivoAnulacion'),
+	(34, 'JFrmPagoCuota');
 /*!40000 ALTER TABLE `programa` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.proveedor
@@ -1353,7 +1359,7 @@ CREATE TABLE IF NOT EXISTS `usuario_programa` (
   PRIMARY KEY (`idusuario`,`idprograma`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.usuario_programa: 33 rows
+-- Volcando datos para la tabla as.usuario_programa: 34 rows
 /*!40000 ALTER TABLE `usuario_programa` DISABLE KEYS */;
 REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 1),
@@ -1388,8 +1394,24 @@ REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 30),
 	(1, 31),
 	(1, 32),
-	(1, 33);
+	(1, 33),
+	(1, 34);
 /*!40000 ALTER TABLE `usuario_programa` ENABLE KEYS */;
+
+-- Volcando estructura para vista as.v_cuotas_compras
+-- Creando tabla temporal para superar errores de dependencia de VIEW
+CREATE TABLE `v_cuotas_compras` (
+	`idproveedor` INT(11) NOT NULL,
+	`idmoneda` INT(11) NOT NULL,
+	`numerodocumento` VARCHAR(25) NOT NULL COLLATE 'utf8mb4_general_ci',
+	`numerotimbrado` INT(11) NOT NULL,
+	`total_documento` DOUBLE NOT NULL,
+	`numero` INT(11) NOT NULL,
+	`monto_cuota` DOUBLE NOT NULL,
+	`idpago` INT(11) NULL,
+	`monto_pago` DOUBLE NULL,
+	`saldo` DOUBLE NOT NULL
+) ENGINE=MyISAM;
 
 -- Volcando estructura para procedimiento as.P_ACT_CUENTA_SALDO
 DELIMITER //
@@ -1433,6 +1455,10 @@ BEGIN
 		
 		IF xTABLA = 'compra' THEN
 			SELECT CO.idmoneda, CO.idcuenta AS idcuenta, CO.fecha INTO V_MONEDA, V_CUENTA, V_FECHA FROM compra AS CO WHERE CO.idcompra = xIDCOMPRA_VENTA;
+		END IF;
+		IF xTABLA = 'compra_pago_cuota' THEN
+			SELECT (SELECT CU.idmoneda FROM cuenta AS CU WHERE CU.idcuenta = CPC.idcuenta) AS idmoneda, CPC.idcuenta AS idcuenta, CPC.fechapago INTO V_MONEDA, V_CUENTA, V_FECHA 
+			FROM compra_pago_cuota AS CPC WHERE CPC.idpago = xIDCOMPRA_VENTA;
 		END IF;
 		
 		-- INSERT INTO excepciones (datos) VALUES (CONCAT(V_MONEDA,'-',V_CUENTA,'-',V_FECHA)); 
@@ -1628,6 +1654,16 @@ DECLARE V_CODIGO_PERIODO INT;
 END//
 DELIMITER ;
 
+-- Volcando estructura para función as.FP_FECHAPY
+DELIMITER //
+CREATE FUNCTION `FP_FECHAPY`(FECHA DATE) RETURNS varchar(10) CHARSET utf8mb4
+BEGIN
+	DECLARE V_RESULT VARCHAR(10);
+	SET V_RESULT = DATE_FORMAT(FECHA, '%d-%m-%Y');
+	RETURN V_RESULT;
+END//
+DELIMITER ;
+
 -- Volcando estructura para disparador as.TR_COMPRA_DETALLE_PERIODO_COSTO
 SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
 DELIMITER //
@@ -1673,7 +1709,42 @@ END//
 DELIMITER ;
 SET SQL_MODE=@OLDTMP_SQL_MODE;
 
+-- Volcando estructura para disparador as.TR_CUENTA_SALDO_COMPRA_PAGO_CUOTA_DEL
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `TR_CUENTA_SALDO_COMPRA_PAGO_CUOTA_DEL` BEFORE DELETE ON `compra_pago_cuota` FOR EACH ROW BEGIN
+		CALL P_ACT_CUENTA_SALDO('E', OLD.monto, OLD.idcuenta, 'compra_pago_cuota');
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Volcando estructura para disparador as.TR_CUENTA_SALDO_COMPRA_PAGO_CUOTA_INS
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_ZERO_IN_DATE,NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION';
+DELIMITER //
+CREATE TRIGGER `TR_CUENTA_SALDO_COMPRA_PAGO_CUOTA_INS` AFTER INSERT ON `compra_pago_cuota` FOR EACH ROW BEGIN
+		CALL P_ACT_CUENTA_SALDO('S', NEW.monto, NEW.idpago, 'compra_pago_cuota');
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+-- Volcando estructura para vista as.v_cuotas_compras
+-- Eliminando tabla temporal y crear estructura final de VIEW
+DROP TABLE IF EXISTS `v_cuotas_compras`;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_cuotas_compras` AS SELECT
+C.idproveedor, 
+C.idmoneda, 
+C.numerodocumento, C.numerotimbrado, (C.totalneto + C.totaliva) AS total_documento,
+CC.numero, CC.monto AS monto_cuota,
+CPC.idpago, CPC.monto AS monto_pago, 
+CC.monto - IFNULL((SELECT sum(p.monto) FROM compra_pago_cuota AS p WHERE p.idcompra = CC.idcompra AND p.numero = CC.numero), 0) AS saldo
+FROM compra_cuota AS CC
+INNER JOIN compra AS C ON C.idcompra = CC.idcompra
+LEFT JOIN compra_pago_cuota AS CPC ON CPC.idcompra = CC.idcompra AND CPC.numero = CC.numero
+INNER JOIN proveedor AS P ON P.idproveedor = C.idproveedor
+INNER JOIN moneda AS M ON M.idmoneda = C.idmoneda
+WHERE CC.monto - IFNULL((SELECT sum(p.monto) FROM compra_pago_cuota AS p WHERE p.idcompra = CC.idcompra AND p.numero = CC.numero), 0) > 0 ;
+
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
