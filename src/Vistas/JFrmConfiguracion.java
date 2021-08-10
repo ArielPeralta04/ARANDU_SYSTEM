@@ -235,7 +235,9 @@ public class JFrmConfiguracion extends javax.swing.JInternalFrame {
         int fila = tablaDatos.getSelectedRow();
         if (fila >= 0) {
             int id = Integer.parseInt(tablaDatos.getValueAt(fila, 0).toString());
+            int idsucursal = Integer.parseInt(tablaDatos.getValueAt(fila, 1).toString());
             c.setIdconfiguracion(id);
+            c.setIdsucursal(idsucursal);
             dao.consultarDatos(c);
             txtCodigo.setText("" + c.getIdconfiguracion());
             s.setIdsucursal(c.getIdsucursal());

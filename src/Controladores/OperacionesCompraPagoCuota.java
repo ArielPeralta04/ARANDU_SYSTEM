@@ -12,4 +12,5 @@ public interface OperacionesCompraPagoCuota {
     public int nuevoID();
     public boolean consultarDatos(Object obj);
     public ArrayList<Object[]> consultarCuotasCompra(int idproveedor, int idmoneda, String criterio);
+    public ArrayList<Object[]> consultarPagosCuotas(int idproveedor, String criterio);
 }

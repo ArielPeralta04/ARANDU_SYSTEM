@@ -1,9 +1,14 @@
 package Vistas;
 
+import App.appLogin;
 import Dao.DAOMoneda;
 import Dao.DAOCProveedor;
+import Dao.DAOCompraPagoCuota;
+import Dao.DAOCompraPagoCuotaAnulado;
+import Dao.DAOMotivoAnulacion;
 import Modelos.Proveedor;
 import Modelos.Moneda;
+import Modelos.MotivoAnulacion;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,13 +22,16 @@ import javax.swing.table.DefaultTableModel;
 public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
 
     Proveedor p = new Proveedor();
-    Moneda m = new Moneda();
+    MotivoAnulacion ma = new MotivoAnulacion();
 
     DAOCProveedor daoProveedor = new DAOCProveedor();
-    DAOMoneda daoMoneda = new DAOMoneda();
+    DAOCompraPagoCuota daoPagoCuota = new DAOCompraPagoCuota();
+    DAOCompraPagoCuotaAnulado daoPagoCuotaAnulado = new DAOCompraPagoCuotaAnulado();
+    DAOMotivoAnulacion daoMotivoAnulacion = new DAOMotivoAnulacion();
 
     ArrayList<Object[]> datosProveedor = new ArrayList<>();
-    ArrayList<Object[]> datosMoneda = new ArrayList<>();
+    ArrayList<Object[]> datosPagoCuota = new ArrayList<>();
+    ArrayList<Object[]> datosMotivo = new ArrayList<>();
 
     ArrayList<Object[]> datos = new ArrayList<>();
 
@@ -66,42 +74,148 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         }
     }
 
-    private void buscarCuotas() {
-        cargarCuotas();
-        BuscadorCuotas.setModal(true);
-        BuscadorCuotas.setSize(710, 360);
-        BuscadorCuotas.setLocationRelativeTo(this);
-        BuscadorCuotas.setVisible(true);
-        int fila = tablaDatosCuotas.getSelectedRow();
-
-        int idmoneda = Integer.parseInt(txtCodigoMoneda.getText());
-        DecimalFormat formatter;
-        if (idmoneda == 1) {
-            formatter = new DecimalFormat("#,###");
-        } else {
-            formatter = new DecimalFormat("#,###.000");
+    public void cargarPagos() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosPagos.getModel();
+        modelo.setRowCount(0);
+        int idproveedor = Integer.parseInt(txtCodigoProveedor.getText());
+        String criterio = txtCriterioPagos.getText();
+        datosPagoCuota = daoPagoCuota.consultarPagosCuotas(idproveedor, criterio);
+        for (Object[] obj : datosPagoCuota) {
+            modelo.addRow(obj);
         }
+        this.tablaDatosPagos.setModel(modelo);
+    }
 
+    private void buscarPagos() {
+        cargarPagos();
+        BuscadorPagos.setModal(true);
+        BuscadorPagos.setSize(710, 360);
+        BuscadorPagos.setLocationRelativeTo(this);
+        BuscadorPagos.setVisible(true);
+        int fila = tablaDatosPagos.getSelectedRow();
+        DecimalFormat formatter = new DecimalFormat("#,###.000");
         if (fila >= 0) {
-            txtNumeroCuota.setText(tablaDatosCuotas.getValueAt(fila, 5).toString());
-            txtComprobante.setText(tablaDatosCuotas.getValueAt(fila, 2).toString());
-            
-            montoCuota = Double.parseDouble(tablaDatosCuotas.getValueAt(fila, 6).toString());
-            txtMontoCuota.setText(formatter.format(montoCuota));
-
-            montoSaldo = Double.parseDouble(tablaDatosCuotas.getValueAt(fila, 8).toString());
-            txtSaldoPendiente.setText(formatter.format(montoSaldo));
-
-            idcompra = Integer.parseInt(tablaDatosCuotas.getValueAt(fila, 9).toString());
-
-            txtEstablecimientoRecibo.grabFocus();
+            txtNumeroPago.setText(tablaDatosPagos.getValueAt(fila, 0).toString());
+            txtComprobante.setText(tablaDatosPagos.getValueAt(fila, 1).toString());
+            txtRecibo.setText(tablaDatosPagos.getValueAt(fila, 2).toString());
+            Double montoPago = Double.parseDouble(tablaDatosPagos.getValueAt(fila, 3).toString());
+            txtMontoPago.setText(formatter.format(montoPago));
+            txtFechaPago.setText(tablaDatosPagos.getValueAt(fila, 8).toString());
+            txtCodigoCuenta.setText(tablaDatosPagos.getValueAt(fila, 4).toString());
+            txtDescripcionCuenta.setText(tablaDatosPagos.getValueAt(fila, 5).toString());
+            txtCodigoUsuario.setText(tablaDatosPagos.getValueAt(fila, 6).toString());
+            txtDescripcionUsuario.setText(tablaDatosPagos.getValueAt(fila, 7).toString());
+            txtObservacion.grabFocus();
         } else {
-            txtNumeroCuota.setText(null);
+            txtNumeroPago.setText(null);
             txtComprobante.setText(null);
-            txtMontoCuota.setText(null);
-            montoCuota = 0.0;
-            txtSaldoPendiente.setText(null);
-            montoSaldo = 0.0;
+            txtRecibo.setText(null);
+            txtMontoPago.setText(null);
+            txtFechaPago.setText(null);
+            txtCodigoCuenta.setText(null);
+            txtDescripcionCuenta.setText(null);
+            txtCodigoUsuario.setText(null);
+            txtDescripcionUsuario.setText(null);
+        }
+    }
+
+    public void limpiarCampos() {
+        txtCodigoProveedor.setText(null);
+        txtDescripcionProveedor.setText(null);
+        txtRucProveedor.setText(null);
+        txtNumeroPago.setText(null);
+        txtComprobante.setText(null);
+        txtRecibo.setText(null);
+        txtMontoPago.setText(null);
+        txtFechaPago.setText(null);
+        txtCodigoCuenta.setText(null);
+        txtDescripcionCuenta.setText(null);
+        txtCodigoUsuario.setText(null);
+        txtDescripcionUsuario.setText(null);
+        txtObservacion.setText(null);
+        txtCodigoProveedor.grabFocus();
+    }
+
+    public void cargarMotivo() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaDatosMotivo.getModel();
+        modelo.setRowCount(0);
+        datosMotivo = daoMotivoAnulacion.consultar(txtCriterioMotivo.getText());
+        for (Object[] obj : datosMotivo) {
+            modelo.addRow(obj);
+        }
+        this.tablaDatosMotivo.setModel(modelo);
+    }
+
+    private void buscarMotivo() {
+        cargarMotivo();
+        BuscadorMotivo.setModal(true);
+        BuscadorMotivo.setSize(540, 285);
+        BuscadorMotivo.setLocationRelativeTo(this);
+        BuscadorMotivo.setVisible(true);
+        int fila = tablaDatosMotivo.getSelectedRow();
+        if (fila >= 0) {
+            txtCodigoMotivo.setText(tablaDatosMotivo.getValueAt(fila, 0).toString());
+            txtDescripcionMotivo.setText(tablaDatosMotivo.getValueAt(fila, 1).toString());
+        } else {
+            txtCodigoMotivo.setText(null);
+            txtDescripcionMotivo.setText(null);
+        }
+    }
+
+    public void guardar() {
+        //CAPTURA Y VALIDACIONES DE LOS DATOS RECIBIDOS
+        String msj = "";
+        int idpagoanulado = daoPagoCuotaAnulado.nuevoID();
+        Date SYSDATE = new Date();
+        java.sql.Date fechaPagoCuotaAnuladoSQL = new java.sql.Date(SYSDATE.getTime());
+        String observacion = txtObservacion.getText();
+        int idmotivo = Integer.parseInt(txtCodigoMotivo.getText());
+        int idusuario = appLogin.IDUSUARIO;
+        int idpago
+        int numeroCuota = Integer.parseInt(txtNumeroCuota.getText());
+
+        double mPago = montoPago;
+        int idCuenta = Integer.parseInt(txtCodigoCuenta.getText());
+        int idUsuario = App.appLogin.IDUSUARIO;
+        String comprobanteRecibo = txtComprobanteRecibo.getText();
+        //VALIDACIONES
+        if (codigoCompra == 0) {
+            msj += "CODIGO DE LA COMPRA ESTA VACIO. AVISE AL ADMINISTRADOR DEL SISTEMA.\n";
+        }
+        if (numeroCuota == 0) {
+            msj += "EL NÚMERO DE LA CUOTA NO PUEDE ESTAR VACIO. AVISE AL ADMINISTRADOR DEL SISTEMA.\n";
+        }
+        if (fechaPago == null) {
+            msj += "LA FECHA DE PAGO NO PUEDE ESTAR VACIA.\n";
+        }
+        if (mPago <= 0) {
+            msj += "EL MONTO DEL PAGO NO PUEDE SER 0.\n";
+        } else {
+            if (mPago > montoSaldo) {
+                msj += "EL MONTO DEL PAGO NO PUEDE SER MAYOR AL SALDO DISPONIBLE DE LA CUOTA.\n";
+            }
+        }
+        if (idCuenta == 0) {
+            msj += "NO SE HA SELECCIONADO UNA CUENTA PARA EL PAGO CORRESPONDIENTE.\n";
+        }
+        if (idUsuario == 0) {
+            msj += "NO SE HA SELECCIONADO UN USUARIO PARA EL PAGO CORRESPONDIENTE. AVISE AL ADMINISTRADOR DEL SISTEMA\n";
+        }
+        if (comprobanteRecibo.isEmpty()) {
+            msj += "NO HA INGRESADO EL NÚMERO DE COMPROBANTE CORRESPONDIENTE AL RECIBO DE PAGO\n";
+        }
+        if (msj.isEmpty()) {
+            cpc.setIdpago(id);
+            cpc.setIdcompra(codigoCompra);
+            cpc.setNumero(numeroCuota);
+            cpc.setFechapago(fechaPagoSQL);
+            cpc.setMonto(mPago);
+            cpc.setIdcuenta(idCuenta);
+            cpc.setIdusuario(idUsuario);
+            cpc.setNumerocomprobante(comprobanteRecibo);
+            daoPagoCuotas.agregar(cpc);
+        } else {
+            JOptionPane.showMessageDialog(null, msj, "ERRORES", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -120,12 +234,18 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         txtCriterioProveedor = new org.jdesktop.swingx.JXTextField();
         jScrollPane4 = new javax.swing.JScrollPane();
         tablaDatosProveedor = new javax.swing.JTable();
-        BuscadorCuotas = new javax.swing.JDialog();
+        BuscadorPagos = new javax.swing.JDialog();
         jPanel5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         txtCriterioPagos = new org.jdesktop.swingx.JXTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tablaDatosCuotas = new javax.swing.JTable();
+        tablaDatosPagos = new javax.swing.JTable();
+        BuscadorMotivo = new javax.swing.JDialog();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        txtCriterioMotivo = new org.jdesktop.swingx.JXTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tablaDatosMotivo = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -135,7 +255,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
         txtRucProveedor = new org.jdesktop.swingx.JXTextField();
         jSeparator1 = new javax.swing.JSeparator();
-        txtNumeroCuota = new org.jdesktop.swingx.JXTextField();
+        txtNumeroPago = new org.jdesktop.swingx.JXTextField();
         jLabel23 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         txtComprobante = new org.jdesktop.swingx.JXTextField();
@@ -152,6 +272,13 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         jLabel22 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         btnConfirmar = new javax.swing.JButton();
+        jLabel28 = new javax.swing.JLabel();
+        txtFechaPago = new org.jdesktop.swingx.JXTextField();
+        jLabel31 = new javax.swing.JLabel();
+        txtObservacion = new org.jdesktop.swingx.JXTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txtCodigoMotivo = new org.jdesktop.swingx.JXTextField();
+        txtDescripcionMotivo = new org.jdesktop.swingx.JXTextField();
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -276,17 +403,17 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             }
         });
 
-        tablaDatosCuotas.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        tablaDatosCuotas.setModel(new javax.swing.table.DefaultTableModel(
+        tablaDatosPagos.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosPagos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">CódigoPago</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Comprobante Nº</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nº Timbrado</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Total Cuota</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nº Cuota</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Monto Cuota</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Vencimiento</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Saldo</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">CodigoCompra</span></span></span></p></html> "
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">N° Pago</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">N° Factura</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Nº Recibo</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Monto Pago</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">CodigoCuenta</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">DescripcionCuenta</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">CodigoUsuario</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">DescripcionUsuario</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Fecha Pago</span></span></span></p></html> "
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false, false, false, false
@@ -300,12 +427,35 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
                 return canEdit [columnIndex];
             }
         });
-        tablaDatosCuotas.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablaDatosPagos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaDatosCuotasMouseClicked(evt);
+                tablaDatosPagosMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(tablaDatosCuotas);
+        jScrollPane3.setViewportView(tablaDatosPagos);
+        if (tablaDatosPagos.getColumnModel().getColumnCount() > 0) {
+            tablaDatosPagos.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosPagos.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosPagos.getColumnModel().getColumn(0).setMaxWidth(60);
+            tablaDatosPagos.getColumnModel().getColumn(3).setMinWidth(100);
+            tablaDatosPagos.getColumnModel().getColumn(3).setPreferredWidth(100);
+            tablaDatosPagos.getColumnModel().getColumn(3).setMaxWidth(100);
+            tablaDatosPagos.getColumnModel().getColumn(4).setMinWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(4).setPreferredWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(4).setMaxWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(5).setMinWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(5).setPreferredWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(5).setMaxWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(6).setMinWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(6).setPreferredWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(6).setMaxWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(7).setMinWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(7).setPreferredWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(7).setMaxWidth(0);
+            tablaDatosPagos.getColumnModel().getColumn(8).setMinWidth(80);
+            tablaDatosPagos.getColumnModel().getColumn(8).setPreferredWidth(80);
+            tablaDatosPagos.getColumnModel().getColumn(8).setMaxWidth(80);
+        }
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -330,15 +480,110 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
                 .addContainerGap())
         );
 
-        javax.swing.GroupLayout BuscadorCuotasLayout = new javax.swing.GroupLayout(BuscadorCuotas.getContentPane());
-        BuscadorCuotas.getContentPane().setLayout(BuscadorCuotasLayout);
-        BuscadorCuotasLayout.setHorizontalGroup(
-            BuscadorCuotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout BuscadorPagosLayout = new javax.swing.GroupLayout(BuscadorPagos.getContentPane());
+        BuscadorPagos.getContentPane().setLayout(BuscadorPagosLayout);
+        BuscadorPagosLayout.setHorizontalGroup(
+            BuscadorPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        BuscadorCuotasLayout.setVerticalGroup(
-            BuscadorCuotasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        BuscadorPagosLayout.setVerticalGroup(
+            BuscadorPagosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel5.setBackground(new java.awt.Color(50, 104, 151));
+        jLabel5.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("BUSCADOR DE MOTIVOS DE ANULACIÓN");
+        jLabel5.setOpaque(true);
+
+        txtCriterioMotivo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCriterioMotivo.setPrompt("Aqui puede ingresar los filtros para la busqueda..");
+        txtCriterioMotivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCriterioMotivoActionPerformed(evt);
+            }
+        });
+        txtCriterioMotivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCriterioMotivoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCriterioMotivoKeyTyped(evt);
+            }
+        });
+
+        tablaDatosMotivo.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        tablaDatosMotivo.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "<html><p style=\"text-align:center\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Código</span></span></span></p></html> ", "<html><p style=\"text-align:right\"><span style=\"color:#000066\"><span style=\"font-family:SansSerif\"><span style=\"font-size:10px\">Descripción</span></span></span></p></html> "
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tablaDatosMotivo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaDatosMotivoMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tablaDatosMotivo);
+        if (tablaDatosMotivo.getColumnModel().getColumnCount() > 0) {
+            tablaDatosMotivo.getColumnModel().getColumn(0).setMinWidth(60);
+            tablaDatosMotivo.getColumnModel().getColumn(0).setPreferredWidth(60);
+            tablaDatosMotivo.getColumnModel().getColumn(0).setMaxWidth(60);
+        }
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtCriterioMotivo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 511, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtCriterioMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout BuscadorMotivoLayout = new javax.swing.GroupLayout(BuscadorMotivo.getContentPane());
+        BuscadorMotivo.getContentPane().setLayout(BuscadorMotivoLayout);
+        BuscadorMotivoLayout.setHorizontalGroup(
+            BuscadorMotivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        BuscadorMotivoLayout.setVerticalGroup(
+            BuscadorMotivoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setClosable(true);
@@ -373,7 +618,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel8.setText("Proveedor:");
 
-        txtCodigoProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoProveedor.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtCodigoProveedor.setPrompt("Cód. Proveedor");
         txtCodigoProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -390,16 +635,18 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         });
 
         txtDescripcionProveedor.setToolTipText("Razón Social del proveedor...");
+        txtDescripcionProveedor.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtDescripcionProveedor.setEnabled(false);
-        txtDescripcionProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionProveedor.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtDescripcionProveedor.setPrompt("Razón Social del proveedor...");
 
         jLabel12.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel12.setText("R.U.C.:");
 
+        txtRucProveedor.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtRucProveedor.setEnabled(false);
-        txtRucProveedor.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtRucProveedor.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtRucProveedor.setPrompt("R. U. C.");
         txtRucProveedor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -412,12 +659,15 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             }
         });
 
-        txtNumeroCuota.setEnabled(false);
-        txtNumeroCuota.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
-        txtNumeroCuota.setPrompt("Nº");
-        txtNumeroCuota.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNumeroPago.setBackground(new java.awt.Color(0, 102, 102));
+        txtNumeroPago.setForeground(new java.awt.Color(255, 255, 255));
+        txtNumeroPago.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        txtNumeroPago.setEnabled(false);
+        txtNumeroPago.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtNumeroPago.setPrompt("Nº");
+        txtNumeroPago.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNumeroCuotaKeyTyped(evt);
+                txtNumeroPagoKeyTyped(evt);
             }
         });
 
@@ -436,7 +686,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
 
         txtComprobante.setBackground(new java.awt.Color(0, 102, 102));
         txtComprobante.setForeground(new java.awt.Color(255, 255, 255));
-        txtComprobante.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtComprobante.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtComprobante.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtComprobante.setEnabled(false);
         txtComprobante.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -448,7 +698,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
 
         txtRecibo.setBackground(new java.awt.Color(0, 102, 102));
         txtRecibo.setForeground(new java.awt.Color(255, 255, 255));
-        txtRecibo.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtRecibo.setHorizontalAlignment(javax.swing.JTextField.LEFT);
         txtRecibo.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtRecibo.setEnabled(false);
         txtRecibo.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
@@ -458,30 +708,41 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         jLabel30.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel30.setText("Nº Recibo:");
 
+        txtMontoPago.setBackground(new java.awt.Color(0, 102, 102));
+        txtMontoPago.setForeground(new java.awt.Color(255, 255, 255));
+        txtMontoPago.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtMontoPago.setEnabled(false);
-        txtMontoPago.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtMontoPago.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtMontoPago.setPrompt("Monto Pago");
 
         jLabel27.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel27.setText("Monto del Pago:");
 
+        txtCodigoCuenta.setBackground(new java.awt.Color(0, 102, 102));
+        txtCodigoCuenta.setForeground(new java.awt.Color(255, 255, 255));
+        txtCodigoCuenta.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtCodigoCuenta.setEnabled(false);
-        txtCodigoCuenta.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoCuenta.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtCodigoCuenta.setPrompt("Cód. Cuenta");
 
         jLabel21.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         jLabel21.setText("Cuenta:");
 
+        txtDescripcionCuenta.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtDescripcionCuenta.setEnabled(false);
-        txtDescripcionCuenta.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionCuenta.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtDescripcionCuenta.setPrompt("Descripción o nombre de la cuenta...");
 
+        txtCodigoUsuario.setBackground(new java.awt.Color(0, 102, 102));
+        txtCodigoUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        txtCodigoUsuario.setDisabledTextColor(new java.awt.Color(255, 255, 255));
         txtCodigoUsuario.setEnabled(false);
-        txtCodigoUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtCodigoUsuario.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtCodigoUsuario.setPrompt("Cód. Usuario");
 
+        txtDescripcionUsuario.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtDescripcionUsuario.setEnabled(false);
-        txtDescripcionUsuario.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        txtDescripcionUsuario.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         txtDescripcionUsuario.setPrompt("Descripción o nombre de la usuario...");
 
         jLabel22.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
@@ -506,6 +767,66 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         btnConfirmar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConfirmarActionPerformed(evt);
+            }
+        });
+
+        jLabel28.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel28.setText("Fecha del Pago:");
+
+        txtFechaPago.setBackground(new java.awt.Color(0, 102, 102));
+        txtFechaPago.setForeground(new java.awt.Color(255, 255, 255));
+        txtFechaPago.setDisabledTextColor(new java.awt.Color(255, 255, 255));
+        txtFechaPago.setEnabled(false);
+        txtFechaPago.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        txtFechaPago.setPrompt("Fecha del pago...");
+
+        jLabel31.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel31.setText("Observaciones:");
+
+        txtObservacion.setDisabledTextColor(new java.awt.Color(153, 153, 153));
+        txtObservacion.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        txtObservacion.setPrompt("Observaciones correspondientes a la anulación...");
+        txtObservacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtObservacionActionPerformed(evt);
+            }
+        });
+        txtObservacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtObservacionKeyTyped(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
+        jLabel4.setText("Motivo Anulación:");
+
+        txtCodigoMotivo.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        txtCodigoMotivo.setPrompt("Cód. M.A.");
+        txtCodigoMotivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCodigoMotivoActionPerformed(evt);
+            }
+        });
+        txtCodigoMotivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtCodigoMotivoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodigoMotivoKeyTyped(evt);
+            }
+        });
+
+        txtDescripcionMotivo.setEnabled(false);
+        txtDescripcionMotivo.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
+        txtDescripcionMotivo.setPrompt("Descripción o nombre del motivo de anulación...");
+        txtDescripcionMotivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDescripcionMotivoActionPerformed(evt);
+            }
+        });
+        txtDescripcionMotivo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescripcionMotivoKeyTyped(evt);
             }
         });
 
@@ -550,21 +871,36 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
                                         .addComponent(txtDescripcionProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(txtRucProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtNumeroCuota, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtNumeroPago, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnBuscar))
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                    .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtRecibo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                     .addComponent(jLabel29, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(txtComprobante, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                    .addComponent(txtComprobante, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel30, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtRecibo, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(txtCodigoMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtDescripcionMotivo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(txtObservacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -584,7 +920,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNumeroCuota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtNumeroPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -608,11 +944,24 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCodigoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDescripcionUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel31, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtObservacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txtCodigoMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtDescripcionMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnConfirmar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -626,7 +975,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -643,7 +992,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             if (resultado == true) {
                 txtDescripcionProveedor.setText(p.getRazonsocial());
                 txtRucProveedor.setText(p.getRuc());
-                txtCodigoMoneda.grabFocus();
+                btnBuscar.grabFocus();
             } else {
                 txtCodigoProveedor.setText(null);
                 txtDescripcionProveedor.setText(null);
@@ -712,7 +1061,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_tablaDatosProveedorMouseClicked
 
-    private void txtNumeroCuotaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroCuotaKeyTyped
+    private void txtNumeroPagoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumeroPagoKeyTyped
         char c = evt.getKeyChar();
         if (Character.isLetter(c)) {
             getToolkit().beep();
@@ -722,13 +1071,13 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             getToolkit().beep();
             evt.consume();
         }
-        if (txtNumeroCuota.getText().length() == 20) {
+        if (txtNumeroPago.getText().length() == 20) {
             evt.consume();
         }
-    }//GEN-LAST:event_txtNumeroCuotaKeyTyped
+    }//GEN-LAST:event_txtNumeroPagoKeyTyped
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        buscarCuotas();
+        buscarPagos();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
@@ -739,25 +1088,25 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        int res = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE CONFIRMAR LOS CAMBIOS?", "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
+        int res = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE CONFIRMAR LOS CAMBIOS?,", "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
         if (res != 1) {
-            guardar();
+            //guardar();
             limpiarCampos();
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
 
     private void txtCriterioPagosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioPagosActionPerformed
-        cargarCuotas();
+        cargarPagos();
     }//GEN-LAST:event_txtCriterioPagosActionPerformed
 
     private void txtCriterioPagosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioPagosKeyPressed
         if (evt.VK_ESCAPE == evt.getKeyCode()) {
-            txtNumeroCuota.setText(null);
+            txtNumeroPago.setText(null);
             txtComprobante.setText(null);
-            txtMontoCuota.setText(null);
-            txtSaldoPendiente.setText(null);
+            //txtMontoCuota.setText(null);
+            //txtSaldoPendiente.setText(null);
             btnBuscar.grabFocus();
-            BuscadorCuotas.dispose();
+            BuscadorPagos.dispose();
         }
     }//GEN-LAST:event_txtCriterioPagosKeyPressed
 
@@ -771,20 +1120,112 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtCriterioPagosKeyTyped
 
-    private void tablaDatosCuotasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosCuotasMouseClicked
+    private void tablaDatosPagosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosPagosMouseClicked
         if (evt.getClickCount() == 2) {
-            if (tablaDatosCuotas.getSelectedRowCount() == 0) {
+            if (tablaDatosPagos.getSelectedRowCount() == 0) {
                 JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
             } else {
                 txtCriterioPagos.setText(null);
-                BuscadorCuotas.dispose();
+                BuscadorPagos.dispose();
             }
         }
-    }//GEN-LAST:event_tablaDatosCuotasMouseClicked
+    }//GEN-LAST:event_tablaDatosPagosMouseClicked
+
+    private void txtObservacionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtObservacionKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtObservacion.getText().length() == 255) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtObservacionKeyTyped
+
+    private void txtObservacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtObservacionActionPerformed
+        txtObservacion.grabFocus();
+    }//GEN-LAST:event_txtObservacionActionPerformed
+
+    private void txtCodigoMotivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoMotivoActionPerformed
+        if (txtCodigoMotivo.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "NO PUEDE DEJAR EL CAMPO DE MOTIVO DE ANULACIÓN VACIO", "ADVERTENCIA", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int idmotivo = Integer.parseInt(txtCodigoMotivo.getText());
+            ma.setIdmotivo(idmotivo);
+            boolean resultado = daoMotivoAnulacion.consultarDatos(ma);
+            if (resultado == true) {
+                txtDescripcionMotivo.setText(ma.getDescripcion());
+                btnConfirmar.grabFocus();
+            } else {
+                txtCodigoMotivo.setText(null);
+                txtDescripcionMotivo.setText(null);
+                txtCodigoMotivo.grabFocus();
+            }
+        }
+    }//GEN-LAST:event_txtCodigoMotivoActionPerformed
+
+    private void txtCodigoMotivoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoMotivoKeyPressed
+        if (evt.VK_F1 == evt.getKeyCode()) {
+            buscarMotivo();
+        }
+    }//GEN-LAST:event_txtCodigoMotivoKeyPressed
+
+    private void txtCodigoMotivoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoMotivoKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLetter(c)) {
+            getToolkit().beep();
+            evt.consume();
+        }
+        if (txtCodigoMotivo.getText().length() == 10) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCodigoMotivoKeyTyped
+
+    private void txtDescripcionMotivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDescripcionMotivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionMotivoActionPerformed
+
+    private void txtDescripcionMotivoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescripcionMotivoKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDescripcionMotivoKeyTyped
+
+    private void txtCriterioMotivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCriterioMotivoActionPerformed
+        cargarMotivo();
+    }//GEN-LAST:event_txtCriterioMotivoActionPerformed
+
+    private void txtCriterioMotivoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioMotivoKeyPressed
+        if (evt.VK_ESCAPE == evt.getKeyCode()) {
+            txtCodigoMotivo.setText(null);
+            txtDescripcionMotivo.setText(null);
+            txtCodigoMotivo.grabFocus();
+            BuscadorMotivo.dispose();
+        }
+    }//GEN-LAST:event_txtCriterioMotivoKeyPressed
+
+    private void txtCriterioMotivoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCriterioMotivoKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isLowerCase(c)) {
+            evt.setKeyChar(Character.toUpperCase(c));
+        }
+        if (txtCriterio.getText().length() == 100) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCriterioMotivoKeyTyped
+
+    private void tablaDatosMotivoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaDatosMotivoMouseClicked
+        if (evt.getClickCount() == 2) {
+            if (tablaDatosMotivo.getSelectedRowCount() == 0) {
+                JOptionPane.showMessageDialog(null, "SELECCIONE UNA FILA");
+            } else {
+                txtCriterioMotivo.setText(null);
+                BuscadorMotivo.dispose();
+            }
+        }
+    }//GEN-LAST:event_tablaDatosMotivoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDialog BuscadorCuotas;
+    private javax.swing.JDialog BuscadorMotivo;
+    private javax.swing.JDialog BuscadorPagos;
     private javax.swing.JDialog BuscadorProveedor;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCancelar;
@@ -797,29 +1238,41 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTable tablaDatosCuotas;
+    private javax.swing.JTable tablaDatosMotivo;
+    private javax.swing.JTable tablaDatosPagos;
     private javax.swing.JTable tablaDatosProveedor;
     private org.jdesktop.swingx.JXTextField txtCodigoCuenta;
+    private org.jdesktop.swingx.JXTextField txtCodigoMotivo;
     private org.jdesktop.swingx.JXTextField txtCodigoProveedor;
     private org.jdesktop.swingx.JXTextField txtCodigoUsuario;
     private org.jdesktop.swingx.JXTextField txtComprobante;
+    private org.jdesktop.swingx.JXTextField txtCriterioMotivo;
     private org.jdesktop.swingx.JXTextField txtCriterioPagos;
     private org.jdesktop.swingx.JXTextField txtCriterioProveedor;
     private org.jdesktop.swingx.JXTextField txtDescripcionCuenta;
+    private org.jdesktop.swingx.JXTextField txtDescripcionMotivo;
     private org.jdesktop.swingx.JXTextField txtDescripcionProveedor;
     private org.jdesktop.swingx.JXTextField txtDescripcionUsuario;
+    private org.jdesktop.swingx.JXTextField txtFechaPago;
     private org.jdesktop.swingx.JXTextField txtMontoPago;
-    private org.jdesktop.swingx.JXTextField txtNumeroCuota;
+    private org.jdesktop.swingx.JXTextField txtNumeroPago;
+    private org.jdesktop.swingx.JXTextField txtObservacion;
     private org.jdesktop.swingx.JXTextField txtRecibo;
     private org.jdesktop.swingx.JXTextField txtRucProveedor;
     // End of variables declaration//GEN-END:variables

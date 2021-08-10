@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
 -- Host:                         127.0.0.1
--- Versión del servidor:         10.4.14-MariaDB - mariadb.org binary distribution
+-- Versión del servidor:         10.4.20-MariaDB - mariadb.org binary distribution
 -- SO del servidor:              Win64
--- HeidiSQL Versión:             11.1.0.6116
+-- HeidiSQL Versión:             11.2.0.6213
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -589,25 +589,8 @@ CREATE TABLE IF NOT EXISTS `articulo_deposito` (
 /*!40000 ALTER TABLE `articulo_deposito` DISABLE KEYS */;
 REPLACE INTO `articulo_deposito` (`idarticulo`, `iddeposito`, `cantidad`) VALUES
 	(1, 1, 5),
-	(2, 1, 5),
-	(3, 1, 0),
-	(4, 1, 0),
-	(5, 1, 0),
-	(6, 1, 0),
-	(7, 1, 0),
-	(8, 1, 0),
-	(9, 1, 0),
-	(10, 1, 0),
-	(11, 1, 0),
-	(12, 1, 0),
-	(13, 1, 0),
-	(14, 1, 0),
-	(15, 1, 0),
-	(16, 1, 0),
-	(17, 1, 0),
-	(18, 1, 0),
-	(19, 1, 0),
-	(20, 1, 0);
+	(200, 1, 5),
+	(353, 1, 0);
 /*!40000 ALTER TABLE `articulo_deposito` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.articulo_periodo
@@ -629,29 +612,8 @@ CREATE TABLE IF NOT EXISTS `articulo_periodo` (
 /*!40000 ALTER TABLE `articulo_periodo` DISABLE KEYS */;
 REPLACE INTO `articulo_periodo` (`idarticulo`, `idperiodo`, `idmoneda`, `costo`) VALUES
 	(1, 1, 1, 5000),
-	(1, 1, 2, 1.5),
-	(2, 1, 1, 5000),
-	(2, 1, 2, 1.5),
-	(3, 1, 1, 5000),
-	(3, 1, 2, 1.5),
-	(4, 1, 1, 5000),
-	(4, 1, 2, 1.5),
-	(5, 1, 1, 5000),
-	(6, 1, 1, 5000),
-	(7, 1, 1, 5000),
-	(8, 1, 1, 5000),
-	(9, 1, 1, 5000),
-	(10, 1, 1, 5000),
-	(11, 1, 1, 5000),
-	(12, 1, 1, 5000),
-	(13, 1, 1, 5000),
-	(14, 1, 1, 5000),
-	(15, 1, 1, 5000),
-	(16, 1, 1, 5000),
-	(17, 1, 1, 5000),
-	(18, 1, 1, 5000),
-	(19, 1, 1, 5000),
-	(20, 1, 1, 5000);
+	(200, 1, 1, 879500),
+	(353, 1, 1, 15000);
 /*!40000 ALTER TABLE `articulo_periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.banco
@@ -738,7 +700,7 @@ CREATE TABLE IF NOT EXISTS `compra` (
 -- Volcando datos para la tabla as.compra: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra` DISABLE KEYS */;
 REPLACE INTO `compra` (`idcompra`, `numerodocumento`, `numerotimbrado`, `fecha`, `observacion`, `idmoneda`, `iddeposito`, `idtipomovimiento`, `idproveedor`, `idusuario`, `totalneto`, `totaliva`, `idcuenta`) VALUES
-	(1, '001-001-0000001', 11111111, '2021-07-15', '', 1, 1, 2, 1, 1, 45454, 4546, 0);
+	(2, '001-001-0000002', 11111111, '2021-08-10', '', 1, 1, 2, 1, 1, 4020454, 402046, 0);
 /*!40000 ALTER TABLE `compra` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_cuota
@@ -752,14 +714,12 @@ CREATE TABLE IF NOT EXISTS `compra_cuota` (
   CONSTRAINT `FK_COMPRA_CUOTA_COMPRA` FOREIGN KEY (`idcompra`) REFERENCES `compra` (`idcompra`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.compra_cuota: ~4 rows (aproximadamente)
+-- Volcando datos para la tabla as.compra_cuota: ~5 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_cuota` DISABLE KEYS */;
 REPLACE INTO `compra_cuota` (`idcompra`, `numero`, `monto`, `fechavencimiento`) VALUES
-	(1, 1, 10000, '2021-07-15'),
-	(1, 2, 10000, '2021-08-15'),
-	(1, 3, 10000, '2021-09-15'),
-	(1, 4, 10000, '2021-10-15'),
-	(1, 5, 10000, '2021-11-15');
+	(2, 1, 2000000, '2021-09-10'),
+	(2, 2, 2000000, '2021-10-10'),
+	(2, 3, 422500, '2021-11-10');
 /*!40000 ALTER TABLE `compra_cuota` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_detalle
@@ -781,8 +741,8 @@ CREATE TABLE IF NOT EXISTS `compra_detalle` (
 -- Volcando datos para la tabla as.compra_detalle: ~2 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_detalle` DISABLE KEYS */;
 REPLACE INTO `compra_detalle` (`idcompra`, `idarticulo`, `costo`, `cantidad`, `numeroitem`, `iva`, `porcentajeiva`) VALUES
-	(1, 1, 4545, 5, 1, 455, 10),
-	(1, 2, 4545, 5, 2, 455, 10);
+	(2, 1, 4545, 5, 1, 455, 10),
+	(2, 200, 799545, 5, 2, 79955, 10);
 /*!40000 ALTER TABLE `compra_detalle` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_pago_cuota
@@ -806,6 +766,11 @@ CREATE TABLE IF NOT EXISTS `compra_pago_cuota` (
 
 -- Volcando datos para la tabla as.compra_pago_cuota: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_pago_cuota` DISABLE KEYS */;
+REPLACE INTO `compra_pago_cuota` (`idpago`, `idcompra`, `numero`, `fechapago`, `monto`, `idcuenta`, `idusuario`, `numerocomprobante`) VALUES
+	(1, 2, 1, '2021-08-10', 2000000, 1, 1, '001-001-0000450'),
+	(2, 2, 2, '2021-08-10', 1000000, 1, 1, '001-001-0000500'),
+	(3, 2, 2, '2021-08-10', 1000000, 1, 1, '001-001-0000501'),
+	(4, 2, 3, '2021-08-10', 422500, 1, 1, '001-001-0000503');
 /*!40000 ALTER TABLE `compra_pago_cuota` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.compra_pago_cuota_anulado
@@ -829,8 +794,6 @@ CREATE TABLE IF NOT EXISTS `compra_pago_cuota_anulado` (
 
 -- Volcando datos para la tabla as.compra_pago_cuota_anulado: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_pago_cuota_anulado` DISABLE KEYS */;
-REPLACE INTO `compra_pago_cuota_anulado` (`idpagoanulado`, `fechahoraanulado`, `observacion`, `idmotivo`, `idusuario`, `idpago`, `idcompra`, `numero`, `fechapago`, `monto`) VALUES
-	(1, '2021-08-08 15:03:00', NULL, 1, 1, 1, 1, 1, '2021-08-08', 50000);
 /*!40000 ALTER TABLE `compra_pago_cuota_anulado` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.configuracion
@@ -904,6 +867,8 @@ CREATE TABLE IF NOT EXISTS `cuenta_saldo` (
 
 -- Volcando datos para la tabla as.cuenta_saldo: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `cuenta_saldo` DISABLE KEYS */;
+REPLACE INTO `cuenta_saldo` (`idcuenta`, `fecha`, `entrada`, `salida`) VALUES
+	(1, '2021-08-10', 0, 4422500);
 /*!40000 ALTER TABLE `cuenta_saldo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.deposito
@@ -1084,7 +1049,7 @@ CREATE TABLE IF NOT EXISTS `periodo` (
 -- Volcando datos para la tabla as.periodo: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `periodo` DISABLE KEYS */;
 REPLACE INTO `periodo` (`idperiodo`, `fecha_desde`, `fecha_hasta`) VALUES
-	(1, '2021-07-01', '2021-07-31');
+	(1, '2021-08-01', '2021-08-31');
 /*!40000 ALTER TABLE `periodo` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.programa
@@ -1094,7 +1059,7 @@ CREATE TABLE IF NOT EXISTS `programa` (
   PRIMARY KEY (`idprograma`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.programa: ~33 rows (aproximadamente)
+-- Volcando datos para la tabla as.programa: ~35 rows (aproximadamente)
 /*!40000 ALTER TABLE `programa` DISABLE KEYS */;
 REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(1, 'JFrmPrograma'),
@@ -1207,6 +1172,8 @@ CREATE TABLE IF NOT EXISTS `timbrado` (
 
 -- Volcando datos para la tabla as.timbrado: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `timbrado` DISABLE KEYS */;
+REPLACE INTO `timbrado` (`idtimbrado`, `establecimiento`, `puntoemision`, `timbrado`, `numeroinicial`, `numerofinal`, `fechainicial`, `fechafinal`, `idcaja`, `idtipocomprobante`) VALUES
+	(1, 1, 1, 11223344, 1, 5000, '2021-01-01', '2021-12-31', 1, 1);
 /*!40000 ALTER TABLE `timbrado` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.tipo_articulo
@@ -1307,7 +1274,7 @@ CREATE TABLE IF NOT EXISTS `tipo_tarjeta` (
   PRIMARY KEY (`idtipo`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.tipo_tarjeta: ~2 rows (aproximadamente)
+-- Volcando datos para la tabla as.tipo_tarjeta: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `tipo_tarjeta` DISABLE KEYS */;
 REPLACE INTO `tipo_tarjeta` (`idtipo`, `descripcion`) VALUES
 	(1, 'TARJETA DE DÉBITO'),
@@ -1322,7 +1289,7 @@ CREATE TABLE IF NOT EXISTS `unidad_medida` (
   PRIMARY KEY (`idunidad`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Volcando datos para la tabla as.unidad_medida: ~5 rows (aproximadamente)
+-- Volcando datos para la tabla as.unidad_medida: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `unidad_medida` DISABLE KEYS */;
 REPLACE INTO `unidad_medida` (`idunidad`, `descripcion`, `simbolo`) VALUES
 	(1, 'UNIDADES', 'UN'),
@@ -1362,7 +1329,7 @@ CREATE TABLE IF NOT EXISTS `usuario_programa` (
   PRIMARY KEY (`idusuario`,`idprograma`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
--- Volcando datos para la tabla as.usuario_programa: 34 rows
+-- Volcando datos para la tabla as.usuario_programa: 35 rows
 /*!40000 ALTER TABLE `usuario_programa` DISABLE KEYS */;
 REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 1),
@@ -1739,6 +1706,6 @@ INNER JOIN moneda AS M ON M.idmoneda = C.idmoneda
 WHERE CC.monto - IFNULL((SELECT sum(p.monto) FROM compra_pago_cuota AS p WHERE p.idcompra = CC.idcompra AND p.numero = CC.numero), 0) > 0 ;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

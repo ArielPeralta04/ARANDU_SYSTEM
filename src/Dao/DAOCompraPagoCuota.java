@@ -116,7 +116,6 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
         return id;
     }
 
-
     @Override
     public boolean consultarDatos(Object obj) {
         cpc = (CompraPagoCuota) obj;
@@ -189,6 +188,57 @@ public class DAOCompraPagoCuota implements OperacionesCompraPagoCuota {
                 fila[7] = rs.getString(8);
                 fila[8] = rs.getDouble(9);
                 fila[9] = rs.getInt(10);
+                datos.add(fila);
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER LA LISTA DE LOS DATOS \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return datos;
+    }
+
+    @Override
+    public ArrayList<Object[]> consultarPagosCuotas(int idproveedor, String criterio) {
+        String sql = "SELECT \n"
+                + "CPC.idpago, \n"
+                + "C.numerodocumento AS comprobante_factura,\n"
+                + "CPC.numerocomprobante AS comprobante_pago,\n"
+                + "CPC.monto,\n"
+                + "CPC.idcuenta,\n"
+                + "CU.descripcion AS cuenta_bancaria,\n"
+                + "CPC.idusuario,\n"
+                + "CONCAT(U.nombre,' ',U.apellido) AS usuario_pago,\n"
+                + "DATE_FORMAT(CPC.fechapago, '%d/%m/%Y') AS fecha_pago\n"
+                + "FROM compra_pago_cuota AS CPC\n"
+                + "INNER JOIN compra_cuota AS CC ON CC.idcompra = CPC.idcompra AND CC.numero = CPC.numero\n"
+                + "INNER JOIN compra AS C ON C.idcompra = CC.idcompra\n"
+                + "INNER JOIN cuenta AS CU ON CU.idcuenta = CPC.idcuenta\n"
+                + "INNER JOIN usuario AS U ON U.idusuario = CPC.idusuario\n"
+                + "WHERE CONCAT(C.numerodocumento, CPC.numerocomprobante, DATE_FORMAT(CPC.fechapago, '%d/%m/%Y')) LIKE ?\n"
+                + "AND C.idproveedor = ?\n"
+                + "ORDER BY CPC.numerocomprobante;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        ArrayList<Object[]> datos = new ArrayList<>();
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + criterio + "%");
+            ps.setInt(2, idproveedor);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Object[] fila = new Object[9];
+                fila[0] = rs.getInt(1);
+                fila[1] = rs.getString(2);
+                fila[2] = rs.getString(3);
+                fila[3] = rs.getDouble(4);
+                fila[4] = rs.getInt(5);
+                fila[5] = rs.getString(6);
+                fila[6] = rs.getInt(7);
+                fila[7] = rs.getString(8);
+                fila[8] = rs.getString(9);
                 datos.add(fila);
             }
             con.close();
