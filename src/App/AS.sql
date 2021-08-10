@@ -829,6 +829,8 @@ CREATE TABLE IF NOT EXISTS `compra_pago_cuota_anulado` (
 
 -- Volcando datos para la tabla as.compra_pago_cuota_anulado: ~0 rows (aproximadamente)
 /*!40000 ALTER TABLE `compra_pago_cuota_anulado` DISABLE KEYS */;
+REPLACE INTO `compra_pago_cuota_anulado` (`idpagoanulado`, `fechahoraanulado`, `observacion`, `idmotivo`, `idusuario`, `idpago`, `idcompra`, `numero`, `fechapago`, `monto`) VALUES
+	(1, '2021-08-08 15:03:00', NULL, 1, 1, 1, 1, 1, '2021-08-08', 50000);
 /*!40000 ALTER TABLE `compra_pago_cuota_anulado` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.configuracion
@@ -1128,7 +1130,8 @@ REPLACE INTO `programa` (`idprograma`, `descripcion`) VALUES
 	(31, 'JFrmCompra'),
 	(32, 'JFrmCuenta'),
 	(33, 'JFrmMotivoAnulacion'),
-	(34, 'JFrmPagoCuota');
+	(34, 'JFrmPagoCuota'),
+	(35, 'JFrmPagoCuotaAnulacion');
 /*!40000 ALTER TABLE `programa` ENABLE KEYS */;
 
 -- Volcando estructura para tabla as.proveedor
@@ -1395,7 +1398,8 @@ REPLACE INTO `usuario_programa` (`idusuario`, `idprograma`) VALUES
 	(1, 31),
 	(1, 32),
 	(1, 33),
-	(1, 34);
+	(1, 34),
+	(1, 35);
 /*!40000 ALTER TABLE `usuario_programa` ENABLE KEYS */;
 
 -- Volcando estructura para vista as.v_cuotas_compras
@@ -1651,16 +1655,6 @@ DECLARE V_CODIGO_PERIODO INT;
 	END IF;
 	
 	RETURN V_CODIGO_PERIODO;
-END//
-DELIMITER ;
-
--- Volcando estructura para función as.FP_FECHAPY
-DELIMITER //
-CREATE FUNCTION `FP_FECHAPY`(FECHA DATE) RETURNS varchar(10) CHARSET utf8mb4
-BEGIN
-	DECLARE V_RESULT VARCHAR(10);
-	SET V_RESULT = DATE_FORMAT(FECHA, '%d-%m-%Y');
-	RETURN V_RESULT;
 END//
 DELIMITER ;
 
