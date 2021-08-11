@@ -1,13 +1,13 @@
 package Vistas;
 
 import App.appLogin;
-import Dao.DAOMoneda;
 import Dao.DAOCProveedor;
 import Dao.DAOCompraPagoCuota;
 import Dao.DAOCompraPagoCuotaAnulado;
+import Dao.DAOCotizacion;
 import Dao.DAOMotivoAnulacion;
+import Modelos.CompraPagoCuotaAnulado;
 import Modelos.Proveedor;
-import Modelos.Moneda;
 import Modelos.MotivoAnulacion;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -23,11 +23,13 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
 
     Proveedor p = new Proveedor();
     MotivoAnulacion ma = new MotivoAnulacion();
+    CompraPagoCuotaAnulado cpca = new CompraPagoCuotaAnulado();
 
     DAOCProveedor daoProveedor = new DAOCProveedor();
     DAOCompraPagoCuota daoPagoCuota = new DAOCompraPagoCuota();
     DAOCompraPagoCuotaAnulado daoPagoCuotaAnulado = new DAOCompraPagoCuotaAnulado();
     DAOMotivoAnulacion daoMotivoAnulacion = new DAOMotivoAnulacion();
+    DAOCotizacion daoCotizacion = new DAOCotizacion();
 
     ArrayList<Object[]> datosProveedor = new ArrayList<>();
     ArrayList<Object[]> datosPagoCuota = new ArrayList<>();
@@ -37,6 +39,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
 
     //VARIABLE QUE MANEJA QUE TIPOS DE OPERACIONES SE REALIZARAN: SI VA A SER ALTA, BAJA O MODIFICACION DEL REGISTRO
     String operacion = "";
+    Double montoPago = 0.0;
 
     /**
      * Creates new form JFrmPagoCuotaAnulacion
@@ -98,7 +101,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             txtNumeroPago.setText(tablaDatosPagos.getValueAt(fila, 0).toString());
             txtComprobante.setText(tablaDatosPagos.getValueAt(fila, 1).toString());
             txtRecibo.setText(tablaDatosPagos.getValueAt(fila, 2).toString());
-            Double montoPago = Double.parseDouble(tablaDatosPagos.getValueAt(fila, 3).toString());
+            montoPago = Double.parseDouble(tablaDatosPagos.getValueAt(fila, 3).toString());
             txtMontoPago.setText(formatter.format(montoPago));
             txtFechaPago.setText(tablaDatosPagos.getValueAt(fila, 8).toString());
             txtCodigoCuenta.setText(tablaDatosPagos.getValueAt(fila, 4).toString());
@@ -116,6 +119,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             txtDescripcionCuenta.setText(null);
             txtCodigoUsuario.setText(null);
             txtDescripcionUsuario.setText(null);
+            montoPago = 0.0;
         }
     }
 
@@ -133,6 +137,9 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         txtCodigoUsuario.setText(null);
         txtDescripcionUsuario.setText(null);
         txtObservacion.setText(null);
+        montoPago = 0.0;
+        txtCodigoMotivo.setText(null);
+        txtDescripcionMotivo.setText(null);
         txtCodigoProveedor.grabFocus();
     }
 
@@ -167,53 +174,35 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         String msj = "";
         int idpagoanulado = daoPagoCuotaAnulado.nuevoID();
         Date SYSDATE = new Date();
-        java.sql.Date fechaPagoCuotaAnuladoSQL = new java.sql.Date(SYSDATE.getTime());
+        java.sql.Timestamp fechaPagoCuotaAnuladoSQL = new java.sql.Timestamp(SYSDATE.getTime());
         String observacion = txtObservacion.getText();
         int idmotivo = Integer.parseInt(txtCodigoMotivo.getText());
         int idusuario = appLogin.IDUSUARIO;
-        int idpago
-        int numeroCuota = Integer.parseInt(txtNumeroCuota.getText());
-
+        int idpago =Integer.parseInt(txtNumeroPago.getText());
+        Date fechapago = daoCotizacion.parseFecha(txtFechaPago.getText());
+        java.sql.Date fechapagoSQL = new java.sql.Date(fechapago.getTime());
         double mPago = montoPago;
-        int idCuenta = Integer.parseInt(txtCodigoCuenta.getText());
-        int idUsuario = App.appLogin.IDUSUARIO;
-        String comprobanteRecibo = txtComprobanteRecibo.getText();
+        String numerocomprobante = txtComprobante.getText();
+        String numerorecibo = txtRecibo.getText();
         //VALIDACIONES
-        if (codigoCompra == 0) {
-            msj += "CODIGO DE LA COMPRA ESTA VACIO. AVISE AL ADMINISTRADOR DEL SISTEMA.\n";
+        if (idmotivo == 0) {
+            msj += "CODIGO DEL MOTIVO DE ANULACION ESTA VACIO.\n";
         }
-        if (numeroCuota == 0) {
-            msj += "EL NÚMERO DE LA CUOTA NO PUEDE ESTAR VACIO. AVISE AL ADMINISTRADOR DEL SISTEMA.\n";
-        }
-        if (fechaPago == null) {
-            msj += "LA FECHA DE PAGO NO PUEDE ESTAR VACIA.\n";
-        }
-        if (mPago <= 0) {
-            msj += "EL MONTO DEL PAGO NO PUEDE SER 0.\n";
-        } else {
-            if (mPago > montoSaldo) {
-                msj += "EL MONTO DEL PAGO NO PUEDE SER MAYOR AL SALDO DISPONIBLE DE LA CUOTA.\n";
-            }
-        }
-        if (idCuenta == 0) {
-            msj += "NO SE HA SELECCIONADO UNA CUENTA PARA EL PAGO CORRESPONDIENTE.\n";
-        }
-        if (idUsuario == 0) {
-            msj += "NO SE HA SELECCIONADO UN USUARIO PARA EL PAGO CORRESPONDIENTE. AVISE AL ADMINISTRADOR DEL SISTEMA\n";
-        }
-        if (comprobanteRecibo.isEmpty()) {
-            msj += "NO HA INGRESADO EL NÚMERO DE COMPROBANTE CORRESPONDIENTE AL RECIBO DE PAGO\n";
+        if (idpago == 0) {
+            msj += "NO HA SELECCIONADO NINGUN PAGO PARA LA ANULACIÓN.\n";
         }
         if (msj.isEmpty()) {
-            cpc.setIdpago(id);
-            cpc.setIdcompra(codigoCompra);
-            cpc.setNumero(numeroCuota);
-            cpc.setFechapago(fechaPagoSQL);
-            cpc.setMonto(mPago);
-            cpc.setIdcuenta(idCuenta);
-            cpc.setIdusuario(idUsuario);
-            cpc.setNumerocomprobante(comprobanteRecibo);
-            daoPagoCuotas.agregar(cpc);
+            cpca.setIdpagoanulado(idpagoanulado);
+            cpca.setFechahoranulado(fechaPagoCuotaAnuladoSQL);
+            cpca.setObservacion(observacion);
+            cpca.setIdmotivo(idmotivo);
+            cpca.setIdusuario(idusuario);
+            cpca.setIdpago(idpago);
+            cpca.setFechapago(fechapagoSQL);
+            cpca.setMonto(mPago);
+            cpca.setNumerocomprobante(numerocomprobante);
+            cpca.setNumerorecibo(numerorecibo);
+            daoPagoCuotaAnulado.agregar(cpca);
         } else {
             JOptionPane.showMessageDialog(null, msj, "ERRORES", JOptionPane.ERROR_MESSAGE);
         }
@@ -957,11 +946,11 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtCodigoMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDescripcionMotivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCancelar)
                     .addComponent(btnConfirmar))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -975,8 +964,8 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, 0)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -1090,7 +1079,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
         int res = JOptionPane.showConfirmDialog(null, "¿ESTA SEGURO DE CONFIRMAR LOS CAMBIOS?,", "ADVERTENCIA", JOptionPane.YES_NO_OPTION);
         if (res != 1) {
-            //guardar();
+            guardar();
             limpiarCampos();
         }
     }//GEN-LAST:event_btnConfirmarActionPerformed
@@ -1142,7 +1131,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtObservacionKeyTyped
 
     private void txtObservacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtObservacionActionPerformed
-        txtObservacion.grabFocus();
+        txtCodigoMotivo.grabFocus();
     }//GEN-LAST:event_txtObservacionActionPerformed
 
     private void txtCodigoMotivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoMotivoActionPerformed
@@ -1206,7 +1195,7 @@ public class JFrmPagoCuotaAnulacion extends javax.swing.JInternalFrame {
         if (Character.isLowerCase(c)) {
             evt.setKeyChar(Character.toUpperCase(c));
         }
-        if (txtCriterio.getText().length() == 100) {
+        if (txtCriterioMotivo.getText().length() == 100) {
             evt.consume();
         }
     }//GEN-LAST:event_txtCriterioMotivoKeyTyped

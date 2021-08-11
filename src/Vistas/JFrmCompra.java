@@ -163,7 +163,7 @@ public class JFrmCompra extends javax.swing.JInternalFrame {
         if (rbDescripcion.isSelected()) {
             filtro = "descripcion";
         } else if (rbReferencia.isSelected()) {
-            filtro = "refencia";
+            filtro = "referencia";
         } else if (rbCodAlfanumerico.isSelected()) {
             filtro = "codigoalfanumerico";
         } else if (rbCodBarra.isSelected()) {

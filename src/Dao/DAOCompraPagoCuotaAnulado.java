@@ -27,8 +27,8 @@ public class DAOCompraPagoCuotaAnulado implements OperacionesCompraPagoCuotaAnul
         cpca = (CompraPagoCuotaAnulado) obj;
         String sql = "INSERT INTO compra_pago_cuota_anulado\n"
                 + "(idpagoanulado, fechahoraanulado, observacion, idmotivo, \n"
-                + "idusuario, idpago, idcompra, numero, \n"
-                + "fechapago, monto)\n"
+                + "idusuario, idpago,\n"
+                + "fechapago, monto, numerocomprobante, numerorecibo)\n"
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         Connection con;
         PreparedStatement ps;
@@ -37,15 +37,15 @@ public class DAOCompraPagoCuotaAnulado implements OperacionesCompraPagoCuotaAnul
             con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
             ps = con.prepareStatement(sql);
             ps.setInt(1, cpca.getIdpagoanulado());
-            ps.setDate(2, (Date) cpca.getFechahoranulado());
+            ps.setTimestamp(2, cpca.getFechahoranulado());
             ps.setString(3, cpca.getObservacion());
             ps.setInt(4, cpca.getIdmotivo());
             ps.setInt(5, cpca.getIdusuario());
             ps.setInt(6, cpca.getIdpago());
-            ps.setInt(7, cpca.getIdcompra());
-            ps.setInt(8, cpca.getNumero());
-            ps.setDate(9, (Date) cpca.getFechapago());
-            ps.setDouble(10, cpca.getMonto());
+            ps.setDate(7, (Date) cpca.getFechapago());
+            ps.setDouble(8, cpca.getMonto());
+            ps.setString(9, cpca.getNumerocomprobante());
+            ps.setString(10, cpca.getNumerorecibo());
             int filas = ps.executeUpdate();
             if (filas > 0) {
                 con.close();
@@ -97,7 +97,7 @@ public class DAOCompraPagoCuotaAnulado implements OperacionesCompraPagoCuotaAnul
                 + " where not exists (select null\n"
                 + "                     from compra_pago_cuota_anulado t2\n"
                 + "                    where t2.idpagoanulado = t1.idpagoanulado + 1)\n"
-                + " order by idpago\n"
+                + " order by idpagoanulado\n"
                 + " LIMIT 1;";
         Connection con;
         PreparedStatement ps;
@@ -156,7 +156,6 @@ public class DAOCompraPagoCuotaAnulado implements OperacionesCompraPagoCuotaAnul
                 + "CPCA.idusuario, \n"
                 + "CPCA.idpago, \n"
                 + "C.numerodocumento,\n"
-                + "CPCA.numero, \n"
                 + "DATE_FORMAT(CPCA.fechapago, '%d/%m/%Y') AS fecha_pago,\n"
                 + "CPCA.monto\n"
                 + "FROM compra_pago_cuota_anulado AS CPCA\n"
@@ -175,7 +174,7 @@ public class DAOCompraPagoCuotaAnulado implements OperacionesCompraPagoCuotaAnul
             ps.setString(1, "%" + criterio + "%");
             rs = ps.executeQuery();
             while (rs.next()) {
-                Object[] fila = new Object[10];
+                Object[] fila = new Object[9];
                 fila[0] = rs.getInt(1);
                 fila[1] = rs.getString(2);
                 fila[2] = rs.getString(3);
@@ -183,9 +182,8 @@ public class DAOCompraPagoCuotaAnulado implements OperacionesCompraPagoCuotaAnul
                 fila[4] = rs.getInt(5);
                 fila[5] = rs.getInt(6);
                 fila[6] = rs.getString(7);
-                fila[7] = rs.getInt(8);
-                fila[8] = rs.getString(9);
-                fila[9] = rs.getDouble(10);
+                fila[7] = rs.getString(9);
+                fila[8] = rs.getDouble(10);
                 datos.add(fila);
             }
             con.close();

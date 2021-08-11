@@ -1,5 +1,6 @@
 package Modelos;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -8,15 +9,15 @@ import java.util.Date;
  */
 public class CompraPagoCuotaAnulado {
     private int idpagoanulado;
-    private Date fechahoranulado;
+    private Timestamp fechahoranulado;
     private String observacion;
     private int idmotivo;
     private int idusuario;
     private int idpago;
-    private int idcompra;
-    private int numero;
     private Date fechapago;
     private double monto;
+    private String numerocomprobante;
+    private String numerorecibo;
     
     public CompraPagoCuotaAnulado() {
     }
@@ -29,14 +30,14 @@ public class CompraPagoCuotaAnulado {
         this.idpagoanulado = idpagoanulado;
     }
 
-    public Date getFechahoranulado() {
+    public Timestamp getFechahoranulado() {
         return fechahoranulado;
     }
 
-    public void setFechahoranulado(Date fechahoranulado) {
+    public void setFechahoranulado(Timestamp fechahoranulado) {
         this.fechahoranulado = fechahoranulado;
     }
-
+    
     public String getObservacion() {
         return observacion;
     }
@@ -69,22 +70,6 @@ public class CompraPagoCuotaAnulado {
         this.idpago = idpago;
     }
 
-    public int getIdcompra() {
-        return idcompra;
-    }
-
-    public void setIdcompra(int idcompra) {
-        this.idcompra = idcompra;
-    }
-
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
     public Date getFechapago() {
         return fechapago;
     }
@@ -101,5 +86,19 @@ public class CompraPagoCuotaAnulado {
         this.monto = monto;
     }
 
-    
+    public String getNumerocomprobante() {
+        return numerocomprobante;
+    }
+
+    public void setNumerocomprobante(String numerocomprobante) {
+        this.numerocomprobante = numerocomprobante;
+    }
+
+    public String getNumerorecibo() {
+        return numerorecibo;
+    }
+
+    public void setNumerorecibo(String numerorecibo) {
+        this.numerorecibo = numerorecibo;
+    }
 }
