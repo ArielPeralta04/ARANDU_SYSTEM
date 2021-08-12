@@ -12,4 +12,5 @@ public interface OperacionesCompra {
     public boolean eliminar(Object obj);
     public int nuevoID();
     public boolean verificarExistenciaCompra(String numerodocumento, int numerotimbrado);
+    public ArrayList<Object[]> consultar(String criterio);
 }

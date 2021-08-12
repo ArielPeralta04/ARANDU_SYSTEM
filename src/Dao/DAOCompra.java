@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import Controladores.OperacionesCompra;
 import Modelos.Compra;
 import java.sql.Date;
+import java.util.ArrayList;
 
 /**
  *
@@ -197,5 +198,77 @@ public class DAOCompra implements OperacionesCompra {
             JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL VERIFICAR EL CÓDIGO DE BARRA \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         return resultado;
+    }
+
+    @Override
+    public ArrayList<Object[]> consultar(String criterio) {
+        String sql = "SELECT\n"
+                + "CONVERT(SUBSTR(C.numerodocumento, 1, 3), INTEGER) AS Establecimiento,\n"
+                + "CONVERT(SUBSTR(C.numerodocumento, 5, 3), INTEGER) AS PuntoEmision,\n"
+                + "CONVERT(SUBSTR(C.numerodocumento, 9, 7), INTEGER) AS Numero,\n"
+                + "C.numerodocumento AS Comprobante,\n"
+                + "C.numerotimbrado AS timbrado,\n"
+                + "C.idcompra AS CodigoCompra,\n"
+                + "DATE_FORMAT(C.fecha, '%d/%m/%Y') AS FechaCompra,\n"
+                + "C.observacion AS ObservacionCompra,\n"
+                + "C.idmoneda AS CodigoMoneda,\n"
+                + "M.descripcion AS DescripcionMoneda,\n"
+                + "C.iddeposito AS CodigoDeposito,\n"
+                + "D.descripcion AS DescripcionDeposito,\n"
+                + "C.idproveedor AS CodigoProveedor,\n"
+                + "P.razonsocial AS DescripcionProveedor,\n"
+                + "C.idusuario AS CodigoUsuario,\n"
+                + "CONCAT(U.nombre,' ',U.apellido) AS DescripcionUsuario,\n"
+                + "C.totalneto AS MontoTotalSinIva,\n"
+                + "C.totaliva AS MontoTotalIva,\n"
+                + "IF(C.idcuenta=0, NULL, C.idcuenta) AS CodigoCuenta,\n"
+                + "CU.descripcion AS DescripcionCuenta\n"
+                + "FROM compra AS C\n"
+                + "INNER JOIN moneda AS M ON M.idmoneda = C.idmoneda\n"
+                + "INNER JOIN deposito AS D ON D.iddeposito = C.iddeposito\n"
+                + "INNER JOIN proveedor AS P ON P.idproveedor = C.idproveedor\n"
+                + "INNER JOIN usuario AS U ON U.idusuario = C.idusuario\n"
+                + "LEFT JOIN cuenta AS CU ON CU.idcuenta = C.idcuenta\n"
+                + "WHERE CONCAT(C.numerodocumento, C.numerotimbrado, P.razonsocial, P.ruc, P.telefono) LIKE ?\n"
+                + "ORDER BY C.fecha;";
+        Connection con;
+        PreparedStatement ps;
+        ResultSet rs;
+        ArrayList<Object[]> datos = new ArrayList<>();
+        try {
+            Class.forName(db.getDriver());
+            con = DriverManager.getConnection(db.getUrl(), db.getUser(), db.getPass());
+            ps = con.prepareStatement(sql);
+            ps.setString(1, "%" + criterio + "%");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Object[] fila = new Object[20];
+                fila[0] = rs.getInt(1);
+                fila[1] = rs.getInt(2);
+                fila[2] = rs.getInt(3);
+                fila[3] = rs.getString(4);
+                fila[4] = rs.getInt(5);
+                fila[5] = rs.getInt(6);
+                fila[6] = rs.getString(7);
+                fila[7] = rs.getString(8);
+                fila[8] = rs.getInt(9);
+                fila[9] = rs.getString(10);
+                fila[10] = rs.getInt(11);
+                fila[11] = rs.getString(12);
+                fila[12] = rs.getInt(13);
+                fila[13] = rs.getString(14);
+                fila[14] = rs.getInt(15);
+                fila[15] = rs.getString(16);
+                fila[16] = rs.getDouble(17);
+                fila[17] = rs.getDouble(18);
+                fila[18] = rs.getInt(19);
+                fila[19] = rs.getString(20);
+                datos.add(fila);
+            }
+            con.close();
+        } catch (SQLException | ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "HA OCURRIDO UN ERROR AL OBTENER LA LISTA DE LOS DATOS \n" + e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
+        return datos;
     }
 }
